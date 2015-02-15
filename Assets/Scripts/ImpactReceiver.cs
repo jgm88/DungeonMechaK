@@ -12,7 +12,8 @@ public class ImpactReceiver: MonoBehaviour {
 	character = GetComponent< CharacterController>();
 	}
 	
-	public void AddImpact(Vector3 force){ // CharacterController version of AddForce
+	public void AddImpact(Vector3 force)
+	{ // CharacterController version of AddForce
 		impact += force / mass;
 	}
 	
@@ -20,11 +21,13 @@ public class ImpactReceiver: MonoBehaviour {
 		
 //		if(gameObject.tag=="Enemy")
 //			character.center=new Vector3(character.center.x,0f,character.center.z);
-//		// apply the impact effect:
-//		if (impact.magnitude > 0.2f){
-//		  character.Move(impact * Time.deltaTime);
-//		}
-//		// impact energy goes by over time:
-//		impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
+//		
+		// apply the impact effect:
+		if (impact.magnitude > 0.2f)
+		{
+		  character.Move(impact * Time.deltaTime);
+		}
+		// impact energy goes by over time:
+		impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
 	}
 }
