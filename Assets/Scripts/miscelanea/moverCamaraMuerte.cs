@@ -14,7 +14,7 @@ public class moverCamaraMuerte : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		player = GameObject.FindWithTag("Player");
+		player = transform.parent.gameObject;
 		controladorGuitexts = GameObject.FindWithTag("GuitextsContainer").GetComponent<controladorGuitexts>();
 	}
 	
@@ -31,7 +31,6 @@ public class moverCamaraMuerte : MonoBehaviour {
 		//desactivo control del pj
 		player.GetComponent<MouseLook>().enabled = false;
 
-		//player.GetComponent("CharacterMotor").SendMessage("canControl", false);
 		player.GetComponent<CharacterMotor>().canControl = false;
 		
 		//eventos itween
