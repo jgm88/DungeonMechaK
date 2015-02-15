@@ -30,8 +30,8 @@ public class moverCamaraMuerte : MonoBehaviour {
 		
 		//desactivo control del pj
 		player.GetComponent<MouseLook>().enabled = false;
-
-		player.GetComponent<CharacterMotor>().canControl = false;
+		player.GetComponent<CharacterController>().enabled = false;
+		player.GetComponent<CharacterMotor>().enabled = false;
 		
 		//eventos itween
 		iTweenEvent.GetEvent(this.gameObject, "moverCamaraMuerte").Play();

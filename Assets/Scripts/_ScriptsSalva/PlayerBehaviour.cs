@@ -47,4 +47,11 @@ public class PlayerBehaviour : MonoBehaviour {
 		yield return new WaitForSeconds(time);
 		receiveDamage = false;
 	}
+
+	public bool isVivo()
+	{
+		if(life < 0)
+			return false;
+		return true;
+	}
 }
