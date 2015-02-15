@@ -114,7 +114,7 @@ public class menuAcciones : MonoBehaviour {
 		if(adentrate.HitTest(Input.mousePosition)){
 			adentrate.color = Color.yellow;
 			if(Input.GetButtonDown("Fire1")){
-				Application.LoadLevel("Dungeon1");
+				Application.LoadLevel("LoadingDungeon1");
 			}
 		}
 		else{
