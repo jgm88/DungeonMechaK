@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ondaExpansiva : MonoBehaviour {
 	
-	public float damageExplosion = 150f;
+	public int damageExplosion = 150;
 	public float radioAccion = 4f;
 	public float lifeTime = 1f;
 	// Use this for initialization
@@ -18,10 +18,11 @@ public class ondaExpansiva : MonoBehaviour {
 	
 	void OnTriggerStay(Collider other){
 		if(other.tag == "Enemy"){
-			other.gameObject.SendMessage("restarVidaEnemigo", damageExplosion, SendMessageOptions.DontRequireReceiver);
+			other.gameObject.GetComponent<EnemyBehaviour>().ReceiveDamage(damageExplosion);
 		}
+
 		else if(other.tag == "Player"){
-			other.gameObject.SendMessage("restarVida",damageExplosion,SendMessageOptions.DontRequireReceiver);
+			other.gameObject.GetComponent<PlayerBehaviour>().ReceiveDamage(damageExplosion);
 		}
 	}
 }

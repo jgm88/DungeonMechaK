@@ -5,7 +5,7 @@ public class FuegoSkill : MonoBehaviour {
 	
 	public float lifeTime = 0.5f;
 	public int force = 10;
-	public float dps = 70f;
+	public int dps = 70;
 	
 	private GameObject mecha;
 	private float spawnTime = 0.0f;
@@ -28,15 +28,15 @@ public class FuegoSkill : MonoBehaviour {
 	}
 	void OnTriggerEnter (Collider other) {
 		if(other.tag=="Enemy"){
-			Vector3 dir = other.transform.position - transform.position;
-			dir.y = 0;
-			if (other.rigidbody){
-	 			 other.rigidbody.AddForce(dir.normalized * force);
-			} 
-			else { // use a special script for character controllers:
-				other.gameObject.SendMessage("AddImpact",dir.normalized * force,SendMessageOptions.DontRequireReceiver);
-			}
-			other.SendMessage("restarVidaEnemigo", dps, SendMessageOptions.DontRequireReceiver);
+//			Vector3 dir = other.transform.position - transform.position;
+//			dir.y = 0;
+//			if (other.rigidbody){
+//	 			 other.rigidbody.AddForce(dir.normalized * force);
+//			} 
+//			else { // use a special script for character controllers:
+//				other.gameObject.SendMessage("AddImpact",dir.normalized * force,SendMessageOptions.DontRequireReceiver);
+//			}
+			other.GetComponent<EnemyBehaviour>().ReceiveDamage(dps);
 		}
 	}
 }

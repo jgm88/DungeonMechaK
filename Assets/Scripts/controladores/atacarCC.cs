@@ -32,23 +32,26 @@ public class atacarCC : MonoBehaviour {
 	//recojo el evento de golpear a un enemigo
 	void OnTriggerEnter(Collider other){
 		if(other.collider.tag == "Enemy" && colliderObject.enabled == true && !golpeado){
-			
+
 			//falta crear un un metodo para obtener el tiempo start animacion
-			other.SendMessage("reproducirImpacto", controladorAnimaciones.getTiempoStartAnimacion(), SendMessageOptions.DontRequireReceiver);
-			other.SendMessage("restarVidaEnemigo", weaponDamage, SendMessageOptions.DontRequireReceiver);
+//			other.SendMessage("reproducirImpacto", controladorAnimaciones.getTiempoStartAnimacion(), SendMessageOptions.DontRequireReceiver);
+//			other.SendMessage("restarVidaEnemigo", weaponDamage, SendMessageOptions.DontRequireReceiver);
+			other.GetComponent<EnemyBehaviour>().ReceiveDamage(weaponDamage);
 			golpeado = true;
 			//reproduzco el sprite de sangre
 			bloodSprite();
 			
 			//echar hacia atras
-			Vector3 dir = other.transform.position - transform.position;
-			dir.y = 0;
-			if (other.rigidbody){
-	 			 other.rigidbody.AddForce(dir.normalized * force);
-			} 
-			else { // use a special script for character controllers:
-				other.gameObject.SendMessage("AddImpact",dir.normalized * force,SendMessageOptions.DontRequireReceiver);
-			}
+//			Vector3 dir = other.transform.position - transform.position;
+//			dir.y = 0;
+//			if (other.GetComponent<CharacterController>().rigidbody){
+//				other.GetComponent<CharacterController>().rigidbody.AddForce(dir.normalized * force);
+//	 			 
+//			} 
+//			else { // use a special script for character controllers:
+//				other.GetComponent<ImpactReceiver>().AddImpact(dir.normalized* force);
+////				other.gameObject.SendMessage("AddImpact",dir.normalized * force,SendMessageOptions.DontRequireReceiver);
+//			}
 		}
 	}
 	
@@ -62,7 +65,7 @@ public class atacarCC : MonoBehaviour {
 		atacando = true;
 		float tiempoStart = controladorAnimaciones.getAnimacionActual().tiempoStartAnimacion;
 		
-		player.SendMessage("reproducirAtacar", tiempoStart, SendMessageOptions.DontRequireReceiver);
+//		player.SendMessage("reproducirAtacar", tiempoStart, SendMessageOptions.DontRequireReceiver);
 		//reproduzco la animacion asociada al "animation" del struct
 		controladorAnimaciones.playAnimationClip();
 		
