@@ -1,3 +1,4 @@
+#pragma warning disable 0618 //  modes are deprecated
 using System;
 using UnityEngine;
 using Pathfinding.Serialization.JsonFx;

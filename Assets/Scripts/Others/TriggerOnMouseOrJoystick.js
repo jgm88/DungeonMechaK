@@ -65,7 +65,7 @@ function COAtacar(){
 	//	mecha.SendMessage("lanzarllamas",espera,SendMessageOptions.DontRequireReceiver);
 		espera = true;
 		state = true;
-		yield WaitForSeconds(cadencia);
+		yield new WaitForSeconds(cadencia);
 		espera = false;
 	}
 }

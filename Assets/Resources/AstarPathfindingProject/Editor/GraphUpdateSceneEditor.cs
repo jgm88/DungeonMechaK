@@ -1,3 +1,5 @@
+
+#pragma warning disable 0618 //  modes are deprecated
 using UnityEngine;
 using UnityEditor;
 using System.Collections;

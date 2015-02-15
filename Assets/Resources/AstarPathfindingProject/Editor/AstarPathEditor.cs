@@ -1,7 +1,7 @@
 //#define ASTARDEBUG   //"Enables some debugging messages"
 //#define ProfileAstar //"Enables profiling of the pathfinder. Use the context menu to get log results"
 //#define ASTAR_SINGLE_THREAD_OPTIMIZE
-
+#pragma warning disable 0618 //  modes are deprecated
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
