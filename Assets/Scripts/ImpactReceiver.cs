@@ -18,13 +18,13 @@ public class ImpactReceiver: MonoBehaviour {
 	
 	void Update(){ 
 		
-		if(gameObject.tag=="Enemy")
-			character.center=new Vector3(character.center.x,0f,character.center.z);
-		// apply the impact effect:
-		if (impact.magnitude > 0.2f){
-		  character.Move(impact * Time.deltaTime);
-		}
-		// impact energy goes by over time:
-		impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
+//		if(gameObject.tag=="Enemy")
+//			character.center=new Vector3(character.center.x,0f,character.center.z);
+//		// apply the impact effect:
+//		if (impact.magnitude > 0.2f){
+//		  character.Move(impact * Time.deltaTime);
+//		}
+//		// impact energy goes by over time:
+//		impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
 	}
 }

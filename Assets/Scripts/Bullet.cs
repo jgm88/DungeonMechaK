@@ -57,14 +57,15 @@ public class Bullet : MonoBehaviour {
 	}
 	void OnTriggerEnter (Collider other) {
 		if(other.tag=="Enemy"){
-			Vector3 dir = other.transform.position - transform.position;
-			dir.y = 0;
-			if (other.rigidbody){
-	 			 other.rigidbody.AddForce(dir.normalized * force);
-			} 
-			else { // use a special script for character controllers:
-				other.gameObject.SendMessage("AddImpact",-dir.normalized * force,SendMessageOptions.DontRequireReceiver);
-			}
+//			Vector3 dir = other.transform.position - transform.position;
+//			dir.y = 0;
+//			if (other.rigidbody){
+//	 			 other.rigidbody.AddForce(dir.normalized * force);
+//			} 
+//			else { // use a special script for character controllers:
+//				other.GetComponent<ImpactReceiver>().AddImpact(-dir.normalized*force);
+////				other.gameObject.SendMessage("AddImpact",-dir.normalized * force,SendMessageOptions.DontRequireReceiver);
+//			}
 			//DPS
 			//c.gameObject.SetActive(false);
 		}

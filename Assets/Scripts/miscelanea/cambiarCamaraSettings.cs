@@ -7,8 +7,9 @@ public class cambiarCamaraSettings : MonoBehaviour {
 
 	private bool vivo;
 	public GameObject guitextMuerte;
- 
+ 	private GameObject player;
     void Start () {
+		player = GameObject.FindWithTag("Player").gameObject;
 	    //Set the background color
 	    //camera.backgroundColor = new Color(164f, 0 ,0);
     }
@@ -16,8 +17,8 @@ public class cambiarCamaraSettings : MonoBehaviour {
 	void FixedUpdate(){
 	}
 	
-    void Update () {
-		vivo = GameObject.FindWithTag("Player").GetComponent<manejadorVida>().isVivo();
+    void LateUpdate () {
+		vivo = player.GetComponent<PlayerBehaviour>().isVivo();
         if (!vivo)
         {
 			camera.backgroundColor = new Color(164f, 0 ,0);

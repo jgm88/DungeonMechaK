@@ -34,7 +34,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	/// The attack damage.
 	/// </summary>
 	public int damage = 10;
-
+	/// <summary>
+	/// The impact force.
+	/// </summary>
+	public float force = 20f;
 	/// <summary>
 	/// Internal animator state machine.
 	/// </summary>
@@ -65,11 +68,12 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 	public void ReceiveDamage(int damage)
 	{
-		life -= damage;
-		if (animator)
+		if (animator && life > 0)
+		{
+			life -= damage;
 			if (life > 0)
 			{
-				soundManajer.reproducirGolpeado();
+				soundManajer.reproducirImpacto();
 				receiveDamage = true;
 				StartCoroutine(COHit(1.2f));
 			}
@@ -79,19 +83,26 @@ public class EnemyBehaviour : MonoBehaviour {
 				GetComponent<AIPath>().enabled = false;
 				collider.enabled = false;
 				soundManajer.reproducirMuerte();
-				Destroy(gameObject,3.5f);
-
+				Destroy(gameObject,3.5f);	
 			}
+
+		}
 	}
 	
 	void OnTriggerStay(Collider other){
 		if(!receiveDamage && !isAttackCD && other.tag == "Player" ){ // && vidaPlayer.isVivo()
 			atacar (other.gameObject);
-			Vector3 dir = other.transform.position - transform.position;
-			dir.y = 0;
-			if (other.rigidbody){
-				other.rigidbody.AddForce(dir.normalized * impactForce);
-			} 
+//			Vector3 dir = other.transform.position - transform.position;
+//			dir.y = 0;
+//			if (other.GetComponent<CharacterController>().rigidbody){
+//				Debug.Log("HAGO IMPACTO CON FISICA");
+//				other.GetComponent<CharacterController>().rigidbody.AddForce(dir.normalized * impactForce);
+//			}
+//			else
+//			{
+//				Debug.Log("HAGO IMPACTO");
+//				other.GetComponent<ImpactReceiver>().AddImpact(dir.normalized * force);
+//			}
 		}
 	}
 	void OnTriggerEnter(Collider other)
