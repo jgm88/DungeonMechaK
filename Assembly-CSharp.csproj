@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{E996D772-18BF-9986-C877-752C2BC4DD8D}</ProjectGuid>
+	<ProjectGuid>{4D4D3145-34FA-DF26-D6FA-ABC7B68720AE}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -131,6 +131,8 @@
      <Compile Include="Assets\Scripts\Torchslider2.cs" />
      <Compile Include="Assets\Scripts\Utility Scripts\CombineChildren.cs" />
      <Compile Include="Assets\Scripts\Utility Scripts\MeshCombineUtility.cs" />
+     <Compile Include="Assets\Scripts\_ScriptsSalva\EnemyBehaviour.cs" />
+     <Compile Include="Assets\Scripts\_ScriptsSalva\PlayerBehaviour.cs" />
      <Compile Include="Assets\Scripts\armaduras\armadura.cs" />
      <Compile Include="Assets\Scripts\armaduras\armaduraCuero.cs" />
      <Compile Include="Assets\Scripts\controladorParticulas.cs" />
@@ -209,17 +211,17 @@
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Ionic.Zip.Reduced">
- <HintPath>C:/Users/AkirA/Documents/Unity Projects/dmkMecha/Assets/Resources/AstarPathfindingProject/Plugins/DotNetZip/Ionic.Zip.Reduced.dll</HintPath>
+ <HintPath>E:/Documentos/DungeonMechaK/Assets/Resources/AstarPathfindingProject/Plugins/DotNetZip/Ionic.Zip.Reduced.dll</HintPath>
  </Reference>
  <Reference Include="JsonFx.Json">
- <HintPath>C:/Users/AkirA/Documents/Unity Projects/dmkMecha/Assets/Resources/AstarPathfindingProject/Plugins/JsonFx/JsonFx.Json.dll</HintPath>
+ <HintPath>E:/Documentos/DungeonMechaK/Assets/Resources/AstarPathfindingProject/Plugins/JsonFx/JsonFx.Json.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{5F1822BE-DF50-41F3-1FBD-74A9FD30B106}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{8013B501-2BDC-FE72-4B93-7586AFC7E360}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
-      <Project>{8C145674-FB5C-3391-1CB1-13EBA54F3BA4}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
+      <Project>{26C4770C-4AAB-7F80-9B40-432126D4C03B}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
