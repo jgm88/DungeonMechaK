@@ -5,17 +5,21 @@ public class PlayerBehaviour : MonoBehaviour {
 
 
 	public int maxLife = 100;
-	public int life;
+	public int life = 100;
+	public int maxMana = 100;
+	public int mana = 100;
 
 	public bool receiveDamage;
 
 	private manejadorAudioAnimado sounManajer;
-	private HUDStatusBehaviour _hsb;
+	private HUDStatusBehaviour _lifeHUD;
+	private HUDStatusBehaviour _manaHUD;
 
 	void Awake()
 	{
 		sounManajer = GetComponent<manejadorAudioAnimado>();
-		_hsb = GameObject.Find("LifeMask").GetComponent<HUDStatusBehaviour>();
+		_lifeHUD = GameObject.Find("LifeMask").GetComponent<HUDStatusBehaviour>();
+		_manaHUD = GameObject.Find("ManaMask").GetComponent<HUDStatusBehaviour>();
 	}
 
 	public void ReceiveDamage(int damage)
@@ -31,7 +35,7 @@ public class PlayerBehaviour : MonoBehaviour {
 			}
 			else
 				muertePj();
-			_hsb.SetValue(life, maxLife);
+			_lifeHUD.SetValue(life, maxLife);
 		}
 		
 	}
@@ -42,8 +46,23 @@ public class PlayerBehaviour : MonoBehaviour {
 		if(life > maxLife)
 			life = maxLife;
 
-		_hsb.SetValue(life, maxLife);
+		_lifeHUD.SetValue(life, maxLife);
 
+	}
+	public void DeductMana(int amount)
+	{
+
+		if (mana - amount >= 0){				
+			mana -= amount;
+			_manaHUD.SetValue(mana, maxMana);
+		}				
+	}
+	public void ReceiveMana(int amount)
+	{
+		mana += amount;
+		if(mana > maxMana)
+			mana = maxMana;		
+		_manaHUD.SetValue(mana, maxMana);		
 	}
 
 	private void muertePj(){

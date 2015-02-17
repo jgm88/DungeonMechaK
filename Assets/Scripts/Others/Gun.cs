@@ -4,33 +4,24 @@ using System.Collections;
 public class Gun : MonoBehaviour {
 	
 	public GameObject bulletPrefab;
-	public bool canShot;
-	
-	public float frecuencia = 10;
-	public float conoDispersion = 1.5f;
-	public bool firing = false;
-	public float dps = 20f;
-	public float fuerzaPS = 20f;
+	public bool canShot;	
 	public float coolDown = 2f;
+	public int manaCost = 20;
 
-	//CACA DE INPUTS
-
-
+	private PlayerBehaviour _pb;
 
 	void Awake () {
+		_pb = GameObject.FindWithTag("player").GetComponent<PlayerBehaviour>();
 		canShot = true;
 
 	}
 	public void Shoot(){
 		if(canShot){
-			Quaternion coneRandomRotation = Quaternion.Euler(Random.Range(-conoDispersion, conoDispersion), 
-			                                                 Random.Range(-conoDispersion, conoDispersion),0);
-			Instantiate(bulletPrefab, transform.position, transform.rotation * coneRandomRotation);
+			_pb.DeductMana(manaCost);
+			Instantiate(bulletPrefab, transform.position, transform.rotation);
 			canShot = false;
-			StartCoroutine(COCoolDown());
-					
+			StartCoroutine(COCoolDown());				
 		}
-
 	}
 
 
