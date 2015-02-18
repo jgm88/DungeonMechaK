@@ -8,22 +8,22 @@ public class Gun : MonoBehaviour {
 	public float coolDown = 2f;
 	public int manaCost = 20;
 
-	private PlayerBehaviour _pb;
+	private PlayerBehaviour _playerBehaviour;
 
 	void Awake () {
-		_pb = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+		_playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 		canShot = true;
 
 	}
 	public void Shoot(){
-		if(canShot){
-			_pb.DeductMana(manaCost);
+		if(canShot && _playerBehaviour.mana >= manaCost){
+
+			_playerBehaviour.DeductMana(manaCost);
 			Instantiate(bulletPrefab, transform.position, transform.rotation);
 			canShot = false;
 			StartCoroutine(COCoolDown());				
 		}
 	}
-
 
 	IEnumerator COCoolDown(){
 		
