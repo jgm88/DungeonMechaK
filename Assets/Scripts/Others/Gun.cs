@@ -11,7 +11,7 @@ public class Gun : MonoBehaviour {
 	private PlayerBehaviour _pb;
 
 	void Awake () {
-		_pb = GameObject.FindWithTag("player").GetComponent<PlayerBehaviour>();
+		_pb = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 		canShot = true;
 
 	}

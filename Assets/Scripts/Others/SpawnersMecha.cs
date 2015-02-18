@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 public class SpawnersMecha : MonoBehaviour {
-	
+
+	//TODO CAMBIAR ESTO POR ALGO MAS SIMPLE; 
+	//TODO SCRIPTS EN CADA MECHA QUE TENGAN SU COMPONENTE PARA RECUPERAR MANA Y COMUNICARSE CON LA PUERTA
+
 	public GameObject avivar;
 	public Transform [] puntosSpawn;
 	
