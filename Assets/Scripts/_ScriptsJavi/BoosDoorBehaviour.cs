@@ -8,11 +8,41 @@ public class BoosDoorBehaviour : MonoBehaviour {
 	private GameObject _doorRight3D;
 	private GameObject _doorLeft3D;
 
-	// Use this for initialization
+	private GameObject _flameRed;
+	private GameObject _flameNormal;
+	private GameObject _flameBlue;
+	private GameObject _flameGreen;
+
+	private GameObject _flameRedUI;
+	private GameObject _flameNormalUI;
+	private GameObject _flameBlueUI;
+	private GameObject _flameGreenUI;
+
 	void Start () {
-	//TODO foreach que recoga las flamas children y las ponga a setactive false
+
 		_doorRight3D = GameObject.Find("DoorRight");
 		_doorLeft3D = GameObject.Find("DoorLeft");
+
+		_flameRed = transform.Find("FlameRed").gameObject;
+		_flameNormal = transform.Find("FlameNormal").gameObject;
+		_flameBlue = transform.Find("FlameBlue").gameObject;
+		_flameGreen = transform.Find("FlameGreen").gameObject;
+
+		_flameRed.SetActive(false);
+		_flameNormal.SetActive(false);
+		_flameBlue.SetActive(false);
+		_flameGreen.SetActive(false);
+
+		_flameRedUI = GameObject.Find("FlameRedUI");
+		_flameNormalUI = GameObject.Find("FlameNormalUI");
+		_flameBlueUI = GameObject.Find("FlameBlueUI");
+		_flameGreenUI = GameObject.Find("FlameGreenUI");
+
+		_flameRedUI.SetActive(false);
+		_flameNormalUI.SetActive(false);
+		_flameBlueUI.SetActive(false);
+		_flameGreenUI.SetActive(false);
+
 	}
 
 	//TODO hacer funcion que reciba una string con color de llama y active un hijo u otro
@@ -22,12 +52,32 @@ public class BoosDoorBehaviour : MonoBehaviour {
 		transform.collider.enabled = openClose;
 	}
 
-	public void purchaseWick(){
+	public void purchaseWick(string color){
 		if(wicksAdquired > 0){
-			//Encender llama en UI
+			if(color == "red"){
+				_flameRed.SetActive(true);
+				_flameRedUI.SetActive(true);
+			}
+			else if(color == "normal"){
+				_flameNormal.SetActive(true);
+				_flameNormalUI.SetActive(true);
+			}
+			else if(color == "blue"){
+				_flameBlue.SetActive(true);
+				_flameBlueUI.SetActive(true);	
+			}
+			else if(color == "green"){
+				_flameGreen.SetActive(true);
+				_flameGreenUI.SetActive(true);
+			}
 			--wicksAdquired;
+			
+			Debug.Log("Enciendo " + color);
+			
+			Debug.Log("Quedan " + wicksAdquired + " LLAMAS");
 		}
-		else{
+		if(wicksAdquired == 0){
+			Debug.Log("Abro puerta");
 			setDoor(false);
 		}
 	}

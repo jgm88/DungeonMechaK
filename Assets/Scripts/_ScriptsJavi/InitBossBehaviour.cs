@@ -9,13 +9,16 @@ public class InitBossBehaviour : MonoBehaviour {
 
 	public AudioClip music;
 	
+	void Awake(){
+		_boss = GameObject.Find("Boss");
+		_boss.SetActive(false);
 
+
+	}
 	// Use this for initialization
 	void Start () {
-
-		_boss = GameObject.FindWithTag("Boss");
-		_bossDoorBehaviour = GameObject.Find("BoosDoor").GetComponent<BoosDoorBehaviour>();
-
+	
+		_bossDoorBehaviour = transform.parent.GetComponent<BoosDoorBehaviour>();	
 	}
 	
 	void OnTriggerEnter(Collider other){
