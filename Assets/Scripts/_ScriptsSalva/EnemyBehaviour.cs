@@ -28,6 +28,10 @@ public class EnemyBehaviour : MonoBehaviour
 	/// </summary>
 	public float attackCD = 3f;
 	/// <summary>
+	/// First Attack random delay, maximum this value.
+	/// </summary>
+	public float firstAttackMaxDelay = 3f;
+	/// <summary>
 	/// The impact force.
 	/// </summary>
 	public float impactForce = 20f;
@@ -45,6 +49,8 @@ public class EnemyBehaviour : MonoBehaviour
 	protected Animator animator;
 
 	private manejadorAudioAnimado soundManajer;
+
+	private bool firstAttack = false;
 	// Use this for initialization
 	void Awake ()
 	{
@@ -144,6 +150,11 @@ public class EnemyBehaviour : MonoBehaviour
 	{
 		yield return new WaitForSeconds (time);
 		receiveDamage = false;
+	}
+
+	IEnumerator COWaitRandFirstAttack ()
+	{
+		yield return new WaitForSeconds (2f);
 	}
 
 }

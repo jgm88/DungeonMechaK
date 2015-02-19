@@ -164,11 +164,12 @@ public class controladorSpawn : MonoBehaviour
 	/// <returns>Recursive Coroutine Spawning Enemies.</returns>
 	IEnumerator COSpawnNormal ()
 	{
-		if (!_inBoss) {
+		if (!_inBoss && this.enabled) {
+			Debug.Log ("spawneamos");
 			InstantiateEnemiesNormal ();
 			yield return new WaitForSeconds (spawnIntervale);
 			yield return StartCoroutine (COSpawnNormal ());
-		} else {
+		} else if (this.enabled) {
 			StartCoroutine (COSpawnBoss ());
 		}
 	}
