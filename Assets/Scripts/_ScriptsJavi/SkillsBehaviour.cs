@@ -9,7 +9,11 @@ public class KeyHandlerHUDBehaviour : MonoBehaviour {
 	private Gun _gunAOE;
 	private Gun _gunDinamite;
 	//TODO cambiar por skill intermedia que genere particulas, cooldown y cosicas
-	private PlayerBehaviour _p;
+	private PlayerBehaviour _playerBehaviour;
+	private bool _inWickArea = false;
+
+	public int manaAmount = 5;
+	public int healAmount = 10;
 
 
 
@@ -19,11 +23,12 @@ public class KeyHandlerHUDBehaviour : MonoBehaviour {
 //		_b1 = transform.Find("SkillButton1").GetComponent<Button>();
 		_gunAOE = GameObject.Find("GunAOE").GetComponent<Gun>();
 		_gunDinamite = GameObject.Find("GunDinamite").GetComponent<Gun>();
-		_p = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+		_playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 
 	}
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.Alpha1)) {
+		if (Input.GetKeyDown(KeyCode.Alpha1) && _inWickArea) {
+			_playerBehaviour.ReceiveMana(manaAmount);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2)) {
 			_gunAOE.Shoot();
@@ -32,7 +37,7 @@ public class KeyHandlerHUDBehaviour : MonoBehaviour {
 			_gunDinamite.Shoot();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4)) {
-			_p.ReceiveHeal(10);
+			_playerBehaviour.ReceiveHeal(healAmount);
 		}
 	}
 }

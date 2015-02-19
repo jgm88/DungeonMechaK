@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CloseDoorAreaBehaviour : MonoBehaviour {
+public class InitBossBehaviour : MonoBehaviour {
 
 	private GameObject _boss;
 	private BoosDoorBehaviour _bossDoorBehaviour;
