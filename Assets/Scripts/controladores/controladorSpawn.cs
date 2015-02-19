@@ -33,7 +33,6 @@ public class controladorSpawn : MonoBehaviour
 
 	void Update ()
 	{
-		Debug.Log (GetNumOfEnemiesInGame ());
 	}
 
 	#region private Functions
@@ -120,10 +119,20 @@ public class controladorSpawn : MonoBehaviour
 	/// </summary>
 	public void InstantiateEnemiesNormal ()
 	{
+		IList<int> pointsSpawned = new List<int> ();
 		int enemiesInGame = GetNumOfEnemiesInGame ();
+		int randIndex = 0;
+		//en el bucle controlamos si hemos spawneado un enemigo en ese punto y esperamos 1s para que no se stakeen aunque tengan collider
 		for (int i=0; i<= numOfEnemiesSpawned && enemiesInGame <= maxEnemies; i++) {
-			Instantiate (prefabsEnemigos [_levelByKeys], spawnPointsNormal [GetRandPointNormal ()].transform.position, Quaternion.identity);
+			randIndex = GetRandPointNormal ();
+			if (pointsSpawned.IndexOf (randIndex) != -1) {
+				StartCoroutine (COWaitSameSpawnPoint (true, randIndex));
+			} else {
+				StartCoroutine (COWaitSameSpawnPoint (false, randIndex));
+			}
+			pointsSpawned.Add (randIndex);
 		}
+		pointsSpawned.Clear ();
 	}
 
 	/// <summary>
@@ -173,6 +182,23 @@ public class controladorSpawn : MonoBehaviour
 		instantiateEnemiesBoss ();
 		yield return new WaitForSeconds (spawnIntervale);
 		yield return StartCoroutine (COSpawnBoss ());
+	}
+
+	/// <summary>
+	/// Coroutine for wait a second to avoid stacking spawning enemies in same point.
+	/// </summary>
+	/// <returns>The wait same spawn point.</returns>
+	/// <param name="wait">If set to <c>true</c> wait.</param>
+	/// <param name="index">Index.</param>
+	IEnumerator COWaitSameSpawnPoint (bool wait = false, int index = 0)
+	{
+		if (wait) {
+			yield return new WaitForSeconds (1f);
+			Instantiate (prefabsEnemigos [_levelByKeys], spawnPointsNormal [index].transform.position, Quaternion.identity);
+		} else {
+			Instantiate (prefabsEnemigos [_levelByKeys], spawnPointsNormal [index].transform.position, Quaternion.identity);
+		}
+
 	}
 
 	#endregion
