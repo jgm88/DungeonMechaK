@@ -3,6 +3,7 @@
 #define UNITY_4
 #endif
 
+#pragma warning disable 0618 //  modes are deprecated
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;

@@ -49,9 +49,9 @@
      <Compile Include="Assets\Scripts\Camera Scripts\MouseOrbit.js" />
      <Compile Include="Assets\Scripts\Camera Scripts\SmoothFollow.js" />
      <Compile Include="Assets\Scripts\Camera Scripts\SmoothLookAt.js" />
-     <Compile Include="Assets\Scripts\FPSInputController.js" />
-     <Compile Include="Assets\Scripts\SignalSender.js" />
-     <Compile Include="Assets\Scripts\TriggerOnMouseOrJoystick.js" />
+     <Compile Include="Assets\Scripts\Others\FPSInputController.js" />
+     <Compile Include="Assets\Scripts\Others\SignalSender.js" />
+     <Compile Include="Assets\Scripts\Others\TriggerOnMouseOrJoystick.js" />
      <Compile Include="Assets\Scripts\miscelanea\DragRigidbody.js" />
      <Compile Include="Assets\_TRASH\Character Controllers\Sources\Scripts\ThirdPersonCamera.js" />
      <Compile Include="Assets\_TRASH\Character Controllers\Sources\Scripts\ThirdPersonController.js" />
@@ -82,6 +82,7 @@
      <None Include="Assets\Modelos2D\demonSpriteSheet.xml" />
      <None Include="Assets\Resources\AstarPathfindingProject\Readme_upgrading.txt" />
      <None Include="Assets\Standard Assets\Orthello\Examples\0 - Simple Examples\TextSprites\Atlases\glyph.xml" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-LightedOutline.shader" />
      <None Include="Assets\Resources\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
      <None Include="Assets\Resources\AstarPathfindingProject\Readme.txt" />
      <None Include="Assets\Modelos2D\blood-SpriteSheet.xml" />

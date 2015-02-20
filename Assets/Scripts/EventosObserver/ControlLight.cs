@@ -27,6 +27,9 @@ public class ControlLight : MonoBehaviour {
 	/// compenentes de la antorcha para decrementar la fuerza de la luz
 	/// </summary>
 	private Torchelight torch;
+
+	//TODO METER ESTO EN CADA MECHA
+	private 
 	
 	void Start()
 	{
@@ -51,9 +54,9 @@ public class ControlLight : MonoBehaviour {
 		{
 			life=luzPj.gameObject.GetComponentInChildren<ligthLife>();
 			canTurn(true);
-			GameObject.Find("GUITextAvivar").guiText.enabled=true;
+//			GameObject.Find("GUITextAvivar").guiText.enabled=true;
 		}
-		Invoke("QuitaGuiText",1f);	
+//		Invoke("QuitaGuiText",1f);	
 	}
 
 	void OnTriggerStay(Collider luzPj)
