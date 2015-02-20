@@ -10,11 +10,16 @@ public class SkillsBehaviour : MonoBehaviour {
 	private Gun _gunDinamite;
 	//TODO cambiar por skill intermedia que genere particulas, cooldown y cosicas
 	private PlayerBehaviour _playerBehaviour;
+	private Transform _transformPlayer;
+	private Vector3 _positionAux;
+
 	public bool inWickArea = false;
 
 	public int manaAmount = 5;
 	public int healAmount = 10;
 	public int healCost = 10;
+
+	public GameObject healEffect;
 
 
 
@@ -24,7 +29,8 @@ public class SkillsBehaviour : MonoBehaviour {
 //		_b1 = transform.Find("SkillButton1").GetComponent<Button>();
 		_gunAOE = GameObject.Find("GunAOE").GetComponent<Gun>();
 		_gunDinamite = GameObject.Find("GunDinamite").GetComponent<Gun>();
-		_playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+		_transformPlayer = GameObject.FindWithTag("Player").transform;
+		_playerBehaviour = _transformPlayer.gameObject.GetComponent<PlayerBehaviour>();
 
 	}
 	void Update() {
@@ -40,6 +46,11 @@ public class SkillsBehaviour : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Alpha4)) {
 			_playerBehaviour.ReceiveHeal(healAmount);
 			_playerBehaviour.DeductMana(healCost);
+			_positionAux = _transformPlayer.position;
+			_positionAux.y -= 0.5f;
+
+			GameObject g = Instantiate(healEffect,_positionAux, _transformPlayer.rotation) as GameObject;
+			g.transform.parent = _transformPlayer;
 		}
 	}
 }
