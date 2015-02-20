@@ -105,7 +105,7 @@ public class bossController : MonoBehaviour {
 				faseActual++;
 				cambiarFases();
 			}
-			Debug.Log(vidaActual);
+
 		}
 	}
 	

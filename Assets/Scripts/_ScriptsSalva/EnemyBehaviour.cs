@@ -35,10 +35,6 @@ public class EnemyBehaviour : MonoBehaviour {
 	/// </summary>
 	public int damage = 10;
 	/// <summary>
-	/// The impact force.
-	/// </summary>
-	public float force = 20f;
-	/// <summary>
 	/// Internal animator state machine.
 	/// </summary>
 	protected Animator animator;
@@ -64,7 +60,6 @@ public class EnemyBehaviour : MonoBehaviour {
 			animator.SetBool("isAttackCooldown",isAttackCD);
 			animator.SetInteger("life",life);
 		}
-
 	}
 	public void ReceiveDamage(int damage)
 	{
@@ -101,20 +96,26 @@ public class EnemyBehaviour : MonoBehaviour {
 //			else
 //			{
 //				Debug.Log("HAGO IMPACTO");
-//				other.GetComponent<ImpactReceiver>().AddImpact(dir.normalized * force);
+//				other.GetComponent<ImpactReceiver>().AddImpact(dir.normalized * impactForce);
 //			}
 		}
 	}
 	void OnTriggerEnter(Collider other)
 	{
 		if(other.CompareTag("Player"))
+		{
 			inCombat = true;
+			isMoving = false;
+		}
 	}
 
 	void OnTriggerExit(Collider other)
 	{
 		if(other.CompareTag("Player"))
+		{
 			inCombat = false;
+			isMoving = true;
+		}
 	}
 	
 	//funcion para atacar, bloquea el spam de ataques y envia mensajes

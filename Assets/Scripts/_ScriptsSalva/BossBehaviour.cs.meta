@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 0490d8a8767876149abfafa2a72bd14d
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - bossSkinMat: {fileID: 2100000, guid: 0223a2abbe4656949b94742c96df2e73, type: 2}
+  - deathParticles: {instanceID: 0}
+  - particles: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

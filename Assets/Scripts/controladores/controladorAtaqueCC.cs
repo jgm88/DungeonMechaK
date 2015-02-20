@@ -9,7 +9,7 @@ public class controladorAtaqueCC : MonoBehaviour {
 	private int indice;
 	public controladorEscudo shieldController;
 	int numerArmas;
-	private string poderActual = "";
+	public string poderActual = "";
 	
 	// Use this for initialization
 	void Start () {
