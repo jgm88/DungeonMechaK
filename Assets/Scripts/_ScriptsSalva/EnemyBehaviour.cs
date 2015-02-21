@@ -151,10 +151,4 @@ public class EnemyBehaviour : MonoBehaviour
 		yield return new WaitForSeconds (time);
 		receiveDamage = false;
 	}
-
-	IEnumerator COWaitRandFirstAttack ()
-	{
-		yield return new WaitForSeconds (2f);
-	}
-
 }
