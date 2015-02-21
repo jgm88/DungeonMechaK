@@ -50,6 +50,10 @@ public class BossBehaviour : MonoBehaviour {
 	/// </summary>
 	public bool inCombat;
 	/// <summary>
+	/// is the boss stunde?
+	/// </summary>
+	public bool isStunned = false;
+	/// <summary>
 	/// The speed movement.
 	/// </summary>
 	public float speedMovement = 2.5f;
@@ -154,7 +158,7 @@ public class BossBehaviour : MonoBehaviour {
 
 		if(damage > 100)
 		{
-		
+			stun();
 		}
 		else if(!receiveDamage) //if(playerAttackController.getPoderActual().Equals(weaknesPower))
 		{
@@ -193,15 +197,19 @@ public class BossBehaviour : MonoBehaviour {
 	}
 
 	private void stun(){
+		isStunned = true;
 		isAttackCD = true;
 		stunSprite.SetActive(true);
+		aiPath.enabled = false;
 		StartCoroutine(COStunn());
 	}
 	
 	IEnumerator COStunn(){
 		yield return new WaitForSeconds(stunTime);
 		isAttackCD = false;
+		isStunned = false;
 		stunSprite.SetActive(false);
+		aiPath.enabled = true;
 	}
 
 	/// <summary>

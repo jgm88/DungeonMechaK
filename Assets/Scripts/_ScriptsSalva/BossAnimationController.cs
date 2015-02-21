@@ -25,8 +25,11 @@ public class BossAnimationController : MonoBehaviour {
 	void LateUpdate()
 	{
 		///MAQUINA DE ESTADOS DEL BOSS
-
-		if(!bossBeha.receiveDamage && bossBeha.inCombat)
+		if(!bossAnim.isPlaying && bossBeha.isStunned)
+		{
+			bossAnim.Play("stunned_idle", PlayMode.StopAll);
+		}
+		else if(!bossBeha.receiveDamage && bossBeha.inCombat)
 		{
 			waitting = false;
 			if(!bossBeha.isAttackCD)
@@ -41,7 +44,7 @@ public class BossAnimationController : MonoBehaviour {
 		else if(!bossAnim.isPlaying && bossBeha.isMoving)
 		{
 			waitting = false;
-			bossAnim.PlayQueued("run");
+			bossAnim.Play("run",PlayMode.StopAll);
 			
 //				bossAnim.Play("run",PlayMode.StopAll);	
 		}
