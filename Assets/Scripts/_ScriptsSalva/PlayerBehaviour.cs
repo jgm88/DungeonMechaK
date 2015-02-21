@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerBehaviour : MonoBehaviour {
+public class PlayerBehaviour : MonoBehaviour
+{
 
 
 	public int maxLife = 100;
@@ -15,27 +16,24 @@ public class PlayerBehaviour : MonoBehaviour {
 	private HUDStatusBehaviour _lifeHUD;
 	private HUDStatusBehaviour _manaHUD;
 
-	void Awake()
+	void Awake ()
 	{
-		sounManajer = GetComponent<manejadorAudioAnimado>();
-		_lifeHUD = GameObject.Find("LifeMask").GetComponent<HUDStatusBehaviour>();
-		_manaHUD = GameObject.Find("ManaMask").GetComponent<HUDStatusBehaviour>();
+		sounManajer = GetComponent<manejadorAudioAnimado> ();
+		_lifeHUD = GameObject.Find ("LifeMask").GetComponent<HUDStatusBehaviour> ();
+		_manaHUD = GameObject.Find ("ManaMask").GetComponent<HUDStatusBehaviour> ();
 	}
 
-	public void ReceiveDamage(int damage)
+	public void ReceiveDamage (int damage)
 	{
-		if(!receiveDamage)
-		{
+		if (!receiveDamage) {
 			life -= damage;
-			if (life > 0)
-			{
-				sounManajer.reproducirGolpeado();
+			if (life > 0) {
+				sounManajer.reproducirGolpeado ();
 				receiveDamage = true;
-				StartCoroutine(COHit(1.2f));
-			}
-			else
-				muertePj();
-			_lifeHUD.SetValue(life, maxLife);
+				StartCoroutine (COHit (1.2f));
+			} else
+				muertePj ();
+			_lifeHUD.SetValue (life, maxLife);
 		}
 		
 	}

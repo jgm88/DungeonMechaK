@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class ImpactReceiver: MonoBehaviour {
+public class ImpactReceiver: MonoBehaviour
+{
   
 	public float mass = 3.0f; // define the character mass
 	
@@ -8,26 +9,27 @@ public class ImpactReceiver: MonoBehaviour {
 	CharacterController character;
 	Vector3 center;
 	
-	void Start(){
-	character = GetComponent< CharacterController>();
+	void Start ()
+	{
+		character = GetComponent< CharacterController> ();
 	}
 	
-	public void AddImpact(Vector3 force)
+	public void AddImpact (Vector3 force)
 	{ // CharacterController version of AddForce
 		impact += force / mass;
 	}
 	
-	void Update(){ 
+	void Update ()
+	{ 
 		
 //		if(gameObject.tag=="Enemy")
 //			character.center=new Vector3(character.center.x,0f,character.center.z);
 //		
 		// apply the impact effect:
-		if (impact.magnitude > 0.2f)
-		{
-		  character.Move(impact * Time.deltaTime);
+		if (impact.magnitude > 0.2f) {
+			character.Move (impact * Time.deltaTime);
 		}
 		// impact energy goes by over time:
-		impact = Vector3.Lerp(impact, Vector3.zero, 5*Time.deltaTime);
+		impact = Vector3.Lerp (impact, Vector3.zero, 5 * Time.deltaTime);
 	}
 }

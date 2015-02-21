@@ -40,18 +40,12 @@ public class atacarCC : MonoBehaviour {
 			golpeado = true;
 			//reproduzco el sprite de sangre
 			bloodSprite();
-			
-			//echar hacia atras
-//			Vector3 dir = other.transform.position - transform.position;
-//			dir.y = 0;
-//			if (other.GetComponent<CharacterController>().rigidbody){
-//				other.GetComponent<CharacterController>().rigidbody.AddForce(dir.normalized * force);
-//	 			 
-//			} 
-//			else { // use a special script for character controllers:
-//				other.GetComponent<ImpactReceiver>().AddImpact(dir.normalized* force);
-////				other.gameObject.SendMessage("AddImpact",dir.normalized * force,SendMessageOptions.DontRequireReceiver);
-//			}
+
+		}
+		else if(other.CompareTag("Boss") && colliderObject.enabled == true && !golpeado)
+		{
+
+			other.GetComponent<BossBehaviour>().ReceiveDamage(weaponDamage);
 		}
 	}
 	
