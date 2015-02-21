@@ -105,7 +105,7 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// The stun sprite.
 	/// </summary>
-	private GameObject stunSprite;
+	public GameObject stunSprite;
 	/// <summary>
 	/// The player.
 	/// </summary>
@@ -119,6 +119,8 @@ public class BossBehaviour : MonoBehaviour
 	/// The ai path controller script
 	/// </summary>
 	private AIPath aiPath;
+
+	private BossAnimationController _animationController;
 
 
 //	private manejadorAudioAnimado soundManajer;
@@ -141,6 +143,8 @@ public class BossBehaviour : MonoBehaviour
 //		stunSprite.SetActive(false);
 		guitextVictoria = GameObject.Find ("victoria");
 		player = GameObject.FindWithTag ("Player");
+		playerAttackController = player.GetComponent<controladorAtaqueCC> ();
+		_animationController = GetComponent<BossAnimationController> ();
 	}
 	
 	//	// Update is called once per frame
@@ -165,7 +169,7 @@ public class BossBehaviour : MonoBehaviour
 
 		if (damage > 100) {
 			stun ();
-		} else if (!receiveDamage) { //if(playerAttackController.getPoderActual().Equals(weaknesPower))
+		} else if (!receiveDamage && playerAttackController.getPoderActual ().Equals (weaknesPower)) { 
 		
 			life -= damage;
 			if (life > 0) {
@@ -207,11 +211,16 @@ public class BossBehaviour : MonoBehaviour
 	
 	IEnumerator COStunn ()
 	{
+		_animationController.setStunned ();
 		yield return new WaitForSeconds (stunTime);
 		isAttackCD = false;
 		isStunned = false;
 		stunSprite.SetActive (false);
 		aiPath.enabled = true;
+		if (isMoving)
+			_animationController.setRunning ();
+		else
+			_animationController.setIdle ();
 	}
 
 	/// <summary>
@@ -225,6 +234,8 @@ public class BossBehaviour : MonoBehaviour
 		//lanzo el evento de del itween y desactivo el conrol
 //		iTweenEvent.GetEvent(Camera.main.gameObject, "recorridoEndGame").Play();
 		player.GetComponent<CharacterMotor> ().canControl = false;
+		//destruimos las armas para el tour con la camara
+		Destroy (GameObject.Find ("Armas"));
 		
 		//muestro guitext victoria
 //		guitextVictoria.guiText.enabled = true;
@@ -273,6 +284,7 @@ public class BossBehaviour : MonoBehaviour
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar ()
 	{
+		_animationController.setAttacking ();
 		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
 	}

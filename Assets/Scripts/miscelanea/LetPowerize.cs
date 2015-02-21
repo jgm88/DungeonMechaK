@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class permitirPoder : MonoBehaviour
+public class LetPowerize : MonoBehaviour
 {
 	
-	public GUIText guitextPoder;
+	public GUIText guitextPower;
 	private controladorAtaqueCC controladorAtaque;
-	public string poder;
+	public string power;
 	public GameObject thunder;
 	public List<GameObject> otherThunders;
 	private bool _thunderActive = false;
@@ -19,24 +19,18 @@ public class permitirPoder : MonoBehaviour
 		controladorAtaque = GameObject.FindWithTag ("Player").GetComponent<controladorAtaqueCC> ();
 		permitRestoreMana = GameObject.Find ("SkillsPanel").GetComponent<SkillsBehaviour> ();
 	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
-	
+
 	void OnTriggerStay (Collider other)
 	{
 		if (other.tag == "Player") {
+			guitextPower.enabled = true;
 			if (_thunderActive) {
-				guitextPoder.enabled = true;
 				permitRestoreMana.inWickArea = true;
 			}
 
 			if (Input.GetKeyDown (KeyCode.F)) {
 				if (!_thunderActive) {
-					controladorAtaque.setPoderActual (poder);
+					controladorAtaque.setPoderActual (power);
 					thunder.SetActive (true);
 					foreach (GameObject otherThunder in otherThunders) {
 						otherThunder.SetActive (false);
@@ -50,7 +44,7 @@ public class permitirPoder : MonoBehaviour
 	void OnTriggerExit (Collider other)
 	{
 		if (other.tag == "Player") {
-			guitextPoder.enabled = false;
+			guitextPower.enabled = false;
 			permitRestoreMana.inWickArea = false;
 		}
 	}
