@@ -12,10 +12,11 @@ public class WickBehaviour : MonoBehaviour {
 
 	private int _currentReload;
 	private SkillsBehaviour _skillsBehaviour;
-	private Text _wickText;
+	private GameObject _wickText;
 	private bool _inCoolDown = false;
 	private BoosDoorBehaviour _bossDoorBehaviour;
 	private GameObject _sparks;
+	private Text[] vText;
 
 	void Start () {
 
@@ -24,14 +25,14 @@ public class WickBehaviour : MonoBehaviour {
 		_sparks = transform.Find("Sparks").gameObject;
 		_bossDoorBehaviour = GameObject.Find("BossDoor").GetComponent<BoosDoorBehaviour>();
 		_skillsBehaviour = GameObject.Find("SkillsPanel").GetComponent<SkillsBehaviour>();
-		_wickText = GameObject.Find("WickText").GetComponent<Text>();
-		_wickText.enabled = false;
-		
+		_wickText = GameObject.Find("WickText");
+		vText =_wickText.GetComponentsInChildren<Text>();	
+		setActiveWickText(false);
 	}
 	void LateUpdate(){
 		transform.Rotate(0f,rotationVelocity,0f);
 	}
-	
+
 	void OnTriggerStay(Collider other)
 	{
 		if(other.gameObject.CompareTag("Player"))
@@ -45,7 +46,7 @@ public class WickBehaviour : MonoBehaviour {
 			}
 			else{
 				_skillsBehaviour.inWickArea = false;
-				_wickText.enabled = false;
+				setActiveWickText(false);
 				if(!adquired){
 					adquired = true;
 					_bossDoorBehaviour.purchaseWick(color);
@@ -56,12 +57,12 @@ public class WickBehaviour : MonoBehaviour {
 	}
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Player" && _currentReload > 0){
-			_wickText.enabled = true;
+			setActiveWickText(true);
 		}
 	}
 	void OnTriggerExit(Collider other){
 		if(other.tag == "Player"){
-			_wickText.enabled = false;
+			setActiveWickText(false);
 			_skillsBehaviour.inWickArea = false;
 			//Debemos controlar que no se haya lanzado la corrutina para no lanzar mas de una
 			if(!_inCoolDown){
@@ -75,5 +76,10 @@ public class WickBehaviour : MonoBehaviour {
 		_currentReload = maxReload;
 		_sparks.SetActive(true);
 		_inCoolDown = false;
+	}
+	void setActiveWickText(bool isEnable){
+		foreach(Text t in vText){
+			t.enabled = isEnable;
+		}
 	}
 }
