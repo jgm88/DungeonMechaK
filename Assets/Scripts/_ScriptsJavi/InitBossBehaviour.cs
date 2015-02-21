@@ -34,7 +34,7 @@ public class InitBossBehaviour : MonoBehaviour {
 			//TODO Cambiar por algo que no este en la torch...
 //			torch.GetComponent<ligthLife>().enBossOn();
 			
-			//mando ademas un mensaje al spawner para que spawneee en el boss
+//			mando ademas un mensaje al spawner para que spawneee en el boss
 //			spawner.SendMessage("setInBoss",SendMessageOptions.DontRequireReceiver);
 			//TODO Cambiar por esto
 			//			_enemySpawnerBehaviour.setInBoss();
