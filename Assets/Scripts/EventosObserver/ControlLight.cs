@@ -54,9 +54,9 @@ public class ControlLight : MonoBehaviour {
 		{
 			life=luzPj.gameObject.GetComponentInChildren<ligthLife>();
 			canTurn(true);
-			GameObject.Find("GUITextAvivar").guiText.enabled=true;
+//			GameObject.Find("GUITextAvivar").guiText.enabled=true;
 		}
-		Invoke("QuitaGuiText",1f);	
+//		Invoke("QuitaGuiText",1f);	
 	}
 
 	void OnTriggerStay(Collider luzPj)
