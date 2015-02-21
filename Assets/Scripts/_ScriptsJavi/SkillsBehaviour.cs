@@ -12,6 +12,7 @@ public class SkillsBehaviour : MonoBehaviour {
 	private PlayerBehaviour _playerBehaviour;
 	private Transform _transformPlayer;
 	private Vector3 _positionAux;
+	private GameObject _gAux;
 
 	public bool inWickArea = false;
 
@@ -44,13 +45,15 @@ public class SkillsBehaviour : MonoBehaviour {
 			_gunDinamite.Shoot();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4)) {
-			_playerBehaviour.ReceiveHeal(healAmount);
-			_playerBehaviour.DeductMana(healCost);
-			_positionAux = _transformPlayer.position;
-			_positionAux.y -= 0.5f;
+			if(_playerBehaviour.mana >= healCost){
+				_playerBehaviour.ReceiveHeal(healAmount);
+				_playerBehaviour.DeductMana(healCost);
+				_positionAux = _transformPlayer.position;
+				_positionAux.y -= 0.5f;
 
-			GameObject g = Instantiate(healEffect,_positionAux, _transformPlayer.rotation) as GameObject;
-			g.transform.parent = _transformPlayer;
+				_gAux = Instantiate(healEffect,_positionAux, _transformPlayer.rotation) as GameObject;
+				_gAux.transform.parent = _transformPlayer;
+			}
 		}
 	}
 }
