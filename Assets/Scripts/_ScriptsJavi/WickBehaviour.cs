@@ -16,6 +16,7 @@ public class WickBehaviour : MonoBehaviour {
 	private bool _inCoolDown = false;
 	private BoosDoorBehaviour _bossDoorBehaviour;
 	private GameObject _sparks;
+	private GameObject _smoke;
 	private Text[] vText;
 
 	void Start () {
@@ -23,11 +24,14 @@ public class WickBehaviour : MonoBehaviour {
 		_currentReload = maxReload;
 
 		_sparks = transform.Find("Sparks").gameObject;
+		_smoke = transform.Find("Smoke").gameObject;
 		_bossDoorBehaviour = GameObject.Find("BossDoor").GetComponent<BoosDoorBehaviour>();
 		_skillsBehaviour = GameObject.Find("SkillsPanel").GetComponent<SkillsBehaviour>();
 		_wickText = GameObject.Find("WickText");
 		vText =_wickText.GetComponentsInChildren<Text>();	
+
 		setActiveWickText(false);
+		_smoke.SetActive(false);
 	}
 	void LateUpdate(){
 		transform.Rotate(0f,rotationVelocity,0f);
@@ -52,6 +56,7 @@ public class WickBehaviour : MonoBehaviour {
 					_bossDoorBehaviour.purchaseWick(color);
 				}
 				_sparks.SetActive(false);
+				_smoke.SetActive(true);
 			}
 		}
 	}
@@ -75,6 +80,7 @@ public class WickBehaviour : MonoBehaviour {
 		yield return new WaitForSeconds(coolDownSeconds);
 		_currentReload = maxReload;
 		_sparks.SetActive(true);
+		_smoke.SetActive(false);
 		_inCoolDown = false;
 	}
 	void setActiveWickText(bool isEnable){
