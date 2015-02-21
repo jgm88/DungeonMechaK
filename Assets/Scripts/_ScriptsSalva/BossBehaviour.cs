@@ -128,13 +128,17 @@ public class BossBehaviour : MonoBehaviour {
 		bossSkinMat.color = Color.white;
 		aiPath = GetComponent<AIPath>();
 		currentDamage = initialDamage; 
-		stunSprite = GameObject.Find("Stun").gameObject;
-		stunSprite.SetActive(false);
-		guitextVictoria = GameObject.Find("victoria");
-		player = GameObject.FindWithTag("Player");
 		life = initialLife;
 		agregarColoresYPoderes();
 		weaknesPower = powersList[currentState];
+	}
+
+	void Start()
+	{
+//		stunSprite = GameObject.Find("Stun").gameObject;
+//		stunSprite.SetActive(false);
+		guitextVictoria = GameObject.Find("victoria");
+		player = GameObject.FindWithTag("Player");
 	}
 	
 	//	// Update is called once per frame
@@ -233,7 +237,9 @@ public class BossBehaviour : MonoBehaviour {
 
 
 	void OnTriggerStay(Collider other){
-		if(!receiveDamage && !isAttackCD && other.tag == "Player" ){ // && vidaPlayer.isVivo()
+		if(!receiveDamage && !isAttackCD && other.tag == "Player" ){
+			// && vidaPlayer.isVivo()
+
 			atacar (other.gameObject);
 		}
 	}
@@ -242,7 +248,7 @@ public class BossBehaviour : MonoBehaviour {
 		if(other.CompareTag("Player"))
 		{
 
-			modCanMove(false);
+			aiPath.enabled = false;
 			inCombat = true;
 			isMoving = false;
 		}
@@ -252,8 +258,7 @@ public class BossBehaviour : MonoBehaviour {
 	{
 		if(other.CompareTag("Player"))
 		{
-
-			modCanMove(true);
+			aiPath.enabled = true;
 			inCombat = false;
 			isMoving = true;
 		}
@@ -262,25 +267,13 @@ public class BossBehaviour : MonoBehaviour {
 	//funcion para atacar, bloquea el spam de ataques y envia mensajes
 	private void atacar(GameObject player){
 		isAttackCD = true;
+		player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
 		StartCoroutine(COAtacar());
-//		soundManajer.reproducirAtacar(0.5f);
-//		player.GetComponent<PlayerBehaviour>().ReceiveDamage(initialDamage);
-		//envio mensajes
-		//		if(padre!=null){
-		//			padre.GetComponent<LoadAnimIA>().attack();
-		//		}
-		//this.transform.parent.gameObject.SendMessage("reproducirAtacar", 0.2f, SendMessageOptions.DontRequireReceiver);
-		//		player.SendMessage("restarVida", damage,SendMessageOptions.DontRequireReceiver);	
-		//		player.SendMessage("reproducirGolpeado", SendMessageOptions.DontRequireReceiver);
-		//		player.SendMessage("reproducirImpacto", SendMessageOptions.DontRequireReceiver);
 	}
 	
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar(){
-		
-		modCanMove(false);
 		yield return new WaitForSeconds(attackCD);
-		modCanMove(true);
 		isAttackCD = false;
 	}
 	/// <summary>
@@ -290,25 +283,8 @@ public class BossBehaviour : MonoBehaviour {
 	/// <param name="time">Cooldown time </param>
 	IEnumerator COHit(float time)
 	{
-//		var aipath = GetComponent<AIPath>();
-//		aipath.canMove = false;
-//		isMoving = false;
 		yield return new WaitForSeconds(time);
-//		aipath.canMove = true;
 		receiveDamage = false;
-//		isMoving = true;
 	}
-
-
-	private void modCanMove(bool setMove)
-	{
-
-		aiPath.canMove = setMove;
-		if(aiPath.canMove)
-		{
-			aiPath.speed = speedMovement;
-		}
-		else
-			aiPath.speed = 0f;
-	}
+	
 }

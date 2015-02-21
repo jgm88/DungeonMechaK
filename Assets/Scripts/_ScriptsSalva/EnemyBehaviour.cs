@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBehaviour : MonoBehaviour {
+public class EnemyBehaviour : MonoBehaviour
+{
 	/// <summary>
 	/// Enemy is receiving damage.
 	/// </summary>
@@ -27,6 +28,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	/// </summary>
 	public float attackCD = 3f;
 	/// <summary>
+	/// First Attack random delay, maximum this value.
+	/// </summary>
+	public float firstAttackMaxDelay = 3f;
+	/// <summary>
 	/// The impact force.
 	/// </summary>
 	public float impactForce = 20f;
@@ -35,15 +40,22 @@ public class EnemyBehaviour : MonoBehaviour {
 	/// </summary>
 	public int damage = 10;
 	/// <summary>
+	/// The impact force.
+	/// </summary>
+	public float force = 20f;
+	/// <summary>
 	/// Internal animator state machine.
 	/// </summary>
 	protected Animator animator;
 
 	private manejadorAudioAnimado soundManajer;
+
+	private bool firstAttack = false;
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+	{
 		animator = GetComponent<Animator> ();
-		soundManajer = GetComponent<manejadorAudioAnimado>();
+		soundManajer = GetComponent<manejadorAudioAnimado> ();
 
 	}
 	
@@ -51,85 +63,82 @@ public class EnemyBehaviour : MonoBehaviour {
 //	void Update () {
 //	}
 
-	void LateUpdate()
+	void LateUpdate ()
 	{
-		if(animator)
-		{
-			animator.SetBool("receiveDamage",receiveDamage);
-			animator.SetBool("inCombat",inCombat);
-			animator.SetBool("isAttackCooldown",isAttackCD);
-			animator.SetInteger("life",life);
+		if (animator) {
+			animator.SetBool ("receiveDamage", receiveDamage);
+			animator.SetBool ("inCombat", inCombat);
+			animator.SetBool ("isAttackCooldown", isAttackCD);
+			animator.SetInteger ("life", life);
 		}
+
 	}
-	public void ReceiveDamage(int damage)
+
+	/// <summary>
+	/// Receives the damage and destroys the object if lif <= 0
+	/// </summary>
+	/// <param name="damage">Damage.</param>
+	public void ReceiveDamage (int damage)
 	{
-		if (animator && life > 0)
-		{
+		if (animator && life > 0) {
 			life -= damage;
-			if (life > 0)
-			{
-				soundManajer.reproducirImpacto();
+			if (life > 0) {
+				soundManajer.reproducirImpacto ();
 				receiveDamage = true;
-				StartCoroutine(COHit(1.2f));
-			}
-			else
-			{
-				GetComponent<CharacterController>().enabled = false;
-				GetComponent<AIPath>().enabled = false;
+				StartCoroutine (COHit (1.2f));
+			} else {
+				GetComponent<CharacterController> ().enabled = false;
+				GetComponent<AIPath> ().enabled = false;
 				collider.enabled = false;
-				soundManajer.reproducirMuerte();
-				Destroy(gameObject,3.5f);	
+				soundManajer.reproducirMuerte ();
+				Destroy (gameObject, 3.5f);	
 			}
-
 		}
 	}
 	
-	void OnTriggerStay(Collider other){
-		if(!receiveDamage && !isAttackCD && other.tag == "Player" ){ // && vidaPlayer.isVivo()
+	void OnTriggerStay (Collider other)
+	{
+		if (!receiveDamage && !isAttackCD && other.tag == "Player") {
+			//desactivamos el seeker para que no esten "corriendo" mientras te pegan
+			GetComponent<AIPath> ().enabled = false;
 			atacar (other.gameObject);
-//			Vector3 dir = other.transform.position - transform.position;
-//			dir.y = 0;
-//			if (other.GetComponent<CharacterController>().rigidbody){
-//				Debug.Log("HAGO IMPACTO CON FISICA");
-//				other.GetComponent<CharacterController>().rigidbody.AddForce(dir.normalized * impactForce);
-//			}
-//			else
-//			{
-//				Debug.Log("HAGO IMPACTO");
-//				other.GetComponent<ImpactReceiver>().AddImpact(dir.normalized * impactForce);
-//			}
 		}
 	}
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnter (Collider other)
 	{
-		if(other.CompareTag("Player"))
-		{
+		if (other.CompareTag ("Player"))
 			inCombat = true;
-			isMoving = false;
-		}
 	}
 
-	void OnTriggerExit(Collider other)
+	void OnTriggerExit (Collider other)
 	{
-		if(other.CompareTag("Player"))
-		{
+		if (other.CompareTag ("Player")) {
+			//activamos el seeker para que vuelvan a correr cuando no estenatacando
+			GetComponent<AIPath> ().enabled = true;
 			inCombat = false;
-			isMoving = true;
 		}
+			
 	}
 	
-	//funcion para atacar, bloquea el spam de ataques y envia mensajes
-	private void atacar(GameObject player){
+	/// <summary>
+	/// AMakes an attack to the player. Fires attacking sound event
+	/// </summary>
+	/// <param name="player">Player.</param>
+	private void atacar (GameObject player)
+	{
 		isAttackCD = true;
-		StartCoroutine(COAtacar());
-		soundManajer.reproducirAtacar(0.5f);
-		player.GetComponent<PlayerBehaviour>().ReceiveDamage(damage);
-
+		StartCoroutine (COAtacar ());
+		soundManajer.reproducirAtacar (0.5f);
+		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (damage);
 	}
 
-	//coroutina que bloquea el spam de ataques al tiempo deseado
-	IEnumerator COAtacar(){
-		yield return new WaitForSeconds(attackCD);
+	/// <summary>
+	/// Coroutine That controls attacking spam waitting time.
+	/// </summary>
+	/// <returns>Void</returns>
+	IEnumerator COAtacar ()
+	{
+		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
 	}
 	/// <summary>
@@ -137,10 +146,9 @@ public class EnemyBehaviour : MonoBehaviour {
 	/// </summary>
 	/// <returns>return the trigger </returns>
 	/// <param name="time">Cooldown time </param>
-	IEnumerator COHit(float time)
+	IEnumerator COHit (float time)
 	{
-		yield return new WaitForSeconds(time);
+		yield return new WaitForSeconds (time);
 		receiveDamage = false;
 	}
-
 }
