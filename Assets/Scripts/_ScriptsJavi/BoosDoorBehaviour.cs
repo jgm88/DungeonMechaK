@@ -71,10 +71,10 @@ public class BoosDoorBehaviour : MonoBehaviour {
 				_flameGreenUI.SetActive(true);
 			}
 			--wicksAdquired;
-			
-			Debug.Log("Enciendo " + color);
-			
-			Debug.Log("Quedan " + wicksAdquired + " LLAMAS");
+//			
+//			Debug.Log("Enciendo " + color);
+//			
+//			Debug.Log("Quedan " + wicksAdquired + " LLAMAS");
 		}
 		if(wicksAdquired == 0){
 			Debug.Log("Abro puerta");
