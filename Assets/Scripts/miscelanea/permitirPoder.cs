@@ -29,11 +29,14 @@ public class permitirPoder : MonoBehaviour
 	void OnTriggerStay (Collider other)
 	{
 		if (other.tag == "Player") {
-			guitextPoder.enabled = true;
-			if (Input.GetKeyDown (KeyCode.F)) {
-				controladorAtaque.setPoderActual (poder);
+			if (_thunderActive) {
+				guitextPoder.enabled = true;
 				permitRestoreMana.inWickArea = true;
+			}
+
+			if (Input.GetKeyDown (KeyCode.F)) {
 				if (!_thunderActive) {
+					controladorAtaque.setPoderActual (poder);
 					thunder.SetActive (true);
 					foreach (GameObject otherThunder in otherThunders) {
 						otherThunder.SetActive (false);

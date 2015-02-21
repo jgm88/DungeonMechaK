@@ -3,7 +3,8 @@ using UnityEngine.UI;
 using UnityEditor.Events;
 using System.Collections;
 
-public class SkillsBehaviour : MonoBehaviour {
+public class SkillsBehaviour : MonoBehaviour
+{
 
 //	private Button _b1;
 	private Gun _gunAOE;
@@ -25,33 +26,35 @@ public class SkillsBehaviour : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 	
 //		_b1 = transform.Find("SkillButton1").GetComponent<Button>();
-		_gunAOE = GameObject.Find("GunAOE").GetComponent<Gun>();
-		_gunDinamite = GameObject.Find("GunDinamite").GetComponent<Gun>();
-		_transformPlayer = GameObject.FindWithTag("Player").transform;
-		_playerBehaviour = _transformPlayer.gameObject.GetComponent<PlayerBehaviour>();
+		_gunAOE = GameObject.Find ("GunAOE").GetComponent<Gun> ();
+		_gunDinamite = GameObject.Find ("GunDinamite").GetComponent<Gun> ();
+		_transformPlayer = GameObject.FindWithTag ("Player").transform;
+		_playerBehaviour = _transformPlayer.gameObject.GetComponent<PlayerBehaviour> ();
 
 	}
-	void Update() {
-		if (Input.GetKeyDown(KeyCode.Alpha1) && inWickArea) {
-			_playerBehaviour.ReceiveMana(manaAmount);
+	void Update ()
+	{
+		if (Input.GetKeyDown (KeyCode.Alpha1) && inWickArea) {
+			_playerBehaviour.ReceiveMana (manaAmount);
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha2)) {
-			_gunAOE.Shoot();
+		if (Input.GetKeyDown (KeyCode.Alpha2)) {
+			_gunAOE.Shoot ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha3)) {
-			_gunDinamite.Shoot();
+		if (Input.GetKeyDown (KeyCode.Alpha3)) {
+			_gunDinamite.Shoot ();
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha4)) {
-			if(_playerBehaviour.mana >= healCost){
-				_playerBehaviour.ReceiveHeal(healAmount);
-				_playerBehaviour.DeductMana(healCost);
+		if (Input.GetKeyDown (KeyCode.Alpha4)) {
+			if (_playerBehaviour.mana >= healCost) {
+				_playerBehaviour.ReceiveHeal (healAmount);
+				_playerBehaviour.DeductMana (healCost);
 				_positionAux = _transformPlayer.position;
 				_positionAux.y -= 0.5f;
 
-				_gAux = Instantiate(healEffect,_positionAux, _transformPlayer.rotation) as GameObject;
+				_gAux = Instantiate (healEffect, _positionAux, _transformPlayer.rotation) as GameObject;
 				_gAux.transform.parent = _transformPlayer;
 			}
 		}

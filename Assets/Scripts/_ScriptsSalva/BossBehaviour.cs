@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BossBehaviour : MonoBehaviour {
+public class BossBehaviour : MonoBehaviour
+{
 
 	public Material bossSkinMat;
 	/// <summary>
@@ -64,7 +65,7 @@ public class BossBehaviour : MonoBehaviour {
 	/// <summary>
 	/// The impact force.
 	/// </summary>
-	public float impactForce=20f;
+	public float impactForce = 20f;
 	/// <summary>
 	/// The stun time.
 	/// </summary>
@@ -80,7 +81,7 @@ public class BossBehaviour : MonoBehaviour {
 	/// <summary>
 	/// The current state.
 	/// </summary>
-	private int currentState =0;
+	private int currentState = 0;
 	/// <summary>
 	/// The controlador ataque pj.
 	/// </summary>
@@ -92,11 +93,11 @@ public class BossBehaviour : MonoBehaviour {
 	/// <summary>
 	/// The color states.
 	/// </summary>
-	private List<Color> colorStates = new List<Color>();
+	private List<Color> colorStates = new List<Color> ();
 	/// <summary>
 	/// The powers list.
 	/// </summary>
-	private List<string> powersList = new List<string>();
+	private List<string> powersList = new List<string> ();
 	/// <summary>
 	/// The weaknes power of this boss.
 	/// </summary>
@@ -122,97 +123,94 @@ public class BossBehaviour : MonoBehaviour {
 
 //	private manejadorAudioAnimado soundManajer;
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+	{
 
 //		soundManajer = GetComponent<manejadorAudioAnimado>();
 		bossSkinMat.color = Color.white;
-		aiPath = GetComponent<AIPath>();
+		aiPath = GetComponent<AIPath> ();
 		currentDamage = initialDamage; 
 		life = initialLife;
-		agregarColoresYPoderes();
-		weaknesPower = powersList[currentState];
+		agregarColoresYPoderes ();
+		weaknesPower = powersList [currentState];
 	}
 
-	void Start()
+	void Start ()
 	{
 //		stunSprite = GameObject.Find("Stun").gameObject;
 //		stunSprite.SetActive(false);
-		guitextVictoria = GameObject.Find("victoria");
-		player = GameObject.FindWithTag("Player");
+		guitextVictoria = GameObject.Find ("victoria");
+		player = GameObject.FindWithTag ("Player");
 	}
 	
 	//	// Update is called once per frame
 	//	void Update () {
 	//	}
 	//agrega los colores de cada fase
-	private void agregarColoresYPoderes(){
-		colorStates.Add(originalColor);
-		colorStates.Add(Color.green);
-		colorStates.Add(Color.red);
-		colorStates.Add(Color.blue);
-		colorStates.Add(Color.white);
-		powersList.Add("original");
-		powersList.Add("green");
-		powersList.Add("red");
-		powersList.Add("blue");
+	private void agregarColoresYPoderes ()
+	{
+		colorStates.Add (originalColor);
+		colorStates.Add (Color.green);
+		colorStates.Add (Color.red);
+		colorStates.Add (Color.blue);
+		colorStates.Add (Color.white);
+		powersList.Add ("original");
+		powersList.Add ("green");
+		powersList.Add ("red");
+		powersList.Add ("blue");
 	}
 
-	public void ReceiveDamage(int damage)
+	public void ReceiveDamage (int damage)
 	{
 
-		if(damage > 100)
-		{
-			stun();
-		}
-		else if(!receiveDamage) //if(playerAttackController.getPoderActual().Equals(weaknesPower))
-		{
+		if (damage > 100) {
+			stun ();
+		} else if (!receiveDamage) { //if(playerAttackController.getPoderActual().Equals(weaknesPower))
 		
 			life -= damage;
-			if (life > 0)
-			{
+			if (life > 0) {
 //				soundManajer.reproducirImpacto();
 				receiveDamage = true;
-				StartCoroutine(COHit(2f));
-			}
-			else
-			{
+				StartCoroutine (COHit (2f));
+			} else {
 				currentState++;
-				cambiarFases();	
+				cambiarFases ();	
 			}
 		}
 	}
 	//funcion que toma acciones segun la fase a laque cambia
-	private void cambiarFases(){
+	private void cambiarFases ()
+	{
 
-		if(currentState <= 3){
-			weaknesPower = powersList[currentState];
-			bossSkinMat.color = colorStates[currentState];
+		if (currentState <= 3) {
+			weaknesPower = powersList [currentState];
+			bossSkinMat.color = colorStates [currentState];
 			life = initialLife;
-			particles.startColor = colorStates[currentState];
-			particles.Play();
-		}
-		else if (currentState == 4){
-			weaknesPower = powersList[currentState];
-			bossSkinMat.color = colorStates[currentState];
+			particles.startColor = colorStates [currentState];
+			particles.Play ();
+		} else if (currentState == 4) {
+			weaknesPower = powersList [currentState];
+			bossSkinMat.color = colorStates [currentState];
 			life = finalLife;
-		}
-		else
-			muerteBoss();
+		} else
+			muerteBoss ();
 	}
 
-	private void stun(){
+	private void stun ()
+	{
 		isStunned = true;
 		isAttackCD = true;
-		stunSprite.SetActive(true);
+		stunSprite.SetActive (true);
 		aiPath.enabled = false;
-		StartCoroutine(COStunn());
+		StartCoroutine (COStunn ());
 	}
 	
-	IEnumerator COStunn(){
-		yield return new WaitForSeconds(stunTime);
+	IEnumerator COStunn ()
+	{
+		yield return new WaitForSeconds (stunTime);
 		isAttackCD = false;
 		isStunned = false;
-		stunSprite.SetActive(false);
+		stunSprite.SetActive (false);
 		aiPath.enabled = true;
 	}
 
@@ -220,33 +218,34 @@ public class BossBehaviour : MonoBehaviour {
 	/// Muertes the boss.
 	/// funcion que realiza las acciones necesarias al morir
 	/// </summary>
-	private void muerteBoss(){
+	private void muerteBoss ()
+	{
 //		Instantiate(deathParticles, transform.position, Quaternion.identity);
 		
 		//lanzo el evento de del itween y desactivo el conrol
 //		iTweenEvent.GetEvent(Camera.main.gameObject, "recorridoEndGame").Play();
-		player.GetComponent<CharacterMotor>().canControl = false;
+		player.GetComponent<CharacterMotor> ().canControl = false;
 		
 		//muestro guitext victoria
 //		guitextVictoria.guiText.enabled = true;
 //		iTweenEvent.GetEvent(guitextVictoria, "fadeInVictoria").Play();
-		Debug.Log("muerte");
+		Debug.Log ("muerte");
 		//destruyo el boss
-		Destroy(this.gameObject);//, soundManajer.getDuracionAudioMuerte());
+		Destroy (this.gameObject);//, soundManajer.getDuracionAudioMuerte());
 	}
 
 
-	void OnTriggerStay(Collider other){
-		if(!receiveDamage && !isAttackCD && other.tag == "Player" ){
+	void OnTriggerStay (Collider other)
+	{
+		if (!receiveDamage && !isAttackCD && other.tag == "Player") {
 			// && vidaPlayer.isVivo()
 
 			atacar (other.gameObject);
 		}
 	}
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnter (Collider other)
 	{
-		if(other.CompareTag("Player"))
-		{
+		if (other.CompareTag ("Player")) {
 
 			aiPath.enabled = false;
 			inCombat = true;
@@ -254,10 +253,9 @@ public class BossBehaviour : MonoBehaviour {
 		}
 	}
 	
-	void OnTriggerExit(Collider other)
+	void OnTriggerExit (Collider other)
 	{
-		if(other.CompareTag("Player"))
-		{
+		if (other.CompareTag ("Player")) {
 			aiPath.enabled = true;
 			inCombat = false;
 			isMoving = true;
@@ -265,15 +263,17 @@ public class BossBehaviour : MonoBehaviour {
 	}
 	
 	//funcion para atacar, bloquea el spam de ataques y envia mensajes
-	private void atacar(GameObject player){
+	private void atacar (GameObject player)
+	{
 		isAttackCD = true;
-		player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
-		StartCoroutine(COAtacar());
+		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
+		StartCoroutine (COAtacar ());
 	}
 	
 	//coroutina que bloquea el spam de ataques al tiempo deseado
-	IEnumerator COAtacar(){
-		yield return new WaitForSeconds(attackCD);
+	IEnumerator COAtacar ()
+	{
+		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
 	}
 	/// <summary>
@@ -281,9 +281,9 @@ public class BossBehaviour : MonoBehaviour {
 	/// </summary>
 	/// <returns>return the trigger </returns>
 	/// <param name="time">Cooldown time </param>
-	IEnumerator COHit(float time)
+	IEnumerator COHit (float time)
 	{
-		yield return new WaitForSeconds(time);
+		yield return new WaitForSeconds (time);
 		receiveDamage = false;
 	}
 	
