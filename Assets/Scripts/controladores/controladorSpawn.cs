@@ -165,7 +165,6 @@ public class controladorSpawn : MonoBehaviour
 	IEnumerator COSpawnNormal ()
 	{
 		if (!_inBoss && this.enabled) {
-			Debug.Log ("spawneamos");
 			InstantiateEnemiesNormal ();
 			yield return new WaitForSeconds (spawnIntervale);
 			yield return StartCoroutine (COSpawnNormal ());
