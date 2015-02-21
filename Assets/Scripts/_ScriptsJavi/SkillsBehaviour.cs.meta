@@ -2,7 +2,8 @@ fileFormatVersion: 2
 guid: 76e5790481ec8004aa4b4da29bec0a66
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healEffect: {fileID: 100008, guid: c315731710b634ac1907e6aceca06447, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
