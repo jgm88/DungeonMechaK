@@ -29,7 +29,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	/// <summary>
 	/// The impact force.
 	/// </summary>
-	public float impactForce=20f;
+	public float impactForce = 20f;
 	/// <summary>
 	/// The attack damage.
 	/// </summary>
@@ -124,14 +124,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		StartCoroutine(COAtacar());
 		soundManajer.reproducirAtacar(0.5f);
 		player.GetComponent<PlayerBehaviour>().ReceiveDamage(damage);
-		//envio mensajes
-//		if(padre!=null){
-//			padre.GetComponent<LoadAnimIA>().attack();
-//		}
-		//this.transform.parent.gameObject.SendMessage("reproducirAtacar", 0.2f, SendMessageOptions.DontRequireReceiver);
-//		player.SendMessage("restarVida", damage,SendMessageOptions.DontRequireReceiver);	
-//		player.SendMessage("reproducirGolpeado", SendMessageOptions.DontRequireReceiver);
-//		player.SendMessage("reproducirImpacto", SendMessageOptions.DontRequireReceiver);
+
 	}
 
 	//coroutina que bloquea el spam de ataques al tiempo deseado

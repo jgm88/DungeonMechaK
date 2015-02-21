@@ -50,6 +50,10 @@ public class BossBehaviour : MonoBehaviour {
 	/// </summary>
 	public bool inCombat;
 	/// <summary>
+	/// The speed movement.
+	/// </summary>
+	public float speedMovement = 2.5f;
+	/// <summary>
 	/// The attack Cooldown.
 	/// </summary>
 	public float attackCD = 3f;
@@ -106,15 +110,21 @@ public class BossBehaviour : MonoBehaviour {
 	/// </summary>
 	private GameObject guitextVictoria;
 
+	/// <summary>
+	/// The ai path controller script
+	/// </summary>
+	private AIPath aiPath;
 
 
-	private manejadorAudioAnimado soundManajer;
+//	private manejadorAudioAnimado soundManajer;
 	// Use this for initialization
 	void Awake () {
 
-		soundManajer = GetComponent<manejadorAudioAnimado>();
+//		soundManajer = GetComponent<manejadorAudioAnimado>();
+		bossSkinMat.color = Color.white;
+		aiPath = GetComponent<AIPath>();
 		currentDamage = initialDamage; 
-		stunSprite = transform.Find("Stun").gameObject;
+		stunSprite = GameObject.Find("Stun").gameObject;
 		stunSprite.SetActive(false);
 		guitextVictoria = GameObject.Find("victoria");
 		player = GameObject.FindWithTag("Player");
@@ -141,18 +151,18 @@ public class BossBehaviour : MonoBehaviour {
 
 	public void ReceiveDamage(int damage)
 	{
-		Debug.Log ("LLAMADA A RECIBIR DANO");
+
 		if(damage > 100)
 		{
-			Debug.Log ("RECIBO DANYO");
+		
 		}
 		else if(!receiveDamage) //if(playerAttackController.getPoderActual().Equals(weaknesPower))
 		{
-			Debug.Log ("RECIBO DANYO");
+		
 			life -= damage;
 			if (life > 0)
 			{
-				soundManajer.reproducirImpacto();
+//				soundManajer.reproducirImpacto();
 				receiveDamage = true;
 				StartCoroutine(COHit(2f));
 			}
@@ -165,7 +175,7 @@ public class BossBehaviour : MonoBehaviour {
 	}
 	//funcion que toma acciones segun la fase a laque cambia
 	private void cambiarFases(){
-		Debug.Log("cambio fase");
+
 		if(currentState <= 3){
 			weaknesPower = powersList[currentState];
 			bossSkinMat.color = colorStates[currentState];
@@ -174,6 +184,7 @@ public class BossBehaviour : MonoBehaviour {
 			particles.Play();
 		}
 		else if (currentState == 4){
+			weaknesPower = powersList[currentState];
 			bossSkinMat.color = colorStates[currentState];
 			life = finalLife;
 		}
@@ -198,18 +209,18 @@ public class BossBehaviour : MonoBehaviour {
 	/// funcion que realiza las acciones necesarias al morir
 	/// </summary>
 	private void muerteBoss(){
-		Instantiate(deathParticles, transform.position, Quaternion.identity);
+//		Instantiate(deathParticles, transform.position, Quaternion.identity);
 		
 		//lanzo el evento de del itween y desactivo el conrol
-		iTweenEvent.GetEvent(Camera.main.gameObject, "recorridoEndGame").Play();
+//		iTweenEvent.GetEvent(Camera.main.gameObject, "recorridoEndGame").Play();
 		player.GetComponent<CharacterMotor>().canControl = false;
 		
 		//muestro guitext victoria
-		guitextVictoria.guiText.enabled = true;
-		iTweenEvent.GetEvent(guitextVictoria, "fadeInVictoria").Play();
-		
+//		guitextVictoria.guiText.enabled = true;
+//		iTweenEvent.GetEvent(guitextVictoria, "fadeInVictoria").Play();
+		Debug.Log("muerte");
 		//destruyo el boss
-		Destroy(this.gameObject, soundManajer.getDuracionAudioMuerte());
+		Destroy(this.gameObject);//, soundManajer.getDuracionAudioMuerte());
 	}
 
 
@@ -222,6 +233,8 @@ public class BossBehaviour : MonoBehaviour {
 	{
 		if(other.CompareTag("Player"))
 		{
+
+			modCanMove(false);
 			inCombat = true;
 			isMoving = false;
 		}
@@ -231,6 +244,8 @@ public class BossBehaviour : MonoBehaviour {
 	{
 		if(other.CompareTag("Player"))
 		{
+
+			modCanMove(true);
 			inCombat = false;
 			isMoving = true;
 		}
@@ -240,8 +255,8 @@ public class BossBehaviour : MonoBehaviour {
 	private void atacar(GameObject player){
 		isAttackCD = true;
 		StartCoroutine(COAtacar());
-		soundManajer.reproducirAtacar(0.5f);
-		player.GetComponent<PlayerBehaviour>().ReceiveDamage(initialDamage);
+//		soundManajer.reproducirAtacar(0.5f);
+//		player.GetComponent<PlayerBehaviour>().ReceiveDamage(initialDamage);
 		//envio mensajes
 		//		if(padre!=null){
 		//			padre.GetComponent<LoadAnimIA>().attack();
@@ -254,7 +269,10 @@ public class BossBehaviour : MonoBehaviour {
 	
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar(){
+		
+		modCanMove(false);
 		yield return new WaitForSeconds(attackCD);
+		modCanMove(true);
 		isAttackCD = false;
 	}
 	/// <summary>
@@ -264,7 +282,25 @@ public class BossBehaviour : MonoBehaviour {
 	/// <param name="time">Cooldown time </param>
 	IEnumerator COHit(float time)
 	{
+//		var aipath = GetComponent<AIPath>();
+//		aipath.canMove = false;
+//		isMoving = false;
 		yield return new WaitForSeconds(time);
+//		aipath.canMove = true;
 		receiveDamage = false;
+//		isMoving = true;
+	}
+
+
+	private void modCanMove(bool setMove)
+	{
+
+		aiPath.canMove = setMove;
+		if(aiPath.canMove)
+		{
+			aiPath.speed = speedMovement;
+		}
+		else
+			aiPath.speed = 0f;
 	}
 }

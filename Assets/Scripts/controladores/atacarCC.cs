@@ -44,7 +44,7 @@ public class atacarCC : MonoBehaviour {
 		}
 		else if(other.CompareTag("Boss") && colliderObject.enabled == true && !golpeado)
 		{
-			Debug.Log ("COLISIONO");
+
 			other.GetComponent<BossBehaviour>().ReceiveDamage(weaponDamage);
 		}
 	}
