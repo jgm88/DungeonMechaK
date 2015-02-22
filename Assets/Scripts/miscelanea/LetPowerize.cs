@@ -36,7 +36,6 @@ public class LetPowerize : MonoBehaviour
 						otherThunder.SetActive (false);
 					}
 				}
-					
 			}
 		}
 	}
