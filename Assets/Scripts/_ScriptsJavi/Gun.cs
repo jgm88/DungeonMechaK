@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Gun : MonoBehaviour {
@@ -9,6 +10,8 @@ public class Gun : MonoBehaviour {
 	public int manaCost = 20;
 
 	private PlayerBehaviour _playerBehaviour;
+	private Image _maskSkill;
+	public Image maskSkill{ set{ _maskSkill = value;} get {return _maskSkill; }}
 
 	void Awake () {
 		_playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
@@ -16,19 +19,20 @@ public class Gun : MonoBehaviour {
 
 	}
 	public void Shoot(){
-		if(canShot && _playerBehaviour.mana >= manaCost){
+		if(canShot){
 
 			_playerBehaviour.DeductMana(manaCost);
 			Instantiate(bulletPrefab, transform.position, transform.rotation);
 			canShot = false;
-			StartCoroutine(COCoolDown());				
+			StartCoroutine(CoVisualCoolDown());				
 		}
 	}
-
-	IEnumerator COCoolDown(){
-		
-		yield return new WaitForSeconds(coolDown);
+	IEnumerator CoVisualCoolDown(){
+		maskSkill.fillAmount = 1;
+		for (int i = 0; i < 50; ++i) {
+			maskSkill.fillAmount -= 0.02f;
+			yield return new WaitForSeconds(coolDown * 0.02f);
+		}
 		canShot = true;
-
 	}
 }
