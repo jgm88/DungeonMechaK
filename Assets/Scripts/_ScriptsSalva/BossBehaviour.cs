@@ -171,7 +171,7 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && string.Equals (weaknesPower, (string)playerAttackController.getActualPower ())) { 
-
+			muerteBoss ();
 			life -= damage;
 			if (life > 0) {
 				receiveDamage = true;
@@ -248,6 +248,31 @@ public class BossBehaviour : MonoBehaviour
 		//ACTIVAR EVENTO DE FINALIZAR EL JUEGO
 	}
 
+	/// <summary>
+	/// Raises the endGamePath when defeating boss and isables player things.
+	/// </summary>
+	void OnDestroy ()
+	{
+		//Enable NodesPath
+		player.GetComponent<StartEndGame> ().EnablePath ();
+		//Disable all components
+		foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
+			c.enabled = false;
+		}
+		//remove child nodes
+		foreach (Transform t in player.transform) {
+			if (t.gameObject.name != "Main Camera") {
+				Destroy (t.gameObject);
+			}
+		}
+		//launch itween event
+		iTweenEvent.GetEvent (player, "recorridoEndGame").Play ();
+
+		//Disable traps for the tour
+		foreach (GameObject trap in GameObject.FindGameObjectsWithTag("Trap")) {
+			trap.collider.enabled = false;
+		}
+	}
 
 	void OnTriggerStay (Collider other)
 	{

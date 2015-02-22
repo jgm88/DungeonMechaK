@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class moverCamaraMuerte : MonoBehaviour {
+public class moverCamaraMuerte : MonoBehaviour
+{
 	
 	
 	public GameObject camaraPrincipal;
@@ -13,30 +14,33 @@ public class moverCamaraMuerte : MonoBehaviour {
 	private controladorGuitexts controladorGuitexts;
 	
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
 		player = transform.parent.gameObject;
-		controladorGuitexts = GameObject.FindWithTag("GuitextsContainer").GetComponent<controladorGuitexts>();
+		controladorGuitexts = GameObject.FindWithTag ("GuitextsContainer").GetComponent<controladorGuitexts> ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	}
 	
 	//funcion que mueve la camara muerte al morir
-	public void moverCamara(){
+	public void moverCamara ()
+	{
 
 		camaraWeapons.camera.enabled = false;
-		controladorGuitexts.enableMensajeMuerte();
+		controladorGuitexts.enableMensajeMuerte ();
 		
 		//desactivo control del pj
-		player.GetComponent<MouseLook>().enabled = false;
-		player.GetComponent<CharacterController>().enabled = false;
-		player.GetComponent<CharacterMotor>().enabled = false;
+		player.GetComponent<MouseLook> ().enabled = false;
+		player.GetComponent<CharacterController> ().enabled = false;
+		player.GetComponent<CharacterMotor> ().enabled = false;
 		
 		//eventos itween
-		iTweenEvent.GetEvent(this.gameObject, "moverCamaraMuerte").Play();
-		iTweenEvent.GetEvent(this.gameObject, "rotarCamaraMuerte").Play();
-		iTweenEvent.GetEvent(guitextMuerte, "mostrarMuerte").Play();
+		iTweenEvent.GetEvent (this.gameObject, "moverCamaraMuerte").Play ();
+		iTweenEvent.GetEvent (this.gameObject, "rotarCamaraMuerte").Play ();
+		iTweenEvent.GetEvent (guitextMuerte, "mostrarMuerte").Play ();
 		
 		
 		
