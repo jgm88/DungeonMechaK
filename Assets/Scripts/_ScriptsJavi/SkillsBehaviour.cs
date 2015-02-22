@@ -5,38 +5,28 @@ using System.Collections;
 
 public class SkillsBehaviour : MonoBehaviour {
 
-//	private Button _b1;
+	//TODO Sacar logica de Heal a otro script
 	private Gun _gunAOE;
 	private Gun _gunDinamite;
-	//TODO cambiar por skill intermedia que genere particulas, cooldown y cosicas
 	private PlayerBehaviour _playerBehaviour;
-	private Transform _transformPlayer;
-	private Vector3 _positionAux;
-	private GameObject _gAux;
+	private HealBehaviour _healBehaviour;
 
 	public bool inWickArea = false;
-
-	public int manaAmount = 5;
-	public int healAmount = 10;
-	public int healCost = 10;
-
-	public GameObject healEffect;
-
+	public int manaChargeAmount = 5;
 
 
 	// Use this for initialization
 	void Start () {
 	
-//		_b1 = transform.Find("SkillButton1").GetComponent<Button>();
 		_gunAOE = GameObject.Find("GunAOE").GetComponent<Gun>();
 		_gunDinamite = GameObject.Find("GunDinamite").GetComponent<Gun>();
-		_transformPlayer = GameObject.FindWithTag("Player").transform;
-		_playerBehaviour = _transformPlayer.gameObject.GetComponent<PlayerBehaviour>();
+		_playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
+		_healBehaviour = GameObject.FindWithTag("Player").GetComponent<HealBehaviour>();
 
 	}
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.Alpha1) && inWickArea) {
-			_playerBehaviour.ReceiveMana(manaAmount);
+			_playerBehaviour.ReceiveMana(manaChargeAmount);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2)) {
 			_gunAOE.Shoot();
@@ -45,15 +35,8 @@ public class SkillsBehaviour : MonoBehaviour {
 			_gunDinamite.Shoot();
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4)) {
-			if(_playerBehaviour.mana >= healCost){
-				_playerBehaviour.ReceiveHeal(healAmount);
-				_playerBehaviour.DeductMana(healCost);
-				_positionAux = _transformPlayer.position;
-				_positionAux.y -= 0.5f;
-
-				_gAux = Instantiate(healEffect,_positionAux, _transformPlayer.rotation) as GameObject;
-				_gAux.transform.parent = _transformPlayer;
-			}
+			_healBehaviour.Heal();
 		}
 	}
+
 }
