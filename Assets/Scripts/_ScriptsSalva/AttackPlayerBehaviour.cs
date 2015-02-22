@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AttackPlayerBehaviour : MonoBehaviour {
+public class AttackPlayerBehaviour : MonoBehaviour
+{
 
 
 	public int weaponDamage;
@@ -9,70 +10,84 @@ public class AttackPlayerBehaviour : MonoBehaviour {
 	private bool golpeado = false;
 	private Collider weaponCollider;
 	private Animator animator;
+	public string actualPower = "";
 	// Use this for initialization
-	void Start () {
-		weaponCollider = GameObject.Find("SwordPhysics").GetComponent<Collider>();
+	void Start ()
+	{
+		weaponCollider = GameObject.Find ("SwordPhysics").GetComponent<Collider> ();
 		weaponCollider.enabled = false;
-		animator = this.GetComponentInChildren<Animator>();
+		animator = this.GetComponentInChildren<Animator> ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		animator.SetBool("attack",isAttack);
-		if(Input.GetButtonDown("Fire1") && !isAttack){// para shields && !shieldController.escudado){
-			atacar();
+	void Update ()
+	{
+		animator.SetBool ("attack", isAttack);
+		if (Input.GetButtonDown ("Fire1") && !isAttack) {// para shields && !shieldController.escudado){
+			atacar ();
 		}
 	}
 
-	public void atacar(){
-		if(!isAttack)
-			StartCoroutine(COatacar());
+	//establezco el poder del arma en el combate final
+	public void setActualPower (string poder)
+	{
+		actualPower = poder;
+	}
+	
+	public string getActualPower ()
+	{
+		return actualPower;
+	}
+
+	public void atacar ()
+	{
+		if (!isAttack)
+			StartCoroutine (COatacar ());
 	}
 
 	//coroutinas que reproducen la animacion y activan el collider el tiempo exacto que puede golpear
-	IEnumerator COatacar(){
+	IEnumerator COatacar ()
+	{
 		isAttack = true;
 				
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds (0.2f);
 		
 		weaponCollider.enabled = true;
-		Debug.Log ("Activo collider");
-		yield return StartCoroutine( colliderActivoExacto() );
+		yield return StartCoroutine (colliderActivoExacto ());
 	}
 
 	//coroutina que activa el collider el tiempo exacto para cada arma
-	IEnumerator colliderActivoExacto(){
+	IEnumerator colliderActivoExacto ()
+	{
 				
 		//espero el tiempo para deshabilitar el collider
-		yield return new WaitForSeconds(1f);
-		Debug.Log ("Activo collider");
+		yield return new WaitForSeconds (1f);
 		weaponCollider.enabled = false;
 		golpeado = false;
 		
 		//espero a que concluya la animacion para poder volver a atacar
-		yield return new WaitForSeconds(animator.GetCurrentAnimationClipState(0).Length-1.06f);
+		yield return new WaitForSeconds (animator.GetCurrentAnimationClipState (0).Length - 1.06f);
 		
 		isAttack = false;
 	}
 
 	//recojo el evento de golpear a un enemigo
-	void OnTriggerStay(Collider other){
-		if(other.collider.tag == "Enemy" && weaponCollider.enabled == true && !golpeado){
+	void OnTriggerStay (Collider other)
+	{
+		if (other.collider.tag == "Enemy" && weaponCollider.enabled == true && !golpeado) {
 			
 			//falta crear un un metodo para obtener el tiempo start animacion
 			//			other.SendMessage("reproducirImpacto", controladorAnimaciones.getTiempoStartAnimacion(), SendMessageOptions.DontRequireReceiver);
 			//			other.SendMessage("restarVidaEnemigo", weaponDamage, SendMessageOptions.DontRequireReceiver);
-			other.GetComponent<EnemyBehaviour>().ReceiveDamage(weaponDamage);
+			other.GetComponent<EnemyBehaviour> ().ReceiveDamage (weaponDamage);
 			golpeado = true;
 			//reproduzco el sprite de sangre
 			//TODO MIRAR PARA HACER QUE CORRA LA SANGRE
 //			bloodSprite();
 			
-		}
-		else if(other.CompareTag("Boss") && weaponCollider.enabled == true && !golpeado)
-		{
+		} else if (other.CompareTag ("Boss") && weaponCollider.enabled == true && !golpeado) {
 			
-			other.GetComponent<BossBehaviour>().ReceiveDamage(weaponDamage);
+			other.GetComponent<BossBehaviour> ().ReceiveDamage (weaponDamage);
 		}
 	}
 
