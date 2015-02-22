@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class HealBehaviour : MonoBehaviour {
@@ -6,12 +7,15 @@ public class HealBehaviour : MonoBehaviour {
 	private PlayerBehaviour _playerBehaviour;
 	private Vector3 _positionAux;
 	private GameObject _gAux;
-	private bool _canHeal = true;
+	private Image _maskSkill;
 
+	public bool canHeal = true;
 	public int healAmount = 10;
-	public int healCost = 10;
-	public float healCoolDown = 3f;
+	public int manaCost = 10;
+	public float coolDown = 3f;
 	public GameObject healEffect;
+
+	public Image maskSkill{ set{ _maskSkill = value;} get {return _maskSkill; }}
 
 
 	// Use this for initialization
@@ -21,17 +25,17 @@ public class HealBehaviour : MonoBehaviour {
 	
 	public void Heal(){
 
-		if(_canHeal && _playerBehaviour.mana >= healCost){
+		if(canHeal){
 			_playerBehaviour.ReceiveHeal(healAmount);
-			_playerBehaviour.DeductMana(healCost);
+			_playerBehaviour.DeductMana(manaCost);
 			_positionAux = Camera.main.transform.position;
 			_positionAux.y -= 0.5f;
 			
 			_gAux = Instantiate(healEffect,_positionAux, Camera.main.transform.rotation) as GameObject;
 			_gAux.transform.parent = Camera.main.transform;
 			StartCoroutine(CoDestoyParticles(_gAux));
-			_canHeal = false;
-			StartCoroutine(CoHealCoolDown());
+			canHeal = false;
+			StartCoroutine(CoVisualCoolDown());
 		}
 	}
 
@@ -39,8 +43,12 @@ public class HealBehaviour : MonoBehaviour {
 		yield return new WaitForSeconds(3f);
 		Destroy(particles);
 	}
-	IEnumerator CoHealCoolDown(){
-		yield return new WaitForSeconds(healCoolDown);
-		_canHeal = true;
+	IEnumerator CoVisualCoolDown(){
+		maskSkill.fillAmount = 1;
+		for (int i = 0; i < 50; ++i) {
+			maskSkill.fillAmount -= 0.02f;
+			yield return new WaitForSeconds(coolDown * 0.02f);
+		}
+		canHeal = true;
 	}
 }

@@ -10,29 +10,27 @@ public class LetPowerize : MonoBehaviour
 	public string power;
 	public GameObject thunder;
 	public List<GameObject> otherThunders;
-	private SkillsBehaviour permitRestoreMana;
+	private bool _thunderActive = false;
+	private ChargeBehaviour permitRestoreMana;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		controladorAtaque = GameObject.FindWithTag ("Player").GetComponent<controladorAtaqueCC> ();
-		permitRestoreMana = GameObject.Find ("SkillsPanel").GetComponent<SkillsBehaviour> ();
+		permitRestoreMana = GameObject.Find ("SkillsPanel").GetComponent<ChargeBehaviour> ();
 	}
 
 	void OnTriggerStay (Collider other)
 	{
 		if (other.tag == "Player") {
 			guitextPower.enabled = true;
-			if (thunder.activeSelf) {
+			if (_thunderActive) {
 				permitRestoreMana.inWickArea = true;
 			}
 
 			if (Input.GetKeyDown (KeyCode.F)) {
-				if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
+				if (!_thunderActive) {
 					controladorAtaque.setPoderActual (power);
-					foreach (Transform child in thunder.transform) {
-						child.gameObject.SetActive (true);
-					}
 					thunder.SetActive (true);
 					foreach (GameObject otherThunder in otherThunders) {
 						otherThunder.SetActive (false);
