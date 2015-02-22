@@ -10,6 +10,7 @@ public class ondaExpansiva : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		(collider as SphereCollider).radius = radioAccion;
 		Destroy (gameObject, lifeTime);
 	}
 	

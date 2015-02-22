@@ -11,13 +11,13 @@ public class LetPowerize : MonoBehaviour
 	public GameObject thunder;
 	public List<GameObject> otherThunders;
 	private bool _thunderActive = false;
-	private SkillsBehaviour permitRestoreMana;
+	private ChargeBehaviour permitRestoreMana;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		controladorAtaque = GameObject.FindWithTag ("Player").GetComponent<controladorAtaqueCC> ();
-		permitRestoreMana = GameObject.Find ("SkillsPanel").GetComponent<SkillsBehaviour> ();
+		permitRestoreMana = GameObject.Find ("SkillsPanel").GetComponent<ChargeBehaviour> ();
 	}
 
 	void OnTriggerStay (Collider other)
