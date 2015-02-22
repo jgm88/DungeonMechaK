@@ -91,9 +91,9 @@ public class controladorSpawn : MonoBehaviour
 	/// Determines whether we are is in boss area.
 	/// </summary>
 	/// <returns><c>true</c> if this instance is in boss; otherwise, <c>false</c>.</returns>
-	public void IsInBoss ()
+	public void IsInBoss (bool isInBoss)
 	{
-		_inBoss = true;
+		_inBoss = isInBoss;
 	}
 
 	/// <summary>
@@ -115,38 +115,6 @@ public class controladorSpawn : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Instantiates the enemies in normal area.
-	/// </summary>
-	public void InstantiateEnemiesNormal ()
-	{
-		IList<int> pointsSpawned = new List<int> ();
-		int enemiesInGame = GetNumOfEnemiesInGame ();
-		int randIndex = 0;
-		//en el bucle controlamos si hemos spawneado un enemigo en ese punto y esperamos 1s para que no se stakeen aunque tengan collider
-		for (int i=0; i<= numOfEnemiesSpawned && enemiesInGame <= maxEnemies; i++) {
-			randIndex = GetRandPointNormal ();
-			if (pointsSpawned.IndexOf (randIndex) != -1) {
-				StartCoroutine (COWaitSameSpawnPoint (true, randIndex));
-			} else {
-				StartCoroutine (COWaitSameSpawnPoint (false, randIndex));
-			}
-			pointsSpawned.Add (randIndex);
-		}
-		pointsSpawned.Clear ();
-	}
-
-	/// <summary>
-	/// Instantiates the enemies in boss area.
-	/// </summary>
-	public void instantiateEnemiesBoss ()
-	{
-		int enemiesInGame = GetNumOfEnemiesInGame ();
-//		for (int i=0; i<= numOfEnemiesSpawnedBoss && enemiesInGame <= maxEnemies; i++) {
-//			Instantiate (prefabsEnemigos [_levelByKeys], spawnPointsBoss [GetRandPointBoss ()].transform.position, Quaternion.identity);
-//		}
-	}
-
-	/// <summary>
 	/// Starts the spawner.
 	/// </summary>
 	public void startSpawner ()
@@ -157,6 +125,28 @@ public class controladorSpawn : MonoBehaviour
 	#endregion
 
 	#region Coroutines
+
+	/// <summary>
+	/// Instantiates the enemies in boss area.
+	/// </summary>
+	IEnumerator instantiateEnemiesBoss ()
+	{
+		IList<int> pointsSpawned = new List<int> ();
+		int enemiesInGame = GetNumOfEnemiesInGame ();
+		int randIndex = 0;
+		//en el bucle controlamos si hemos spawneado un enemigo en ese punto y esperamos 1s para que no se stakeen aunque tengan collider
+		for (int i=0; i<= numOfEnemiesSpawnedBoss && enemiesInGame <= maxEnemies; i++) {
+			randIndex = NextIndexBoss ();
+			if (pointsSpawned.IndexOf (randIndex) != -1) {
+				yield return new WaitForSeconds (1f);
+				Instantiate (prefabsEnemigos [0], spawnPointsBoss [randIndex].transform.position, Quaternion.identity);
+			} else {
+				Instantiate (prefabsEnemigos [0], spawnPointsBoss [randIndex].transform.position, Quaternion.identity);
+			}
+			enemiesInGame++;
+			pointsSpawned.Add (randIndex);
+		}
+	}
 	
 	/// <summary>
 	/// CORoutine that controls the normal Spawner by a time interval.
@@ -165,7 +155,7 @@ public class controladorSpawn : MonoBehaviour
 	IEnumerator COSpawnNormal ()
 	{
 		if (!_inBoss && this.enabled) {
-			InstantiateEnemiesNormal ();
+			StartCoroutine (InstantiateEnemiesNormal ());
 			yield return new WaitForSeconds (spawnIntervale);
 			yield return StartCoroutine (COSpawnNormal ());
 		} else if (this.enabled) {
@@ -179,26 +169,32 @@ public class controladorSpawn : MonoBehaviour
 	/// <returns>Recursive Coroutine Spawning Enemies.</returns>
 	IEnumerator COSpawnBoss ()
 	{
-		instantiateEnemiesBoss ();
+		StartCoroutine (instantiateEnemiesBoss ());
 		yield return new WaitForSeconds (spawnIntervale);
 		yield return StartCoroutine (COSpawnBoss ());
 	}
 
 	/// <summary>
-	/// Coroutine for wait a second to avoid stacking spawning enemies in same point.
+	/// Instantiates the enemies in normal area.
 	/// </summary>
-	/// <returns>The wait same spawn point.</returns>
-	/// <param name="wait">If set to <c>true</c> wait.</param>
-	/// <param name="index">Index.</param>
-	IEnumerator COWaitSameSpawnPoint (bool wait = false, int index = 0)
+	IEnumerator InstantiateEnemiesNormal ()
 	{
-		if (wait) {
-			yield return new WaitForSeconds (1f);
-			//Instantiate (prefabsEnemigos [_levelByKeys], spawnPointsNormal [index].transform.position, Quaternion.identity);
-		} else {
-			//Instantiate (prefabsEnemigos [_levelByKeys], spawnPointsNormal [index].transform.position, Quaternion.identity);
+		IList<int> pointsSpawned = new List<int> ();
+		int enemiesInGame = GetNumOfEnemiesInGame ();
+		int randIndex = 0;
+		//en el bucle controlamos si hemos spawneado un enemigo en ese punto y esperamos 1s para que no se stakeen aunque tengan collider
+		for (int i=0; i<= numOfEnemiesSpawned && enemiesInGame <= maxEnemies; i++) {
+			randIndex = NextIndexNormal ();
+			if (pointsSpawned.IndexOf (randIndex) != -1) {
+				yield return new WaitForSeconds (1f);
+				Instantiate (prefabsEnemigos [0], spawnPointsNormal [randIndex].transform.position, Quaternion.identity);
+			} else {
+				Instantiate (prefabsEnemigos [0], spawnPointsNormal [randIndex].transform.position, Quaternion.identity);
+			}
+			enemiesInGame++;
+			pointsSpawned.Add (randIndex);
 		}
-
+		pointsSpawned.Clear ();
 	}
 
 	#endregion
