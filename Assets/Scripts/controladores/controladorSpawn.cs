@@ -135,7 +135,7 @@ public class controladorSpawn : MonoBehaviour
 		int enemiesInGame = GetNumOfEnemiesInGame ();
 		int randIndex = 0;
 		//en el bucle controlamos si hemos spawneado un enemigo en ese punto y esperamos 1s para que no se stakeen aunque tengan collider
-		for (int i=0; i<= numOfEnemiesSpawnedBoss && enemiesInGame <= maxEnemies; i++) {
+		for (int i=0; i< numOfEnemiesSpawnedBoss && enemiesInGame <= maxEnemies; i++) {
 			randIndex = NextIndexBoss ();
 			if (pointsSpawned.IndexOf (randIndex) != -1) {
 				yield return new WaitForSeconds (1f);
@@ -183,7 +183,7 @@ public class controladorSpawn : MonoBehaviour
 		int enemiesInGame = GetNumOfEnemiesInGame ();
 		int randIndex = 0;
 		//en el bucle controlamos si hemos spawneado un enemigo en ese punto y esperamos 1s para que no se stakeen aunque tengan collider
-		for (int i=0; i<= numOfEnemiesSpawned && enemiesInGame <= maxEnemies; i++) {
+		for (int i=0; i< numOfEnemiesSpawned && enemiesInGame <= maxEnemies; i++) {
 			randIndex = NextIndexNormal ();
 			if (pointsSpawned.IndexOf (randIndex) != -1) {
 				yield return new WaitForSeconds (1f);

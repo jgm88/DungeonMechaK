@@ -85,7 +85,7 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// The controlador ataque pj.
 	/// </summary>
-	private controladorAtaqueCC playerAttackController;
+	private AttackPlayerBehaviour playerAttackController;
 	/// <summary>
 	/// The current damage.
 	/// </summary>
@@ -143,7 +143,7 @@ public class BossBehaviour : MonoBehaviour
 //		stunSprite.SetActive(false);
 		guitextVictoria = GameObject.Find ("victoria");
 		player = GameObject.FindWithTag ("Player");
-		playerAttackController = player.GetComponent<controladorAtaqueCC> ();
+		playerAttackController = player.GetComponent<AttackPlayerBehaviour> ();
 		_animationController = GetComponent<BossAnimationController> ();
 	}
 	
@@ -166,10 +166,13 @@ public class BossBehaviour : MonoBehaviour
 
 	public void ReceiveDamage (int damage)
 	{
+		Debug.Log (weaknesPower);
+		Debug.Log ((string)playerAttackController.getActualPower ());
+		Debug.Log (string.Equals (weaknesPower, (string)playerAttackController.getActualPower ()));
 
 		if (damage > 100) {
 			stun ();
-		} else if (!receiveDamage && playerAttackController.getPoderActual ().Equals (weaknesPower)) { 
+		} else if (!receiveDamage && string.Equals (weaknesPower, (string)playerAttackController.getActualPower ())) { 
 		
 			life -= damage;
 			if (life > 0) {
