@@ -171,7 +171,7 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && string.Equals (weaknesPower, (string)playerAttackController.getActualPower ())) { 
-			muerteBoss ();
+
 			life -= damage;
 			if (life > 0) {
 				receiveDamage = true;
