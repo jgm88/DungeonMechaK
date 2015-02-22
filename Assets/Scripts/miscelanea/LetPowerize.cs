@@ -10,7 +10,6 @@ public class LetPowerize : MonoBehaviour
 	public string power;
 	public GameObject thunder;
 	public List<GameObject> otherThunders;
-	private bool _thunderActive = false;
 	private SkillsBehaviour permitRestoreMana;
 	
 	// Use this for initialization
@@ -24,13 +23,16 @@ public class LetPowerize : MonoBehaviour
 	{
 		if (other.tag == "Player") {
 			guitextPower.enabled = true;
-			if (_thunderActive) {
+			if (thunder.activeSelf) {
 				permitRestoreMana.inWickArea = true;
 			}
 
 			if (Input.GetKeyDown (KeyCode.F)) {
-				if (!_thunderActive) {
+				if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
 					controladorAtaque.setPoderActual (power);
+					foreach (Transform child in thunder.transform) {
+						child.gameObject.SetActive (true);
+					}
 					thunder.SetActive (true);
 					foreach (GameObject otherThunder in otherThunders) {
 						otherThunder.SetActive (false);

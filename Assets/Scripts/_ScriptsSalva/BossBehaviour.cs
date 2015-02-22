@@ -166,10 +166,13 @@ public class BossBehaviour : MonoBehaviour
 
 	public void ReceiveDamage (int damage)
 	{
+		Debug.Log (weaknesPower);
+		Debug.Log ((string)playerAttackController.getPoderActual ());
+		Debug.Log (string.Equals (weaknesPower, (string)playerAttackController.getPoderActual ()));
 
 		if (damage > 100) {
 			stun ();
-		} else if (!receiveDamage && playerAttackController.getPoderActual ().Equals (weaknesPower)) { 
+		} else if (!receiveDamage && string.Equals (weaknesPower, (string)playerAttackController.getPoderActual ())) { 
 		
 			life -= damage;
 			if (life > 0) {

@@ -7,7 +7,7 @@ public class InitBossBehaviour : MonoBehaviour
 	private GameObject _boss;
 	private BoosDoorBehaviour _bossDoorBehaviour;
 	public GameObject bossThunder;
-
+	public GameObject firstStatueAura;
 	public AudioClip music;
 	
 	void Awake ()
@@ -35,7 +35,8 @@ public class InitBossBehaviour : MonoBehaviour
 
 			Camera.main.audio.Stop ();
 			Camera.main.audio.clip = music;
-			Camera.main.audio.Play ();
+			//Camera.main.audio.Play ();
+			firstStatueAura.SetActive (true);
 		}
 	}
 
