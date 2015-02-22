@@ -32,9 +32,9 @@ public class ChargeBehaviour : MonoBehaviour {
 
 	IEnumerator CoVisualCoolDown(){
 		maskSkill.fillAmount = 1;
-		for (int i = 0; i < 5; ++i) {
-			maskSkill.fillAmount -= 0.2f;
-			yield return new WaitForSeconds(coolDown * 0.2f);
+		for (int i = 0; i < 10; ++i) {
+			maskSkill.fillAmount -= 0.1f;
+			yield return new WaitForSeconds(coolDown * 0.1f);
 		}
 		canCharge = true;
 	}
