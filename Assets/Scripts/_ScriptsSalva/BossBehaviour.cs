@@ -121,6 +121,7 @@ public class BossBehaviour : MonoBehaviour
 	private AIPath aiPath;
 
 	private BossAnimationController _animationController;
+	private bool _isDying = false;
 
 
 //	private manejadorAudioAnimado soundManajer;
@@ -166,17 +167,13 @@ public class BossBehaviour : MonoBehaviour
 
 	public void ReceiveDamage (int damage)
 	{
-		Debug.Log (weaknesPower);
-		Debug.Log ((string)playerAttackController.getActualPower ());
-		Debug.Log (string.Equals (weaknesPower, (string)playerAttackController.getActualPower ()));
 
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && string.Equals (weaknesPower, (string)playerAttackController.getActualPower ())) { 
-		
+
 			life -= damage;
 			if (life > 0) {
-//				soundManajer.reproducirImpacto();
 				receiveDamage = true;
 				StartCoroutine (COHit (2f));
 			} else {
@@ -205,11 +202,13 @@ public class BossBehaviour : MonoBehaviour
 
 	private void stun ()
 	{
-		isStunned = true;
-		isAttackCD = true;
-		stunSprite.SetActive (true);
-		aiPath.enabled = false;
-		StartCoroutine (COStunn ());
+		if (!_isDying) {
+			isStunned = true;
+			isAttackCD = true;
+			stunSprite.SetActive (true);
+			aiPath.enabled = false;
+			StartCoroutine (COStunn ());
+		}
 	}
 	
 	IEnumerator COStunn ()
@@ -232,20 +231,21 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	private void muerteBoss ()
 	{
-//		Instantiate(deathParticles, transform.position, Quaternion.identity);
-		
-		//lanzo el evento de del itween y desactivo el conrol
-//		iTweenEvent.GetEvent(Camera.main.gameObject, "recorridoEndGame").Play();
-		player.GetComponent<CharacterMotor> ().canControl = false;
+		_isDying = true;
+		aiPath.enabled = false;
+		isMoving = false;
+		_animationController.setIdle ();
+		_animationController.enabled = false;
 		//destruimos las armas para el tour con la camara
 		Destroy (GameObject.Find ("Armas"));
-		
-		//muestro guitext victoria
-//		guitextVictoria.guiText.enabled = true;
-//		iTweenEvent.GetEvent(guitextVictoria, "fadeInVictoria").Play();
-		Debug.Log ("muerte");
+		deathParticles.SetActive (true);
+		float duration = deathParticles.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
+
 		//destruyo el boss
-		Destroy (this.gameObject);//, soundManajer.getDuracionAudioMuerte());
+		Destroy (this.gameObject, duration);
+
+		//TODO
+		//ACTIVAR EVENTO DE FINALIZAR EL JUEGO
 	}
 
 
@@ -270,7 +270,8 @@ public class BossBehaviour : MonoBehaviour
 	void OnTriggerExit (Collider other)
 	{
 		if (other.CompareTag ("Player")) {
-			aiPath.enabled = true;
+			if (!_isDying)
+				aiPath.enabled = true;
 			inCombat = false;
 			isMoving = true;
 		}

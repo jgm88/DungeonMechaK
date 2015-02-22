@@ -29,10 +29,7 @@ public class LetPowerize : MonoBehaviour
 
 			if (Input.GetKeyDown (KeyCode.F)) {
 				if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
-					Debug.Log (power);
-					Debug.Log (attackController.getActualPower ());
 					attackController.setActualPower (power);
-					Debug.Log ((string)attackController.getActualPower ());
 					thunder.SetActive (true);
 					foreach (Transform child in thunder.transform) {
 						child.gameObject.SetActive (true);
