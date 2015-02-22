@@ -8,9 +8,17 @@ public class DynamiteBehaviour : MonoBehaviour {
 	public GameObject explosion;
 	public GameObject AoeExplosion;
 
+	private float _randomRotation;
+
 	void OnEnable(){
 		gameObject.rigidbody.AddForce(transform.forward * speed);
+		_randomRotation = Random.Range(0f, 360f);
+		rigidbody.AddTorque(_randomRotation,_randomRotation, _randomRotation);
+		audio.Play();
 		StartCoroutine(CoLifeTimer());
+
+	}
+	void Update(){
 
 	}
 	IEnumerator CoLifeTimer(){
