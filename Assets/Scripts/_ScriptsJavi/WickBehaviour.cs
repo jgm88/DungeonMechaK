@@ -53,7 +53,7 @@ public class WickBehaviour : MonoBehaviour {
 				setActiveWickText(false);
 				if(!adquired){
 					adquired = true;
-					_chargeBehaviour.transform.gameObject.audio.PlayOneShot();
+					_chargeBehaviour.transform.gameObject.audio.Play();
 					_bossDoorBehaviour.purchaseWick(color);
 				}
 				_sparks.SetActive(false);
