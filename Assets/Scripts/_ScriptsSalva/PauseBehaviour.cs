@@ -8,9 +8,11 @@ public class PauseBehaviour : MonoBehaviour {
 	private bool inPause;
 	private GameObject pauseMenu;
 	private ChangeCursor changeCursor;
+	private PlayerBehaviour playerBehaviour;
 	// Use this for initialization
 	void Start () {
 		mouseLook = GameObject.FindWithTag("Player").GetComponent<MouseLook>();
+		playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 		changeCursor = GetComponent<ChangeCursor>();
 		pauseMenu = GameObject.Find("WindowBackground");
 
@@ -20,17 +22,20 @@ public class PauseBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!inPause && Input.GetKeyDown(KeyCode.Escape))
+		if(playerBehaviour.isVivo())
 		{
-			ShowCursor(true);
-			pauseMenu.SetActive(true);
-			mouseLook.enabled = false;
-			Time.timeScale = 0;
-			inPause = true;
-		}
-		else if (inPause && Input.GetKeyDown(KeyCode.Escape))
-		{
-			QuitPause();
+			if(!inPause && Input.GetKeyDown(KeyCode.Escape))
+			{
+				ShowCursor(true);
+				pauseMenu.SetActive(true);
+				mouseLook.enabled = false;
+				Time.timeScale = 0;
+				inPause = true;
+			}
+			else if (inPause && Input.GetKeyDown(KeyCode.Escape))
+			{
+				QuitPause();
+			}
 		}
 		
 	}
