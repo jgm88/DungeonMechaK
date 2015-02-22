@@ -6,12 +6,12 @@ public class WickBehaviour : MonoBehaviour {
 
 	public string color;
 	public bool adquired = false;
-	public int maxReload = 30;
+	public int maxReload = 5;
 	public float coolDownSeconds = 5f;
 	public float rotationVelocity = 5f;
+	public int currentReload;
 
-	private int _currentReload;
-	private SkillsBehaviour _skillsBehaviour;
+	private ChargeBehaviour _chargeBehaviour;
 	private GameObject _wickText;
 	private bool _inCoolDown = false;
 	private BoosDoorBehaviour _bossDoorBehaviour;
@@ -21,12 +21,12 @@ public class WickBehaviour : MonoBehaviour {
 
 	void Start () {
 
-		_currentReload = maxReload;
+		currentReload = maxReload;
 
 		_sparks = transform.Find("Sparks").gameObject;
 		_smoke = transform.Find("Smoke").gameObject;
 		_bossDoorBehaviour = GameObject.Find("BossDoor").GetComponent<BoosDoorBehaviour>();
-		_skillsBehaviour = GameObject.Find("SkillsPanel").GetComponent<SkillsBehaviour>();
+		_chargeBehaviour = GameObject.Find("Player").GetComponent<ChargeBehaviour>();
 		_wickText = GameObject.Find("WickText");
 		vText =_wickText.GetComponentsInChildren<Text>();	
 
@@ -41,15 +41,15 @@ public class WickBehaviour : MonoBehaviour {
 	{
 		if(other.gameObject.CompareTag("Player"))
 		{
-			if(_currentReload > 0){
+			if(currentReload > 0){
 
-				_skillsBehaviour.inWickArea = true;
-				if (Input.GetKeyDown(KeyCode.Alpha1)){
-				    --_currentReload;
-				}
+				_chargeBehaviour.inWickArea = true;
+				_chargeBehaviour.wickBehaviour = this;
+
 			}
 			else{
-				_skillsBehaviour.inWickArea = false;
+				_chargeBehaviour.inWickArea = false;
+				_chargeBehaviour.wickBehaviour = null;
 				setActiveWickText(false);
 				if(!adquired){
 					adquired = true;
@@ -61,14 +61,15 @@ public class WickBehaviour : MonoBehaviour {
 		}
 	}
 	void OnTriggerEnter(Collider other){
-		if(other.tag == "Player" && _currentReload > 0){
+		if(other.tag == "Player" && currentReload > 0){
 			setActiveWickText(true);
 		}
 	}
 	void OnTriggerExit(Collider other){
 		if(other.tag == "Player"){
 			setActiveWickText(false);
-			_skillsBehaviour.inWickArea = false;
+			_chargeBehaviour.inWickArea = false;
+			_chargeBehaviour.wickBehaviour = null;
 			//Debemos controlar que no se haya lanzado la corrutina para no lanzar mas de una
 			if(!_inCoolDown){
 				_inCoolDown = true;
@@ -78,7 +79,7 @@ public class WickBehaviour : MonoBehaviour {
 	}
 	IEnumerator CoolDownTocharge(){
 		yield return new WaitForSeconds(coolDownSeconds);
-		_currentReload = maxReload;
+		currentReload = maxReload;
 		_sparks.SetActive(true);
 		_smoke.SetActive(false);
 		_inCoolDown = false;
