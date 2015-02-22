@@ -1,70 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class moverCamaraMuerte : MonoBehaviour {
+public class moverCamaraMuerte : MonoBehaviour
+{
 	
 	
 	public GameObject camaraPrincipal;
 	public GameObject camaraWeapons;
-//	public GameObject guitextMuerte;
+	public GameObject guitextMuerte;
 
 	private GameObject player;
 	private Material noSkybox;
-	private GameObject UIDie;
-//	private controladorGuitexts controladorGuitexts;
+	private controladorGuitexts controladorGuitexts;
 	
 	// Use this for initialization
-	void Start () {
-		UIDie = GameObject.Find("Diepanel");
+	void Start ()
+	{
 		player = transform.parent.gameObject;
-		UIDie.SetActive(false);
+		controladorGuitexts = GameObject.FindWithTag ("GuitextsContainer").GetComponent<controladorGuitexts> ();
 	}
-
+	
+	// Update is called once per frame
+	void Update ()
+	{
+	}
+	
 	//funcion que mueve la camara muerte al morir
-	public void moverCamara(){
+	public void moverCamara ()
+	{
 
 		camaraWeapons.camera.enabled = false;
-
+		controladorGuitexts.enableMensajeMuerte ();
 		
 		//desactivo control del pj
-		player.GetComponent<MouseLook>().enabled = false;
-		player.GetComponent<CharacterController>().enabled = false;
-		player.GetComponent<AttackPlayerBehaviour>().enabled = false;
-		player.GetComponent<CharacterMotor>().enabled = false;
-		GameObject.Find("EventSystem").GetComponent<PauseBehaviour>().ShowCursor(true);
+		player.GetComponent<MouseLook> ().enabled = false;
+		player.GetComponent<CharacterController> ().enabled = false;
+		player.GetComponent<CharacterMotor> ().enabled = false;
+		
 		//eventos itween
-		iTweenEvent.GetEvent(this.gameObject, "moverCamaraMuerte").Play();
-		iTweenEvent.GetEvent(this.gameObject, "rotarCamaraMuerte").Play();
-
-		desactiveEnemies();
-		UIDie.SetActive(true);
+		iTweenEvent.GetEvent (this.gameObject, "moverCamaraMuerte").Play ();
+		iTweenEvent.GetEvent (this.gameObject, "rotarCamaraMuerte").Play ();
+		iTweenEvent.GetEvent (guitextMuerte, "mostrarMuerte").Play ();
+		
+		
+		
 		//cambio los settings de la camara y el render para dar aspecto de muerte
 		
 	}
 
 	
-	private void desactiveEnemies()
-	{
-		// Recogemos todos los enemigos y el boss
-		GameObject [] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-		GameObject boss = GameObject.FindGameObjectWithTag("Boss");
-
-		// Desactivo los componentes para que se esten quietos
-		GameObject.Find("EnemySpawns").SetActive(false);
-
-		boss.GetComponent<AIPath>().enabled = false;
-		boss.GetComponent<SphereCollider>().enabled = false;
-		boss.GetComponent<BossBehaviour>().inCombat = true;
-		foreach(GameObject enemy in enemies)
-		{
-			enemy.GetComponent<AIPath>().enabled = false;
-			enemy.GetComponent<SphereCollider>().enabled = false;
-			enemy.GetComponent<EnemyBehaviour>().inCombat = true;
-		}
-
-
-	}
-
-
+	
 
 }
