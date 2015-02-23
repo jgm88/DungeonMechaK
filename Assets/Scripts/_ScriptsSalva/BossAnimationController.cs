@@ -34,13 +34,28 @@ public class BossAnimationController : MonoBehaviour
 
 	public void setAttacking ()
 	{
-		numRand = Random.Range (0, 100);
-		nomAnimation = (numRand < 50) ? "attack_1" : "attack_2";
-		bossAnim.Play (nomAnimation, PlayMode.StopAll);
+		Debug.Log("ESTADO ATACAR");
+//		if()
+//			Debug.Log("ATTACK1");
+//		else if ()
+//			Debug.Log("ATTACK2");
+		// TODO mirar semaforo entre animaciones de ataque!
+		if(!bossAnim.IsPlaying("attack_1") && !bossAnim.IsPlaying("Attack_2"))
+		{
+			numRand = Random.Range (0, 100);
+			nomAnimation = (numRand < 50) ? "attack_1" : "attack_2";
+			bossAnim.Play (nomAnimation, PlayMode.StopAll);
+		}
+
+//		if(bossBeha.inCombat)
+//			currentState = states.IDLE;
+//		else if(bossBeha.isMoving)
+//			currentState = states.RUN;
 	}
 
 	public void setRunning ()
 	{
+		Debug.Log("ESTADO CORRER");
 		bossAnim.Play ("run", PlayMode.StopAll);
 
 		if(bossBeha.inCombat)
@@ -49,18 +64,22 @@ public class BossAnimationController : MonoBehaviour
 			currentState = states.HIT;
 		else if(bossBeha.life < 0)
 			currentState = states.DIE;
+		else if(bossBeha.isStunned)
+			currentState = states.STUN;
 	}
 
 	public void setStunned ()
 	{
+		Debug.Log("ESTADO STUN");
 		bossAnim.Play ("stunned_idle", PlayMode.StopAll);
 	}
 
 	public void setIdle ()
 	{
+		Debug.Log("ESTADO IDLE");
 		bossAnim.Play ("idle", PlayMode.StopAll);
 
-		if(!bossBeha.isAttackCD)
+		if(bossBeha.isAttackCD)
 			currentState = states.ATTACK;
 		if(bossBeha.isMoving)
 			currentState = states.RUN;
@@ -69,7 +88,10 @@ public class BossAnimationController : MonoBehaviour
 
 	private void setHit()
 	{
+		Debug.Log("ESTADO HIT");
 		bossAnim.Play("hit",PlayMode.StopAll);
+
+
 	}
 
 	void Update ()

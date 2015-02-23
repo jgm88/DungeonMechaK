@@ -45,11 +45,11 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// Attack is in cooldown.
 	/// </summary>
-	public bool isAttackCD;
+	public bool isAttackCD = false;
 	/// <summary>
 	/// State is in combat.
 	/// </summary>
-	public bool inCombat;
+	public bool inCombat = false;
 	/// <summary>
 	/// is the boss stunde?
 	/// </summary>
@@ -282,7 +282,7 @@ public class BossBehaviour : MonoBehaviour
 	{
 		if (!receiveDamage && !isAttackCD && other.tag == "Player") {
 			// && vidaPlayer.isVivo()
-
+			Debug.Log ("ATACO");
 			atacar (other.gameObject);
 		}
 	}
@@ -309,7 +309,6 @@ public class BossBehaviour : MonoBehaviour
 	//funcion para atacar, bloquea el spam de ataques y envia mensajes
 	private void atacar (GameObject player)
 	{
-		isAttackCD = true;
 		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
 		StartCoroutine (COAtacar ());
 	}
@@ -317,9 +316,12 @@ public class BossBehaviour : MonoBehaviour
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar ()
 	{
+
+		isAttackCD = true;
 //		_animationController.setAttacking ();
 		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
+
 	}
 	/// <summary>
 	/// Wait to finish the hit animation
