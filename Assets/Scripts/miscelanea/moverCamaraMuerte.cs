@@ -55,10 +55,12 @@ public class moverCamaraMuerte : MonoBehaviour {
 		boss.GetComponent<AIPath>().enabled = false;
 		boss.GetComponent<SphereCollider>().enabled = false;
 		boss.GetComponent<BossBehaviour>().inCombat = true;
+		boss.GetComponent<BossBehaviour>().isAttackCD = true;
 		foreach(GameObject enemy in enemies)
 		{
 			enemy.GetComponent<AIPath>().enabled = false;
 			enemy.GetComponent<SphereCollider>().enabled = false;
+			enemy.GetComponent<EnemyBehaviour>().inCombat = true;
 			enemy.GetComponent<EnemyBehaviour>().inCombat = true;
 		}
 
