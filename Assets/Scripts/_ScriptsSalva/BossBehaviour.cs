@@ -120,7 +120,7 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	private AIPath aiPath;
 
-	private BossAnimationController _animationController;
+//	private BossAnimationController _animationController;
 	private bool _isDying = false;
 
 
@@ -145,7 +145,7 @@ public class BossBehaviour : MonoBehaviour
 		guitextVictoria = GameObject.Find ("victoria");
 		player = GameObject.FindWithTag ("Player");
 		playerAttackController = player.GetComponent<AttackPlayerBehaviour> ();
-		_animationController = GetComponent<BossAnimationController> ();
+//		_animationController = GetComponent<BossAnimationController> ();
 	}
 	
 	//	// Update is called once per frame
@@ -170,8 +170,8 @@ public class BossBehaviour : MonoBehaviour
 
 		if (damage > 100) {
 			stun ();
-		} else if (!receiveDamage && string.Equals (weaknesPower, (string)playerAttackController.getActualPower ())) { 
-			muerteBoss ();
+		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
+//			muerteBoss ();
 			life -= damage;
 			if (life > 0) {
 				receiveDamage = true;
@@ -213,16 +213,16 @@ public class BossBehaviour : MonoBehaviour
 	
 	IEnumerator COStunn ()
 	{
-		_animationController.setStunned ();
+//		_animationController.setStunned ();
 		yield return new WaitForSeconds (stunTime);
 		isAttackCD = false;
 		isStunned = false;
 		stunSprite.SetActive (false);
 		aiPath.enabled = true;
-		if (isMoving)
-			_animationController.setRunning ();
-		else
-			_animationController.setIdle ();
+//		if (isMoving)
+//			_animationController.setRunning ();
+//		else
+//			_animationController.setIdle ();
 	}
 
 	/// <summary>
@@ -234,8 +234,8 @@ public class BossBehaviour : MonoBehaviour
 		_isDying = true;
 		aiPath.enabled = false;
 		isMoving = false;
-		_animationController.setIdle ();
-		_animationController.enabled = false;
+//		_animationController.setIdle ();
+//		_animationController.enabled = false;
 		//destruimos las armas para el tour con la camara
 		Destroy (GameObject.Find ("Armas"));
 		deathParticles.SetActive (true);
@@ -254,20 +254,24 @@ public class BossBehaviour : MonoBehaviour
 	void OnDestroy ()
 	{
 		//Enable NodesPath
-		player.GetComponent<StartEndGame> ().EnablePath ();
-		//Disable all components
-		foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
-			c.enabled = false;
-		}
-		//remove child nodes
-		foreach (Transform t in player.transform) {
-			if (t.gameObject.name != "Main Camera") {
-				Destroy (t.gameObject);
+		//Comprobamos si el player esta en la escena (da null reference si te mata el boss)
+		if(player)
+		{
+			player.GetComponent<StartEndGame> ().EnablePath ();
+			//Disable all components
+			foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
+				c.enabled = false;
 			}
+			//remove child nodes
+			foreach (Transform t in player.transform) {
+				if (t.gameObject.name != "Main Camera") {
+					Destroy (t.gameObject);
+				}
+			}
+			//launch itween event
+			iTweenEvent.GetEvent (player, "recorridoEndGame").Play ();
+			
 		}
-		//launch itween event
-		iTweenEvent.GetEvent (player, "recorridoEndGame").Play ();
-
 		//Disable traps for the tour
 		foreach (GameObject trap in GameObject.FindGameObjectsWithTag("Trap")) {
 			trap.collider.enabled = false;
@@ -313,7 +317,7 @@ public class BossBehaviour : MonoBehaviour
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar ()
 	{
-		_animationController.setAttacking ();
+//		_animationController.setAttacking ();
 		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
 	}
@@ -324,7 +328,9 @@ public class BossBehaviour : MonoBehaviour
 	/// <param name="time">Cooldown time </param>
 	IEnumerator COHit (float time)
 	{
+		aiPath.enabled = false;
 		yield return new WaitForSeconds (time);
+		aiPath.enabled = true;
 		receiveDamage = false;
 	}
 	
