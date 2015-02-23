@@ -35,7 +35,7 @@ public class InitBossBehaviour : MonoBehaviour
 
 			Camera.main.audio.Stop ();
 			Camera.main.audio.clip = music;
-			//Camera.main.audio.Play ();
+			Camera.main.audio.Play ();
 			firstStatueAura.SetActive (true);
 		}
 	}
