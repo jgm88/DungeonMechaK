@@ -22,5 +22,9 @@ public class FuegoSkill : MonoBehaviour {
 		if(other.tag=="Enemy"){
 			other.GetComponent<EnemyBehaviour>().ReceiveDamage(dps);
 		}
+		else if(other.tag=="Boss")
+		{
+			other.GetComponent<BossBehaviour>().ReceiveDamage(dps);
+		}
 	}
 }

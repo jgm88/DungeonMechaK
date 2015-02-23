@@ -25,9 +25,10 @@ public class LetPowerize : MonoBehaviour
 			guitextPower.enabled = true;
 			if (thunder.activeSelf) {
 				permitRestoreMana.inWickArea = true;
+				permitRestoreMana.letPowerize = this;
 			}
-
-			if (Input.GetKeyDown (KeyCode.F)) {
+			// TODO quitar de aqui, se comprueba en skill behaviour
+			if (Input.GetKeyDown (KeyCode.Alpha1)) {
 				if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
 					attackController.setActualPower (power);
 					thunder.SetActive (true);
@@ -45,6 +46,7 @@ public class LetPowerize : MonoBehaviour
 	void OnTriggerExit (Collider other)
 	{
 		if (other.tag == "Player") {
+			permitRestoreMana.letPowerize = null;
 			guitextPower.enabled = false;
 			permitRestoreMana.inWickArea = false;
 		}
