@@ -35,10 +35,7 @@ public class BossAnimationController : MonoBehaviour
 	public void setAttacking ()
 	{
 		Debug.Log("ESTADO ATACAR");
-//		if()
-//			Debug.Log("ATTACK1");
-//		else if ()
-//			Debug.Log("ATTACK2");
+
 		// TODO mirar semaforo entre animaciones de ataque!
 		if(!bossAnim.IsPlaying("attack_1") && !bossAnim.IsPlaying("Attack_2"))
 		{
@@ -47,7 +44,7 @@ public class BossAnimationController : MonoBehaviour
 			bossAnim.Play (nomAnimation, PlayMode.StopAll);
 		}
 
-//		if(bossBeha.inCombat)
+//		if(bossBeha.isAttackCD && bossBeha.inCombat)
 //			currentState = states.IDLE;
 //		else if(bossBeha.isMoving)
 //			currentState = states.RUN;
@@ -77,9 +74,9 @@ public class BossAnimationController : MonoBehaviour
 	public void setIdle ()
 	{
 		Debug.Log("ESTADO IDLE");
-		bossAnim.Play ("idle", PlayMode.StopAll);
+		bossAnim.Play ("idle");
 
-		if(bossBeha.isAttackCD)
+		if(!bossBeha.isAttackCD)
 			currentState = states.ATTACK;
 		if(bossBeha.isMoving)
 			currentState = states.RUN;
