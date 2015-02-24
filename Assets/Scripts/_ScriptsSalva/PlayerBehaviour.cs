@@ -12,13 +12,14 @@ public class PlayerBehaviour : MonoBehaviour
 
 	public bool receiveDamage;
 
-	private manejadorAudioAnimado sounManajer;
+	private manejadorAudioAnimado soundManajer;
 	private HUDStatusBehaviour _lifeHUD;
 	private HUDStatusBehaviour _manaHUD;
+	private bool _isDead = false;
 
 	void Awake ()
 	{
-		sounManajer = GetComponent<manejadorAudioAnimado> ();
+		soundManajer = GetComponent<manejadorAudioAnimado> ();
 		_lifeHUD = GameObject.Find ("LifeMask").GetComponent<HUDStatusBehaviour> ();
 		_manaHUD = GameObject.Find ("ManaMask").GetComponent<HUDStatusBehaviour> ();
 	}
@@ -28,44 +29,48 @@ public class PlayerBehaviour : MonoBehaviour
 		if (!receiveDamage) {
 			life -= damage;
 			if (life > 0) {
-				sounManajer.reproducirGolpeado ();
+				soundManajer.reproducirImpacto ();
+				soundManajer.reproducirGolpeado ();
 				receiveDamage = true;
 				StartCoroutine (COHit (1.2f));
-			} else
+			} else if (!_isDead) {
+				_isDead = true;
 				muertePj ();
+			}
 			_lifeHUD.SetValue (life, maxLife);
 		}
-		
 	}
-	public void ReceiveHeal(int heal)
+
+	public void ReceiveHeal (int heal)
 	{
 
 		life += heal;
-		if(life > maxLife)
+		if (life > maxLife)
 			life = maxLife;
 
-		_lifeHUD.SetValue(life, maxLife);
+		_lifeHUD.SetValue (life, maxLife);
 
 	}
-	public void DeductMana(int amount)
+	public void DeductMana (int amount)
 	{
 
-		if (mana - amount >= 0){				
+		if (mana - amount >= 0) {				
 			mana -= amount;
-			_manaHUD.SetValue(mana, maxMana);
+			_manaHUD.SetValue (mana, maxMana);
 		}				
 	}
-	public void ReceiveMana(int amount)
+	public void ReceiveMana (int amount)
 	{
 		mana += amount;
-		if(mana > maxMana)
+		if (mana > maxMana)
 			mana = maxMana;		
-		_manaHUD.SetValue(mana, maxMana);		
+		_manaHUD.SetValue (mana, maxMana);		
 	}
 
-	private void muertePj(){
-		sounManajer.reproducirMuerte();	
-		GameObject.FindWithTag("MainCamera").GetComponent<moverCamaraMuerte>().moverCamara();
+	private void muertePj ()
+	{
+		soundManajer.reproducirMuerte ();	
+		GameObject.FindWithTag ("MainCamera").GetComponent<moverCamaraMuerte> ().moverCamara ();
 	}
 
 	/// <summary>
@@ -73,15 +78,15 @@ public class PlayerBehaviour : MonoBehaviour
 	/// </summary>
 	/// <returns>return the trigger </returns>
 	/// <param name="time">Cooldown time </param>
-	IEnumerator COHit(float time)
+	IEnumerator COHit (float time)
 	{
-		yield return new WaitForSeconds(time);
+		yield return new WaitForSeconds (time);
 		receiveDamage = false;
 	}
 
-	public bool isVivo()
+	public bool isVivo ()
 	{
-		if(life < 0)
+		if (life < 0)
 			return false;
 		return true;
 	}

@@ -10,8 +10,8 @@ public class StartEndGame : MonoBehaviour
 	void Start ()
 	{
 
-		if(PathEndGame &&  PathEndGame.activeSelf )
-			PathEndGame.SetActive(false);
+		if (PathEndGame && PathEndGame.activeSelf)
+			PathEndGame.SetActive (false);
 
 
 	}
