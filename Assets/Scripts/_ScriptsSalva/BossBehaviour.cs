@@ -123,6 +123,8 @@ public class BossBehaviour : MonoBehaviour
 
 //	private BossAnimationController _animationController;
 	private bool _isDying = false;
+
+	private manejadorAudioAnimado _auidioController;
 	
 
 
@@ -138,6 +140,7 @@ public class BossBehaviour : MonoBehaviour
 		life = initialLife;
 		agregarColoresYPoderes ();
 		weaknesPower = powersList [currentState];
+		_auidioController = GetComponent<manejadorAudioAnimado> ();
 	}
 
 	void Start ()
@@ -176,6 +179,7 @@ public class BossBehaviour : MonoBehaviour
 			muerteBoss ();
 			life -= damage;
 			if (life > 0) {
+				_auidioController.reproducirGolpeado ();
 				receiveDamage = true;
 				StartCoroutine (COHit (2f));
 			} else {
@@ -236,6 +240,7 @@ public class BossBehaviour : MonoBehaviour
 		_isDying = true;
 		aiPath.enabled = false;
 		isMoving = false;
+		_auidioController.reproducirEspecial (1);
 //		_animationController.setIdle ();
 //		_animationController.enabled = false;
 		//destruimos las armas para el tour con la camara
@@ -252,9 +257,11 @@ public class BossBehaviour : MonoBehaviour
 		float finalExplosion = bossFinalExplosion.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
 		float realDuration = duration - finalExplosion;
 		float disableDelay = bossFinalExplosion.transform.GetChild (0).GetComponent<ParticleSystem> ().startDelay;
+		//_auidioController.reproducirEspecial (1);
 		yield return new WaitForSeconds (realDuration);
 		bossFinalExplosion.SetActive (true);
 		yield return new WaitForSeconds (disableDelay);
+		_auidioController.reproducirEspecial (0);
 		GameObject.Find ("cyclop_Boss").SetActive (false);
 		deathParticles.SetActive (false);
 		yield return new WaitForSeconds (finalExplosion - disableDelay);

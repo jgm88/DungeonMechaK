@@ -30,6 +30,7 @@ public class LetPowerize : MonoBehaviour
 			// TODO quitar de aqui, se comprueba en skill behaviour
 			if (Input.GetKeyDown (KeyCode.Alpha1)) {
 				if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
+					GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
 					attackController.setActualPower (power);
 					thunder.SetActive (true);
 					foreach (Transform child in thunder.transform) {

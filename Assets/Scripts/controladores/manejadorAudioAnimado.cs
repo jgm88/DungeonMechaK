@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 
-public class manejadorAudioAnimado : MonoBehaviour {
+public class manejadorAudioAnimado : MonoBehaviour
+{
 	
 	//sonidos de impactos contra el objeto animado
 	public List<AudioClip> armadura;
@@ -26,71 +27,88 @@ public class manejadorAudioAnimado : MonoBehaviour {
 	private bool atacando = false;
 	
 	// Use this for initialization
-	void Start () {
-		if(respirar.Count>0)
-			Respiracion();
+	void Start ()
+	{
+		if (respirar.Count > 0)
+			Respiracion ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		
 	}
 	
 	//al ser herencia recojo el componente de la armadura que sea desde la clase padre
-	public void reproducirImpacto(){
- 		int indice = Random.Range(0, (armadura.Count -1));
-		audio.PlayOneShot(armadura[indice]);
+	public void reproducirImpacto ()
+	{
+		int indice = Random.Range (0, (armadura.Count - 1));
+		audio.PlayOneShot (armadura [indice]);
 	}
 	
 	//reproduce el clip cuando es golpeado (gemido)
-	public void reproducirGolpeado(){
-		int indice = Random.Range(0, (golpeado.Count -1));
-		audio.PlayOneShot(golpeado[indice]);
+	public void reproducirGolpeado ()
+	{
+		int indice = Random.Range (0, (golpeado.Count - 1));
+		audio.PlayOneShot (golpeado [indice]);
 	}
 	
 	//reproduce la coroutina de atacar si no esta atacando
-	public void reproducirAtacar(float start){
-		if(!atacando){
+	public void reproducirAtacar (float start)
+	{
+		if (!atacando) {
 			tiempoStartAtacarAnimacion = start;
-			StartCoroutine(coroutineAtacar());
+			StartCoroutine (coroutineAtacar ());
 		}
 	}
 	
 	//reproduce el clip de la muerte del objeto
-	public void reproducirMuerte(){
-		int indice = Random.Range(0, (muere.Count -1));
-		audio.PlayOneShot(muere[indice]);
+	public void reproducirMuerte ()
+	{
+		int indice = Random.Range (0, (muere.Count - 1));
+		audio.PlayOneShot (muere [indice]);
 		//guardo la duracion del clip reproducido
-		duracionMuerte = muere[indice].length;
+		duracionMuerte = muere [indice].length;
 		
 	}
-	public void reproducirEspecial(){
-		int indice = Random.Range(0, (especial.Count -1));
-		audio.PlayOneShot(especial[indice]);
+	public void reproducirEspecial (int explicitIndex = -1)
+	{
+		int indice;
+		if (explicitIndex > -1) {
+			indice = explicitIndex;
+		} else {
+			indice = Random.Range (0, (especial.Count - 1));
+		}
+		Debug.Log (indice);
+		audio.PlayOneShot (especial [indice]);
 	}
 	
 	//devuelve la duracion del clip muerte para reproducirlo antes de destruir el objeto en el manejador vida
-	public float getDuracionAudioMuerte(){
+	public float getDuracionAudioMuerte ()
+	{
 		return duracionMuerte;
 	}
-	public void Respiracion(){
-		StartCoroutine(coroutineRespirar());
+	public void Respiracion ()
+	{
+		StartCoroutine (coroutineRespirar ());
 	}
-	IEnumerator coroutineRespirar(){
-		int indice = Random.Range(0, (respirar.Count -1));
-		audio.PlayOneShot(respirar[indice]);
-		yield return new WaitForSeconds(audio.clip.length+2f);
-		yield return StartCoroutine(coroutineRespirar());
+	IEnumerator coroutineRespirar ()
+	{
+		int indice = Random.Range (0, (respirar.Count - 1));
+		audio.PlayOneShot (respirar [indice]);
+		yield return new WaitForSeconds (audio.clip.length + 2f);
+		yield return StartCoroutine (coroutineRespirar ());
 	}
 	//reproduce el clip de atacar justo cuando el arma esta atacando
-	IEnumerator coroutineAtacar(){
-		int indice = Random.Range(0, (atacar.Count -1));
-		audio.clip = atacar[indice];
+	IEnumerator coroutineAtacar ()
+	{
+		int indice = Random.Range (0, (atacar.Count - 1));
+		audio.clip = atacar [indice];
 		//reproduzco el clip con retardo para que coincida con el ataque
-		audio.PlayDelayed(tiempoStartAtacarAnimacion);
+		audio.PlayDelayed (tiempoStartAtacarAnimacion);
 		atacando = true;
 		//espero la duracion de la animacion del ataque para no poder spamear el ataque
-		yield return new WaitForSeconds(atacar[indice].length);
+		yield return new WaitForSeconds (atacar [indice].length);
 		atacando = false;
 	}
 }

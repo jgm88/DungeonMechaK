@@ -12,14 +12,14 @@ public class PlayerBehaviour : MonoBehaviour
 
 	public bool receiveDamage;
 
-	private manejadorAudioAnimado sounManajer;
+	private manejadorAudioAnimado soundManajer;
 	private HUDStatusBehaviour _lifeHUD;
 	private HUDStatusBehaviour _manaHUD;
 	private bool _isDead = false;
 
 	void Awake ()
 	{
-		sounManajer = GetComponent<manejadorAudioAnimado> ();
+		soundManajer = GetComponent<manejadorAudioAnimado> ();
 		_lifeHUD = GameObject.Find ("LifeMask").GetComponent<HUDStatusBehaviour> ();
 		_manaHUD = GameObject.Find ("ManaMask").GetComponent<HUDStatusBehaviour> ();
 	}
@@ -29,7 +29,8 @@ public class PlayerBehaviour : MonoBehaviour
 		if (!receiveDamage) {
 			life -= damage;
 			if (life > 0) {
-				sounManajer.reproducirGolpeado ();
+				soundManajer.reproducirImpacto ();
+				soundManajer.reproducirGolpeado ();
 				receiveDamage = true;
 				StartCoroutine (COHit (1.2f));
 			} else if (!_isDead) {
@@ -68,7 +69,7 @@ public class PlayerBehaviour : MonoBehaviour
 
 	private void muertePj ()
 	{
-		sounManajer.reproducirMuerte ();	
+		soundManajer.reproducirMuerte ();	
 		GameObject.FindWithTag ("MainCamera").GetComponent<moverCamaraMuerte> ().moverCamara ();
 	}
 
