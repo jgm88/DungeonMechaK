@@ -270,6 +270,14 @@ public class BossBehaviour : MonoBehaviour
 //		deathParticles.SetActive (true);
 		float duration = deathParticles.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
 
+		//desactivamos spawner
+		GameObject.Find ("EnemySpawns").SetActive (false);
+
+		//destruimos el resto de enmigos
+		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
+			Destroy (enemy);
+		}
+
 		//coroutina que controla el lanzamiento de particulas de muerte del boss
 		StartCoroutine (CODestroyBoss (duration));
 	}
@@ -298,20 +306,22 @@ public class BossBehaviour : MonoBehaviour
 		//Enable NodesPath
 		//Comprobamos si el player esta en la escena (da null reference si te mata el boss)
 		if (player) {
-			player.GetComponent<StartEndGame> ().EnablePath ();
 			//Disable all components
 			foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
 				c.enabled = false;
 			}
+			StartEndGame path = player.GetComponent<StartEndGame> ();
+			//volvemos a activar el path e iniciamos
+			path.enabled = true;
+			path.EnablePath ();
+			//launch itween event
+			path.StartPath ();
 			//remove child nodes
 			foreach (Transform t in player.transform) {
 				if (t.gameObject.name != "Main Camera") {
 					Destroy (t.gameObject);
 				}
 			}
-			//launch itween event
-			iTweenEvent.GetEvent (player, "recorridoEndGame").Play ();
-			
 		}
 		//Disable traps for the tour
 		foreach (GameObject trap in GameObject.FindGameObjectsWithTag("Trap")) {

@@ -5,6 +5,7 @@ public class BoosDoorBehaviour : MonoBehaviour
 {
 
 	public int wicksAdquired = 4;
+	public GameObject openDoorText;
 
 	private GameObject _doorRight3D;
 	private GameObject _doorLeft3D;
@@ -76,6 +77,14 @@ public class BoosDoorBehaviour : MonoBehaviour
 		}
 		if (wicksAdquired == 0) {
 			setDoor (false);
+			StartCoroutine (COShowDoorOpened ());
 		}
+	}
+
+	IEnumerator COShowDoorOpened ()
+	{
+		openDoorText.SetActive (true);
+		yield return new WaitForSeconds (3.0f);
+		openDoorText.SetActive (false);
 	}
 }
