@@ -26,7 +26,13 @@ ModelImporter:
     400018: door_R
     400020: estructure
     2300000: Cylinder_003
+    2300002: Cube_001
+    2300004: Cylinder
+    2300006: Cylinder_002
     3300000: Cylinder_003
+    3300002: Cube_001
+    3300004: Cylinder
+    3300006: Cylinder_002
     4300000: Cylinder
     4300004: Cylinder_002
     4300006: Cube_001
@@ -43,7 +49,8 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     optimizeGameObjects: 0
-    animationCompression: 1
+    motionNodeName: 
+    animationCompression: 3
     animationRotationError: .5
     animationPositionError: .5
     animationScaleError: .5
