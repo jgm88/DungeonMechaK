@@ -165,10 +165,13 @@ public class BossBehaviour : MonoBehaviour
 		else if(isMoving)
 			_animationController.PlayRun();
 
-//			if(inCombat)
-//			{
-//				distance = Vector3.Distance(player.transform.localPosition,impactPoint.transform.position;
-//			}
+		if(inCombat)
+		{
+			distance = Vector3.Distance(player.transform.localPosition,impactPoint.transform.position);
+			if(distance < 0.6f)
+				player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
+
+		}
 			
 	}
 
@@ -192,7 +195,7 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
-			muerteBoss ();
+//			muerteBoss ();
 
 			life -= damage;
 			if (life > 0) {
@@ -372,22 +375,11 @@ public class BossBehaviour : MonoBehaviour
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar ()
 	{
-
-		yield return new WaitForSeconds(0.5f);
-		distance = float.MaxValue;
-//		for(int i = 0; i< 20; ++i)
-//		{
-//			Debug.Log("INICIO BUCLE");
-//			distance = Vector3.Distance(impactPoint.transform.localPosition, player.transform.localPosition);
-//			if(distance< 1f) i = 20;
-//			Debug.Log("GOLPE Distancia a "+ distance);
-//			yield return null;
-//		}
-
+		yield return new WaitForEndOfFrame();
 		isAttackCD = true;
-		player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
 		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
+
 
 	
 	}
@@ -401,7 +393,7 @@ public class BossBehaviour : MonoBehaviour
 		aiPath.enabled = false;
 		isMoving = false;
 		yield return new WaitForSeconds (time);
-		if(!_isDying)
+		if(!_isDying && !inCombat)
 		{
 			isMoving = true;
 			aiPath.enabled = true;
