@@ -10,6 +10,7 @@ public class BossBehaviour : MonoBehaviour
 	/// The death particles.
 	/// </summary>
 	public GameObject deathParticles;
+	public GameObject bossFinalExplosion;
 	/// <summary>
 	/// The initial damage.
 	/// </summary>
@@ -123,6 +124,9 @@ public class BossBehaviour : MonoBehaviour
 //	private BossAnimationController _animationController;
 	private bool _isDying = false;
 
+	private manejadorAudioAnimado _auidioController;
+	
+
 
 //	private manejadorAudioAnimado soundManajer;
 	// Use this for initialization
@@ -136,6 +140,7 @@ public class BossBehaviour : MonoBehaviour
 		life = initialLife;
 		agregarColoresYPoderes ();
 		weaknesPower = powersList [currentState];
+		_auidioController = GetComponent<manejadorAudioAnimado> ();
 	}
 
 	void Start ()
@@ -171,9 +176,10 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
-//			muerteBoss ();
+			muerteBoss ();
 			life -= damage;
 			if (life > 0) {
+				_auidioController.reproducirGolpeado ();
 				receiveDamage = true;
 				StartCoroutine (COHit (2f));
 			} else {
@@ -234,6 +240,7 @@ public class BossBehaviour : MonoBehaviour
 		_isDying = true;
 		aiPath.enabled = false;
 		isMoving = false;
+		_auidioController.reproducirEspecial (1);
 //		_animationController.setIdle ();
 //		_animationController.enabled = false;
 		//destruimos las armas para el tour con la camara
@@ -241,11 +248,32 @@ public class BossBehaviour : MonoBehaviour
 		deathParticles.SetActive (true);
 		float duration = deathParticles.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
 
-		//destruyo el boss
-		Destroy (this.gameObject, duration);
+		//desactivamos spawner
+		GameObject.Find ("EnemySpawns").SetActive (false);
 
-		//TODO
-		//ACTIVAR EVENTO DE FINALIZAR EL JUEGO
+		//destruimos el resto de enmigos
+		foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
+			Destroy (enemy);
+		}
+
+		//coroutina que controla el lanzamiento de particulas de muerte del boss
+		StartCoroutine (CODestroyBoss (duration));
+	}
+
+	IEnumerator CODestroyBoss (float duration)
+	{
+		float finalExplosion = bossFinalExplosion.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
+		float realDuration = duration - finalExplosion;
+		float disableDelay = bossFinalExplosion.transform.GetChild (0).GetComponent<ParticleSystem> ().startDelay;
+		//_auidioController.reproducirEspecial (1);
+		yield return new WaitForSeconds (realDuration);
+		bossFinalExplosion.SetActive (true);
+		yield return new WaitForSeconds (disableDelay);
+		_auidioController.reproducirEspecial (0);
+		GameObject.Find ("cyclop_Boss").SetActive (false);
+		deathParticles.SetActive (false);
+		yield return new WaitForSeconds (finalExplosion - disableDelay);
+		Destroy (this.gameObject);
 	}
 
 	/// <summary>
@@ -255,22 +283,23 @@ public class BossBehaviour : MonoBehaviour
 	{
 		//Enable NodesPath
 		//Comprobamos si el player esta en la escena (da null reference si te mata el boss)
-		if(player)
-		{
-			player.GetComponent<StartEndGame> ().EnablePath ();
+		if (player) {
 			//Disable all components
 			foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
 				c.enabled = false;
 			}
+			StartEndGame path = player.GetComponent<StartEndGame> ();
+			//volvemos a activar el path e iniciamos
+			path.enabled = true;
+			path.EnablePath ();
+			//launch itween event
+			path.StartPath ();
 			//remove child nodes
 			foreach (Transform t in player.transform) {
 				if (t.gameObject.name != "Main Camera") {
 					Destroy (t.gameObject);
 				}
 			}
-			//launch itween event
-			iTweenEvent.GetEvent (player, "recorridoEndGame").Play ();
-			
 		}
 		//Disable traps for the tour
 		foreach (GameObject trap in GameObject.FindGameObjectsWithTag("Trap")) {
