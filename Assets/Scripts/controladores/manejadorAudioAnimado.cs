@@ -29,8 +29,8 @@ public class manejadorAudioAnimado : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		if (respirar.Count > 0)
-			Respiracion ();
+//		if (respirar.Count > 0)
+//			Respiracion ();
 	}
 	
 	// Update is called once per frame
@@ -79,7 +79,7 @@ public class manejadorAudioAnimado : MonoBehaviour
 		} else {
 			indice = Random.Range (0, (especial.Count - 1));
 		}
-		Debug.Log (indice);
+
 		audio.PlayOneShot (especial [indice]);
 	}
 	

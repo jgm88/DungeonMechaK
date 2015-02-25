@@ -46,7 +46,7 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// Attack is in cooldown.
 	/// </summary>
-	public bool isAttackCD = false;
+	public bool isAttackCD = true;
 	/// <summary>
 	/// State is in combat.
 	/// </summary>
@@ -121,12 +121,14 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	private AIPath aiPath;
 
-//	private BossAnimationController _animationController;
+	private BossAnimationController _animationController;
 	private bool _isDying = false;
 
 	private manejadorAudioAnimado _auidioController;
-	
 
+	private GameObject impactPoint;
+
+	private float distance;
 
 //	private manejadorAudioAnimado soundManajer;
 	// Use this for initialization
@@ -141,6 +143,7 @@ public class BossBehaviour : MonoBehaviour
 		agregarColoresYPoderes ();
 		weaknesPower = powersList [currentState];
 		_auidioController = GetComponent<manejadorAudioAnimado> ();
+		
 	}
 
 	void Start ()
@@ -150,12 +153,25 @@ public class BossBehaviour : MonoBehaviour
 		guitextVictoria = GameObject.Find ("victoria");
 		player = GameObject.FindWithTag ("Player");
 		playerAttackController = player.GetComponent<AttackPlayerBehaviour> ();
-//		_animationController = GetComponent<BossAnimationController> ();
+		impactPoint = GameObject.Find("MazeImpactPoint");
+		_animationController = GetComponent<BossAnimationController> ();
 	}
 	
 	//	// Update is called once per frame
-	//	void Update () {
-	//	}
+	void Update ()
+	{
+		if(_isDying)
+			_animationController.PlayDeath();
+		else if(isMoving)
+			_animationController.PlayRun();
+
+//			if(inCombat)
+//			{
+//				distance = Vector3.Distance(player.transform.localPosition,impactPoint.transform.position;
+//			}
+			
+	}
+
 	//agrega los colores de cada fase
 	private void agregarColoresYPoderes ()
 	{
@@ -177,11 +193,13 @@ public class BossBehaviour : MonoBehaviour
 			stun ();
 		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
 			muerteBoss ();
+
 			life -= damage;
 			if (life > 0) {
+				_animationController.PlayHit();
 				_auidioController.reproducirGolpeado ();
 				receiveDamage = true;
-				StartCoroutine (COHit (2f));
+				StartCoroutine (COHit (1f));
 			} else {
 				currentState++;
 				cambiarFases ();	
@@ -202,6 +220,7 @@ public class BossBehaviour : MonoBehaviour
 			weaknesPower = powersList [currentState];
 			bossSkinMat.color = colorStates [currentState];
 			life = finalLife;
+			currentDamage = finalDamage;
 		} else
 			muerteBoss ();
 	}
@@ -209,8 +228,11 @@ public class BossBehaviour : MonoBehaviour
 	private void stun ()
 	{
 		if (!_isDying) {
+			_animationController.PlayStun();
 			isStunned = true;
 			isAttackCD = true;
+			isMoving = false;
+
 			stunSprite.SetActive (true);
 			aiPath.enabled = false;
 			StartCoroutine (COStunn ());
@@ -223,6 +245,7 @@ public class BossBehaviour : MonoBehaviour
 		yield return new WaitForSeconds (stunTime);
 		isAttackCD = false;
 		isStunned = false;
+		isMoving = true;
 		stunSprite.SetActive (false);
 		aiPath.enabled = true;
 //		if (isMoving)
@@ -241,11 +264,10 @@ public class BossBehaviour : MonoBehaviour
 		aiPath.enabled = false;
 		isMoving = false;
 		_auidioController.reproducirEspecial (1);
-//		_animationController.setIdle ();
-//		_animationController.enabled = false;
+
 		//destruimos las armas para el tour con la camara
-		Destroy (GameObject.Find ("Armas"));
-		deathParticles.SetActive (true);
+//		Destroy (GameObject.Find ("Armas"));
+//		deathParticles.SetActive (true);
 		float duration = deathParticles.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
 
 		//coroutina que controla el lanzamiento de particulas de muerte del boss
@@ -263,7 +285,7 @@ public class BossBehaviour : MonoBehaviour
 		yield return new WaitForSeconds (disableDelay);
 		_auidioController.reproducirEspecial (0);
 		GameObject.Find ("cyclop_Boss").SetActive (false);
-		deathParticles.SetActive (false);
+//		deathParticles.SetActive (false);
 		yield return new WaitForSeconds (finalExplosion - disableDelay);
 		Destroy (this.gameObject);
 	}
@@ -299,9 +321,10 @@ public class BossBehaviour : MonoBehaviour
 
 	void OnTriggerStay (Collider other)
 	{
-		if (!receiveDamage && !isAttackCD && other.tag == "Player") {
+		if (other.tag == "Player" && !_isDying ) {
+			_animationController.PlayIdle();
 			// && vidaPlayer.isVivo()
-			Debug.Log ("ATACO");
+
 			atacar (other.gameObject);
 		}
 	}
@@ -328,19 +351,35 @@ public class BossBehaviour : MonoBehaviour
 	//funcion para atacar, bloquea el spam de ataques y envia mensajes
 	private void atacar (GameObject player)
 	{
-		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
-		StartCoroutine (COAtacar ());
+//		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
+		if(!isAttackCD)
+		{
+			_animationController.PlayAttack();
+			StartCoroutine (COAtacar ());
+		}
 	}
 	
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar ()
 	{
 
+		yield return new WaitForSeconds(0.5f);
+		distance = float.MaxValue;
+//		for(int i = 0; i< 20; ++i)
+//		{
+//			Debug.Log("INICIO BUCLE");
+//			distance = Vector3.Distance(impactPoint.transform.localPosition, player.transform.localPosition);
+//			if(distance< 1f) i = 20;
+//			Debug.Log("GOLPE Distancia a "+ distance);
+//			yield return null;
+//		}
+
 		isAttackCD = true;
-//		_animationController.setAttacking ();
+		player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
 		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
 
+	
 	}
 	/// <summary>
 	/// Wait to finish the hit animation
@@ -350,9 +389,15 @@ public class BossBehaviour : MonoBehaviour
 	IEnumerator COHit (float time)
 	{
 		aiPath.enabled = false;
+		isMoving = false;
 		yield return new WaitForSeconds (time);
-		aiPath.enabled = true;
+		if(!_isDying)
+		{
+			isMoving = true;
+			aiPath.enabled = true;
+		}
 		receiveDamage = false;
 	}
-	
+
+
 }
