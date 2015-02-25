@@ -8,8 +8,7 @@ public class FadeUI : MonoBehaviour {
  
 	void Start () {
 		_animator = gameObject.GetComponent<Animator>();
-		if(_animator)
-			Debug.Log("Recojo el animator de " + gameObject.name);
+	
 		_animator.SetBool("Fade", false);
 	}
 
