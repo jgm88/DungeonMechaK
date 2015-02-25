@@ -91,6 +91,7 @@ public class EnemyBehaviour : MonoBehaviour
 				GetComponent<AIPath> ().enabled = false;
 				collider.enabled = false;
 				soundManajer.reproducirMuerte ();
+				GameObject.Find ("EnemySpawns").GetComponent<controladorSpawn>().enemiesInGame--;
 				Destroy (gameObject, 3.5f);	
 			}
 		}
