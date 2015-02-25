@@ -268,7 +268,7 @@ public class BossBehaviour : MonoBehaviour
 		//destruimos las armas para el tour con la camara
 //		Destroy (GameObject.Find ("Armas"));
 //		deathParticles.SetActive (true);
-		float duration = deathParticles.transform.GetChild (0).GetComponent<ParticleSystem> ().duration;
+		float duration = 5.5f;
 
 		//desactivamos spawner
 		GameObject.Find ("EnemySpawns").SetActive (false);
