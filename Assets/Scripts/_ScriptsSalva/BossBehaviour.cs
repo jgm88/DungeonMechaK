@@ -164,14 +164,6 @@ public class BossBehaviour : MonoBehaviour
 			_animationController.PlayDeath();
 		else if(isMoving)
 			_animationController.PlayRun();
-
-		if(inCombat)
-		{
-			distance = Vector3.Distance(player.transform.localPosition,impactPoint.transform.position);
-			if(distance < 0.6f)
-				player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
-
-		}
 			
 	}
 
@@ -335,9 +327,6 @@ public class BossBehaviour : MonoBehaviour
 	void OnTriggerStay (Collider other)
 	{
 		if (other.tag == "Player" && !_isDying ) {
-			_animationController.PlayIdle();
-			// && vidaPlayer.isVivo()
-
 			atacar (other.gameObject);
 		}
 	}
@@ -377,7 +366,9 @@ public class BossBehaviour : MonoBehaviour
 	{
 		yield return new WaitForEndOfFrame();
 		isAttackCD = true;
-		yield return new WaitForSeconds (attackCD);
+		yield return new WaitForSeconds(1f);
+		player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
+		yield return new WaitForSeconds (attackCD-1f);
 		isAttackCD = false;
 
 
