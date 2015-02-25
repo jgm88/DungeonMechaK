@@ -9,6 +9,12 @@ public class PauseBehaviour : MonoBehaviour {
 	private GameObject pauseMenu;
 	private ChangeCursor changeCursor;
 	private PlayerBehaviour playerBehaviour;
+	private bool _endGame = false;
+
+	public bool endGame{
+		get { return _endGame;}
+		set { _endGame = value;}
+	}
 	// Use this for initialization
 	void Start () {
 		mouseLook = GameObject.FindWithTag("Player").GetComponent<MouseLook>();
@@ -22,7 +28,7 @@ public class PauseBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(playerBehaviour.isVivo())
+		if(playerBehaviour.isVivo() && !_endGame)
 		{
 			if(!inPause && Input.GetKeyDown(KeyCode.Escape))
 			{

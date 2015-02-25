@@ -7,137 +7,63 @@ public class BossAnimationController : MonoBehaviour
 	private Animation bossAnim;
 	private int numRand;
 	private string nomAnimation;
+	private bool _ismuerto;
 
-	// parcheada al canto
-	private bool waitting;
-
-	private enum states{
-		ATTACK,
-		IDLE,
-		RUN,
-		HIT,
-		STUN,
-		DIE
-	}
-
-	states currentState;
 	// Use this for initialization
 	void Awake ()
 	{
 		bossBeha = GetComponent<BossBehaviour> ();
-		bossAnim = transform.GetComponentInChildren<Animation> (); //GetComponent<Animation>();
-//		Debug.Log (bossAnim.GetClipCount());
+		bossAnim = transform.GetComponentInChildren<Animation> ();
 		bossBeha.isMoving = true;
-		currentState = states.RUN;
-		waitting = false;
+		_ismuerto = false;
 	}
 
-	public void setAttacking ()
+	public void PlayAttack()
 	{
-		numRand = Random.Range (0, 100);
-		nomAnimation = (numRand < 50) ? "attack_1" : "attack_2";
-		bossAnim.Play (nomAnimation, PlayMode.StopAll);
+		// TODO mirar semaforo entre animaciones de ataque!
+		if(!bossAnim.IsPlaying("attack_1") && !bossAnim.IsPlaying("Attack_2"))
+		{
+			numRand = Random.Range (0, 100);
+			nomAnimation = (numRand < 50) ? "attack_1" : "attack_2";
+			bossAnim.Play (nomAnimation, PlayMode.StopAll);
+		}
 	}
 
-	public void setRunning ()
+	public void PlayDeath()
 	{
+		if(!bossAnim.IsPlaying("death") && !_ismuerto)
+		{
+			_ismuerto = true;
+			bossAnim.Play("death",PlayMode.StopAll);
+		}
+	}
+
+	public void PlayRun ()
+	{
+
 		bossAnim.Play ("run", PlayMode.StopAll);
-
-		if(bossBeha.inCombat)
-			currentState = states.IDLE;
-		else if(bossBeha.receiveDamage)
-			currentState = states.HIT;
-		else if(bossBeha.life < 0)
-			currentState = states.DIE;
 	}
 
-	public void setStunned ()
+	public void PlayStun ()
 	{
+
 		bossAnim.Play ("stunned_idle", PlayMode.StopAll);
 	}
 
-	public void setIdle ()
+	public void PlayIdle ()
 	{
-		bossAnim.Play ("idle", PlayMode.StopAll);
+		if(!bossAnim.IsPlaying("attack_1") && !bossAnim.IsPlaying("Attack_2") && !bossAnim.IsPlaying("hit") && !bossAnim.IsPlaying("stunned_idle"))
+			bossAnim.Play ("idle",PlayMode.StopAll);
 
-		if(!bossBeha.isAttackCD)
-			currentState = states.ATTACK;
-		if(bossBeha.isMoving)
-			currentState = states.RUN;
 
 	}
 
-	private void setHit()
+	public void PlayHit()
 	{
-		bossAnim.Play("hit",PlayMode.StopAll);
+		if(!bossAnim.IsPlaying("attack_1") && !bossAnim.IsPlaying("Attack_2"))
+			bossAnim.Play("hit",PlayMode.StopAll);
+
+
 	}
 
-	void Update ()
-	{
-		switch(currentState)
-		{
-			case states.RUN:
-				setRunning();
-				break;
-			case states.IDLE:
-				setIdle();
-				break;
-			case states.ATTACK:
-				setAttacking();
-				break;
-			case states.STUN:
-				setStunned();
-				break;
-			case states.HIT:
-				setHit();
-				break;
-			case states.DIE:
-				break;
-		}
-
-
-
-//		if(currentState == states.RUN)
-//		{
-//			setRunning();
-//		}
-//		else if(currentState == states.IDLE)
-//		{
-//			setIdle();
-//		}
-//		else if(currentState == states.ATTACK)
-//		{
-//			setAttacking();
-//		}
-//		else
-//
-//
-//
-//		///MAQUINA DE ESTADOS DEL BOSS
-//		if (!bossAnim.isPlaying && bossBeha.isStunned) {
-//			bossAnim.Play ("stunned_idle", PlayMode.StopAll);
-//		} else if (!bossBeha.receiveDamage && bossBeha.inCombat) {
-//			waitting = false;
-//			if (!bossBeha.isAttackCD) {
-//				numRand = Random.Range (0, 100);
-//				nomAnimation = (numRand < 50) ? "attack_1" : "attack_2";
-//				bossAnim.Play (nomAnimation, PlayMode.StopAll);
-//			} else if (!bossAnim.isPlaying) 
-//				bossAnim.Play ("idle", PlayMode.StopAll);	
-//		} else if (!bossAnim.isPlaying && bossBeha.isMoving) {
-//			waitting = false;
-//			bossAnim.Play ("run", PlayMode.StopAll);
-//			
-////				bossAnim.Play("run",PlayMode.StopAll);	
-//		} else if (!bossAnim.isPlaying && bossBeha.receiveDamage) {
-//			
-////					bossAnim.Play("hit",PlayMode.StopAll);	
-//			bossAnim.PlayQueued ("hit", QueueMode.PlayNow);
-//			
-////					bossAnim.Play("idle",PlayMode.StopAll);
-//			bossAnim.PlayQueued ("idle");
-//			
-////				waitting = true;
-//		}
-	}
 }
