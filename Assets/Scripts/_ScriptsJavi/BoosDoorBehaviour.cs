@@ -22,7 +22,7 @@ public class BoosDoorBehaviour : MonoBehaviour
 
 	void Start ()
 	{
-
+		openDoorText.SetActive(false);
 		_doorRight3D = GameObject.Find ("DoorRight");
 		_doorLeft3D = GameObject.Find ("DoorLeft");
 

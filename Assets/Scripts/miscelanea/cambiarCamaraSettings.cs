@@ -6,7 +6,7 @@ public class cambiarCamaraSettings : MonoBehaviour {
     private Material noSkybox;
 
 	private bool vivo;
-	public GameObject guitextMuerte;
+//	public GameObject guitextMuerte;
  	private GameObject player;
     void Start () {
 		player = GameObject.FindWithTag("Player").gameObject;

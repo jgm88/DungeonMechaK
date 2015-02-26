@@ -82,7 +82,17 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// The current state.
 	/// </summary>
-	private int currentState = 0;
+	private int _currentState = 0;
+	/// <summary>
+	/// Gets the state of the current.
+	/// </summary>
+	/// <value>The state of the current state.</value>
+	public int currentState {
+		get {
+			return _currentState;
+		}
+	}
+
 	/// <summary>
 	/// The controlador ataque pj.
 	/// </summary>
@@ -141,7 +151,7 @@ public class BossBehaviour : MonoBehaviour
 		currentDamage = initialDamage; 
 		life = initialLife;
 		agregarColoresYPoderes ();
-		weaknesPower = powersList [currentState];
+		weaknesPower = powersList [_currentState];
 		_auidioController = GetComponent<manejadorAudioAnimado> ();
 		
 	}
@@ -187,7 +197,7 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
-			muerteBoss ();
+//			muerteBoss ();
 
 			life -= damage;
 			if (life > 0) {
@@ -196,7 +206,8 @@ public class BossBehaviour : MonoBehaviour
 				receiveDamage = true;
 				StartCoroutine (COHit (1f));
 			} else {
-				currentState++;
+				_currentState++;
+				Debug.Log("CAMBIO DE FASE A "+_currentState);
 				cambiarFases ();	
 			}
 		}
@@ -205,15 +216,15 @@ public class BossBehaviour : MonoBehaviour
 	private void cambiarFases ()
 	{
 
-		if (currentState <= 3) {
-			weaknesPower = powersList [currentState];
-			bossSkinMat.color = colorStates [currentState];
+		if (_currentState <= 3) {
+			weaknesPower = powersList [_currentState];
+			bossSkinMat.color = colorStates [_currentState];
 			life = initialLife;
-			particles.startColor = colorStates [currentState];
+			particles.startColor = colorStates [_currentState];
 			particles.Play ();
-		} else if (currentState == 4) {
-			weaknesPower = powersList [currentState];
-			bossSkinMat.color = colorStates [currentState];
+		} else if (_currentState == 4) {
+			weaknesPower = powersList [_currentState];
+			bossSkinMat.color = colorStates [_currentState];
 			life = finalLife;
 			currentDamage = finalDamage;
 		} else
