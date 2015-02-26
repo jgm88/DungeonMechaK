@@ -4,7 +4,7 @@ using System.Collections;
 public class InitBossBehaviour : MonoBehaviour
 {
 
-	private GameObject _boss;
+	public GameObject _boss;
 	private BoosDoorBehaviour _bossDoorBehaviour;
 	public GameObject bossThunder;
 	public GameObject firstStatueAura;
@@ -18,7 +18,7 @@ public class InitBossBehaviour : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		_boss = GameObject.Find ("Boss");
+//		_boss = GameObject.FindWithTag ("Boss");
 		_boss.SetActive (false);
 		_bossDoorBehaviour = transform.parent.GetComponent<BoosDoorBehaviour> ();	
 	}

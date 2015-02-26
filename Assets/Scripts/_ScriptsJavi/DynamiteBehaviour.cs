@@ -25,6 +25,9 @@ public class DynamiteBehaviour : MonoBehaviour {
 		yield return new WaitForSeconds(lifeTime);
 		Instantiate(explosion, transform.position, transform.rotation);
 		Instantiate(AoeExplosion, transform.position, transform.rotation);
-		Destroy(gameObject);
+		Destroy( gameObject);
+//		yield return new WaitForSeconds (2f);
+//		Destroy (explosion);
+
 	}
 }

@@ -8,6 +8,7 @@ public class LetPowerize : MonoBehaviour
 	public string power;
 	public GameObject thunder;
 	public Color powerColor;
+	public GameObject boss;
 	public List<GameObject> otherThunders;
 	private ChargeBehaviour permitRestoreMana;
 	private BossBehaviour bossPhase;
@@ -18,7 +19,7 @@ public class LetPowerize : MonoBehaviour
 	void Awake ()
 	{
 		bloomLight = transform.FindChild ("Bloom02").gameObject;
-		bossPhase = GameObject.FindWithTag ("Boss").GetComponent<BossBehaviour> ();
+		bossPhase = boss.GetComponent<BossBehaviour> ();
 	}
 	void Start ()
 	{

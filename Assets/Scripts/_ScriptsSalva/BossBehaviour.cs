@@ -147,7 +147,7 @@ public class BossBehaviour : MonoBehaviour
 	{
 
 //		soundManajer = GetComponent<manejadorAudioAnimado>();
-		bossSkinMat.color = Color.white;
+		bossSkinMat.color = Color.yellow;
 		aiPath = GetComponent<AIPath> ();
 		currentDamage = initialDamage; 
 		life = initialLife;
@@ -181,10 +181,14 @@ public class BossBehaviour : MonoBehaviour
 	//agrega los colores de cada fase
 	private void agregarColoresYPoderes ()
 	{
-		colorStates.Add (originalColor);
-		colorStates.Add (Color.green);
-		colorStates.Add (Color.red);
-		colorStates.Add (Color.blue);
+		// AMARILLO
+		colorStates.Add (Color.yellow);
+		// VERDE
+		colorStates.Add ( new Color(0.111f,0.255f,0.118f));
+		// ROJO
+		colorStates.Add (new Color(0.255f,0.148f,0.148f));
+		// AZUL
+		colorStates.Add (new Color(0.148f,0.215f,0.255f));
 		colorStates.Add (Color.white);
 		powersList.Add ("original");
 		powersList.Add ("green");
@@ -208,7 +212,6 @@ public class BossBehaviour : MonoBehaviour
 				StartCoroutine (COHit (1f));
 			} else {
 				_currentState++;
-				Debug.Log ("CAMBIO DE FASE A " + _currentState);
 				cambiarFases ();	
 			}
 		}
@@ -217,14 +220,19 @@ public class BossBehaviour : MonoBehaviour
 	private void cambiarFases ()
 	{
 
-		if (_currentState <= 3) {
+		if (_currentState <= 2) {
 			weaknesPower = powersList [_currentState];
+//			bossSkinMat.SetColor("_TintColor",new Color(111f,255f,118f,255f));
+//			bossSkinMat.color.r =;
+//			bossSkinMat.color.g =;
+//			bossSkinMat.color.b =118f;
+			
 			bossSkinMat.color = colorStates [_currentState];
 			life = initialLife;
 			particles.startColor = colorStates [_currentState];
 			particles.Play ();
 			StartCoroutine (COPhaseChangeText ());
-		} else if (_currentState == 4) {
+		} else if (_currentState == 3) {
 			weaknesPower = powersList [_currentState];
 			bossSkinMat.color = colorStates [_currentState];
 			life = finalLife;
