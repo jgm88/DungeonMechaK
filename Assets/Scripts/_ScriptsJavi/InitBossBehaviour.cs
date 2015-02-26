@@ -37,6 +37,7 @@ public class InitBossBehaviour : MonoBehaviour
 			Camera.main.audio.clip = music;
 			Camera.main.audio.Play ();
 			firstStatueAura.SetActive (true);
+			GameObject.Find("StartBattle").GetComponent<AudioSource>().Play();
 		}
 	}
 
