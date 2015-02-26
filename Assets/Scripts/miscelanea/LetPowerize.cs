@@ -13,11 +13,12 @@ public class LetPowerize : MonoBehaviour
 	private BossBehaviour bossPhase;
 	private AttackPlayerBehaviour attackController;
 	private GameObject bloomLight;
+	private bool _soundLaunched = false;
 	// Use this for initialization
 	void Awake ()
 	{
-		bloomLight = transform.FindChild("Bloom02").gameObject;
-		bossPhase = GameObject.FindWithTag("Boss").GetComponent<BossBehaviour>();
+		bloomLight = transform.FindChild ("Bloom02").gameObject;
+		bossPhase = GameObject.FindWithTag ("Boss").GetComponent<BossBehaviour> ();
 	}
 	void Start ()
 	{
@@ -25,17 +26,14 @@ public class LetPowerize : MonoBehaviour
 		permitRestoreMana = GameObject.FindWithTag ("Player").GetComponent<ChargeBehaviour> ();
 
 	}
-	void LateUpdate()
+	void LateUpdate ()
 	{
-		if(stateActive == bossPhase.currentState)
-		{
+		if (stateActive == bossPhase.currentState) {
 			thunder.SetActive (true);
 			bloomLight.SetActive (true);
-			bloomLight.GetComponent<MeshRenderer>().material.SetColor("_TintColor",powerColor);
+			bloomLight.GetComponent<MeshRenderer> ().material.SetColor ("_TintColor", powerColor);
 //			bloomMat.color = powerColor;
-		}
-		else
-		{
+		} else {
 			thunder.SetActive (false);
 			bloomLight.SetActive (false);
 		}
@@ -43,8 +41,7 @@ public class LetPowerize : MonoBehaviour
 	}
 	void OnTriggerStay (Collider other)
 	{
-		if(bossPhase.currentState == stateActive )
-		{
+		if (bossPhase.currentState == stateActive) {
 			if (other.tag == "Player") {
 				if (thunder.activeSelf) {
 					permitRestoreMana.inWickArea = true;
@@ -58,12 +55,12 @@ public class LetPowerize : MonoBehaviour
 					}
 				}
 				// TODO quitar de aqui, se comprueba en skill behaviour
-//				if (Input.GetKeyDown (KeyCode.Alpha1)) {
-//					if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
-//						//					GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
-//						
-//					}
-//				}
+				if (Input.GetKeyDown (KeyCode.Alpha1)) {
+					if (!_soundLaunched) {
+						GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
+						_soundLaunched = true;
+					}
+				}
 			}
 
 		}
