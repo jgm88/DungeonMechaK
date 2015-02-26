@@ -11,6 +11,7 @@ public class LetPowerize : MonoBehaviour
 	public GameObject thunder;
 	public List<GameObject> otherThunders;
 	private ChargeBehaviour permitRestoreMana;
+	private bool _soundLaunched = false;
 	
 	// Use this for initialization
 	void Start ()
@@ -30,7 +31,10 @@ public class LetPowerize : MonoBehaviour
 			// TODO quitar de aqui, se comprueba en skill behaviour
 			if (Input.GetKeyDown (KeyCode.Alpha1)) {
 				if (!thunder.activeSelf || thunder.name == "hellSparkYellow") {
-					GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
+					if (!_soundLaunched) {
+						GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
+						_soundLaunched = true;
+					}
 					attackController.setActualPower (power);
 					thunder.SetActive (true);
 					foreach (Transform child in thunder.transform) {
