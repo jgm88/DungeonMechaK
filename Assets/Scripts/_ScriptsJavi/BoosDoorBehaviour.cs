@@ -73,7 +73,6 @@ public class BoosDoorBehaviour : MonoBehaviour
 				_flameGreenUI.SetActive (true);
 			}
 			--wicksAdquired;
-			GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>().reproducirEspecial();
 
 		}
 		if (wicksAdquired == 0) {
@@ -85,6 +84,7 @@ public class BoosDoorBehaviour : MonoBehaviour
 	IEnumerator COShowDoorOpened ()
 	{
 		openDoorText.SetActive (true);
+		GameObject.Find("DoorOpened").GetComponent<AudioSource>().Play();
 		yield return new WaitForSeconds (4.0f);
 		openDoorText.SetActive (false);
 	}
