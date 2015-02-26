@@ -222,10 +222,6 @@ public class BossBehaviour : MonoBehaviour
 
 		if (_currentState <= 2) {
 			weaknesPower = powersList [_currentState];
-//			bossSkinMat.SetColor("_TintColor",new Color(111f,255f,118f,255f));
-//			bossSkinMat.color.r =;
-//			bossSkinMat.color.g =;
-//			bossSkinMat.color.b =118f;
 			
 			bossSkinMat.color = colorStates [_currentState];
 			life = initialLife;
