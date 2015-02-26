@@ -49,9 +49,9 @@ public class AttackPlayerBehaviour : MonoBehaviour
 	IEnumerator COatacar ()
 	{
 		isAttack = true;
-				
+
 		yield return new WaitForSeconds (0.2f);
-		
+		GameObject.Find("AttackSound").GetComponent<manejadorAudioAnimado>().reproducirAtacar(0.0f);
 		weaponCollider.enabled = true;
 		yield return StartCoroutine (colliderActivoExacto ());
 	}
