@@ -142,30 +142,6 @@ public class controladorSpawn : MonoBehaviour
 
 		yield return StartCoroutine (instantiateEnemiesBoss ());
 	}
-	
-	/// <summary>
-	/// CORoutine that controls the normal Spawner by a time interval.
-	/// </summary>
-	/// <returns>Recursive Coroutine Spawning Enemies.</returns>
-	IEnumerator COSpawnNormal ()
-	{
-		if (!_inBoss && this.enabled) {
-			yield return StartCoroutine (InstantiateEnemiesNormal ());
-		} else if (this.enabled) {
-			StartCoroutine (COSpawnBoss ());
-		}
-	}
-	
-	/// <summary>
-	/// CORoutine that controls the boss Spawner by a time interval.
-	/// </summary>
-	/// <returns>Recursive Coroutine Spawning Enemies.</returns>
-	IEnumerator COSpawnBoss ()
-	{
-		yield return StartCoroutine (instantiateEnemiesBoss ());
-		//yield return new WaitForSeconds (spawnIntervale);
-		//yield return StartCoroutine (COSpawnBoss ());
-	}
 
 	/// <summary>
 	/// Instantiates the enemies in normal area.
@@ -185,6 +161,7 @@ public class controladorSpawn : MonoBehaviour
 
 			StartCoroutine (InstantiateEnemiesNormal ());
 		} else if (this.enabled) {
+			spawnIntervale = 3;
 			StartCoroutine (instantiateEnemiesBoss ());
 		}
 	}

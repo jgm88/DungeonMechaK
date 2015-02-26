@@ -38,6 +38,13 @@ public class manejadorAudioAnimado : MonoBehaviour
 	{
 		
 	}
+
+	public float reproducirMovimiento ()
+	{
+		int indice = Random.Range (0, (movimiento.Count - 1));
+		audio.PlayOneShot (movimiento [indice]);
+		return movimiento[indice].length;
+	}
 	
 	//al ser herencia recojo el componente de la armadura que sea desde la clase padre
 	public void reproducirImpacto ()

@@ -73,6 +73,7 @@ public class BoosDoorBehaviour : MonoBehaviour
 				_flameGreenUI.SetActive (true);
 			}
 			--wicksAdquired;
+			GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>().reproducirEspecial();
 
 		}
 		if (wicksAdquired == 0) {
