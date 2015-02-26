@@ -207,6 +207,8 @@ public class BossBehaviour : MonoBehaviour
 				receiveDamage = true;
 				StartCoroutine (COHit (1f));
 			} else {
+				receiveDamage = true;
+				StartCoroutine (COHit (1f));
 				_currentState++;
 				Debug.Log ("CAMBIO DE FASE A " + _currentState);
 				cambiarFases ();	
@@ -217,14 +219,14 @@ public class BossBehaviour : MonoBehaviour
 	private void cambiarFases ()
 	{
 
-		if (_currentState <= 3) {
+		if (_currentState <= 2) {
 			weaknesPower = powersList [_currentState];
 			bossSkinMat.color = colorStates [_currentState];
 			life = initialLife;
 			particles.startColor = colorStates [_currentState];
 			particles.Play ();
 			StartCoroutine (COPhaseChangeText ());
-		} else if (_currentState == 4) {
+		} else if (_currentState == 3) {
 			weaknesPower = powersList [_currentState];
 			bossSkinMat.color = colorStates [_currentState];
 			life = finalLife;
