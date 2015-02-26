@@ -88,7 +88,6 @@ public class PlayerBehaviour : MonoBehaviour
 	{
 		if (life <= 0)
 		{
-			Debug.Log("me invocano");
 			return false;
 		}
 		return true;
