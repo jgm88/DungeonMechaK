@@ -187,7 +187,7 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
-//			muerteBoss ();
+			muerteBoss ();
 
 			life -= damage;
 			if (life > 0) {
@@ -367,7 +367,8 @@ public class BossBehaviour : MonoBehaviour
 		yield return new WaitForEndOfFrame();
 		isAttackCD = true;
 		yield return new WaitForSeconds(1f);
-		player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
+		if(inCombat)
+			player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
 		yield return new WaitForSeconds (attackCD-1f);
 		isAttackCD = false;
 
