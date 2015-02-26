@@ -10,16 +10,16 @@ public class InitBossBehaviour : MonoBehaviour
 	public GameObject firstStatueAura;
 	public AudioClip music;
 	
-	void Awake ()
-	{
-		_boss = GameObject.Find ("Boss");
-		_boss.SetActive (false);
-
-
-	}
+//	void Awake ()
+//	{
+//
+//
+//	}
 	// Use this for initialization
 	void Start ()
 	{
+		_boss = GameObject.Find ("Boss");
+		_boss.SetActive (false);
 		_bossDoorBehaviour = transform.parent.GetComponent<BoosDoorBehaviour> ();	
 	}
 	

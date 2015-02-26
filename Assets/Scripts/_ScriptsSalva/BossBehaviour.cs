@@ -9,7 +9,6 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// The death particles.
 	/// </summary>
-	public GameObject deathParticles;
 	public GameObject bossFinalExplosion;
 	/// <summary>
 	/// The initial damage.
@@ -82,7 +81,17 @@ public class BossBehaviour : MonoBehaviour
 	/// <summary>
 	/// The current state.
 	/// </summary>
-	private int currentState = 0;
+	private int _currentState = 0;
+	/// <summary>
+	/// Gets the state of the current.
+	/// </summary>
+	/// <value>The state of the current state.</value>
+	public int currentState {
+		get {
+			return _currentState;
+		}
+	}
+
 	/// <summary>
 	/// The controlador ataque pj.
 	/// </summary>
@@ -107,6 +116,8 @@ public class BossBehaviour : MonoBehaviour
 	/// The stun sprite.
 	/// </summary>
 	public GameObject stunSprite;
+	public GameObject PhaseChangeText;
+	public GameObject FinalPhaseText;
 	/// <summary>
 	/// The player.
 	/// </summary>
@@ -141,7 +152,7 @@ public class BossBehaviour : MonoBehaviour
 		currentDamage = initialDamage; 
 		life = initialLife;
 		agregarColoresYPoderes ();
-		weaknesPower = powersList [currentState];
+		weaknesPower = powersList [_currentState];
 		_auidioController = GetComponent<manejadorAudioAnimado> ();
 		
 	}
@@ -153,17 +164,17 @@ public class BossBehaviour : MonoBehaviour
 		guitextVictoria = GameObject.Find ("victoria");
 		player = GameObject.FindWithTag ("Player");
 		playerAttackController = player.GetComponent<AttackPlayerBehaviour> ();
-		impactPoint = GameObject.Find("MazeImpactPoint");
+		impactPoint = GameObject.Find ("MazeImpactPoint");
 		_animationController = GetComponent<BossAnimationController> ();
 	}
 	
 	//	// Update is called once per frame
 	void Update ()
 	{
-		if(_isDying)
-			_animationController.PlayDeath();
-		else if(isMoving)
-			_animationController.PlayRun();
+		if (_isDying)
+			_animationController.PlayDeath ();
+		else if (isMoving)
+			_animationController.PlayRun ();
 			
 	}
 
@@ -187,16 +198,17 @@ public class BossBehaviour : MonoBehaviour
 		if (damage > 100) {
 			stun ();
 		} else if (!receiveDamage && weaknesPower == playerAttackController.actualPower) { 
-			muerteBoss ();
+//			muerteBoss ();
 
 			life -= damage;
 			if (life > 0) {
-				_animationController.PlayHit();
+				_animationController.PlayHit ();
 				_auidioController.reproducirGolpeado ();
 				receiveDamage = true;
 				StartCoroutine (COHit (1f));
 			} else {
-				currentState++;
+				_currentState++;
+				Debug.Log ("CAMBIO DE FASE A " + _currentState);
 				cambiarFases ();	
 			}
 		}
@@ -205,17 +217,19 @@ public class BossBehaviour : MonoBehaviour
 	private void cambiarFases ()
 	{
 
-		if (currentState <= 3) {
-			weaknesPower = powersList [currentState];
-			bossSkinMat.color = colorStates [currentState];
+		if (_currentState <= 3) {
+			weaknesPower = powersList [_currentState];
+			bossSkinMat.color = colorStates [_currentState];
 			life = initialLife;
-			particles.startColor = colorStates [currentState];
+			particles.startColor = colorStates [_currentState];
 			particles.Play ();
-		} else if (currentState == 4) {
-			weaknesPower = powersList [currentState];
-			bossSkinMat.color = colorStates [currentState];
+			StartCoroutine (COPhaseChangeText ());
+		} else if (_currentState == 4) {
+			weaknesPower = powersList [_currentState];
+			bossSkinMat.color = colorStates [_currentState];
 			life = finalLife;
 			currentDamage = finalDamage;
+			StartCoroutine (COFinalPhaseText ());
 		} else
 			muerteBoss ();
 	}
@@ -223,7 +237,7 @@ public class BossBehaviour : MonoBehaviour
 	private void stun ()
 	{
 		if (!_isDying) {
-			_animationController.PlayStun();
+			_animationController.PlayStun ();
 			isStunned = true;
 			isAttackCD = true;
 			isMoving = false;
@@ -249,6 +263,20 @@ public class BossBehaviour : MonoBehaviour
 //			_animationController.setIdle ();
 	}
 
+	IEnumerator COPhaseChangeText ()
+	{
+		PhaseChangeText.SetActive (true);
+		yield return new WaitForSeconds (4.0f);
+		PhaseChangeText.SetActive (false);
+	}
+
+	IEnumerator COFinalPhaseText ()
+	{
+		FinalPhaseText.SetActive (true);
+		yield return new WaitForSeconds (4.0f);
+		FinalPhaseText.SetActive (false);
+	}
+
 	/// <summary>
 	/// Muertes the boss.
 	/// funcion que realiza las acciones necesarias al morir
@@ -262,7 +290,6 @@ public class BossBehaviour : MonoBehaviour
 
 		//destruimos las armas para el tour con la camara
 //		Destroy (GameObject.Find ("Armas"));
-//		deathParticles.SetActive (true);
 		float duration = 5.5f;
 
 		//desactivamos spawner
@@ -288,7 +315,6 @@ public class BossBehaviour : MonoBehaviour
 		yield return new WaitForSeconds (disableDelay);
 		_auidioController.reproducirEspecial (0);
 		GameObject.Find ("cyclop_Boss").SetActive (false);
-//		deathParticles.SetActive (false);
 		yield return new WaitForSeconds (finalExplosion - disableDelay);
 		Destroy (this.gameObject);
 	}
@@ -326,7 +352,7 @@ public class BossBehaviour : MonoBehaviour
 
 	void OnTriggerStay (Collider other)
 	{
-		if (other.tag == "Player" && !_isDying ) {
+		if (other.tag == "Player" && !_isDying) {
 			atacar (other.gameObject);
 		}
 	}
@@ -354,9 +380,8 @@ public class BossBehaviour : MonoBehaviour
 	private void atacar (GameObject player)
 	{
 //		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
-		if(!isAttackCD)
-		{
-			_animationController.PlayAttack();
+		if (!isAttackCD) {
+			_animationController.PlayAttack ();
 			StartCoroutine (COAtacar ());
 		}
 	}
@@ -364,14 +389,12 @@ public class BossBehaviour : MonoBehaviour
 	//coroutina que bloquea el spam de ataques al tiempo deseado
 	IEnumerator COAtacar ()
 	{
-		yield return new WaitForEndOfFrame();
+		yield return new WaitForEndOfFrame ();
 		isAttackCD = true;
-		yield return new WaitForSeconds(1f);
-		if(inCombat){
-			player.GetComponent<PlayerBehaviour>().ReceiveDamage(currentDamage);
-			player.GetComponent<ImpactReceiver>().AddImpact(player.transform.position - transform.position );
-		}
-		yield return new WaitForSeconds (attackCD-1f);
+		yield return new WaitForSeconds (1f);
+		if (inCombat)
+			player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
+		yield return new WaitForSeconds (attackCD - 1f);
 		isAttackCD = false;
 
 
@@ -387,8 +410,7 @@ public class BossBehaviour : MonoBehaviour
 		aiPath.enabled = false;
 		isMoving = false;
 		yield return new WaitForSeconds (time);
-		if(!_isDying && !inCombat)
-		{
+		if (!_isDying && !inCombat) {
 			isMoving = true;
 			aiPath.enabled = true;
 		}

@@ -20,7 +20,7 @@ public class PauseBehaviour : MonoBehaviour {
 		mouseLook = GameObject.FindWithTag("Player").GetComponent<MouseLook>();
 		playerBehaviour = GameObject.FindWithTag("Player").GetComponent<PlayerBehaviour>();
 		changeCursor = GetComponent<ChangeCursor>();
-		pauseMenu = GameObject.Find("WindowBackground");
+		pauseMenu = GameObject.Find("PauseMenu");
 
 		pauseMenu.SetActive(false);
 		inPause = false;

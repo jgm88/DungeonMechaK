@@ -91,6 +91,7 @@ public class EnemyBehaviour : MonoBehaviour
 				GetComponent<AIPath> ().enabled = false;
 				collider.enabled = false;
 				soundManajer.reproducirMuerte ();
+				GameObject.Find ("EnemySpawns").GetComponent<controladorSpawn> ().enemiesInGame--;
 				Destroy (gameObject, 3.5f);	
 			}
 		}
@@ -127,18 +128,19 @@ public class EnemyBehaviour : MonoBehaviour
 	private void atacar (GameObject player)
 	{
 		isAttackCD = true;
-		StartCoroutine (COAtacar ());
+		StartCoroutine (COAtacar (player));
 		soundManajer.reproducirAtacar (0.5f);
-		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (damage);
+
 	}
 
 	/// <summary>
 	/// Coroutine That controls attacking spam waitting time.
 	/// </summary>
 	/// <returns>Void</returns>
-	IEnumerator COAtacar ()
+	IEnumerator COAtacar (GameObject player)
 	{
-		yield return new WaitForSeconds (attackCD);
+		yield return new WaitForSeconds (Random.Range (1.0f, attackCD));
+		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (damage);
 		isAttackCD = false;
 	}
 	/// <summary>
