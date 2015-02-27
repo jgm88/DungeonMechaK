@@ -127,9 +127,8 @@ public class EnemyBehaviour : MonoBehaviour
 	/// <param name="player">Player.</param>
 	private void atacar (GameObject player)
 	{
-		isAttackCD = true;
+
 		StartCoroutine (COAtacar (player));
-		soundManajer.reproducirAtacar (0.5f);
 
 	}
 
@@ -139,8 +138,21 @@ public class EnemyBehaviour : MonoBehaviour
 	/// <returns>Void</returns>
 	IEnumerator COAtacar (GameObject player)
 	{
-		yield return new WaitForSeconds (Random.Range (1.0f, attackCD));
-		player.GetComponent<PlayerBehaviour> ().ReceiveDamage (damage);
+		yield return new WaitForEndOfFrame();
+		isAttackCD = true;
+		yield return new WaitForSeconds(0.5f);
+		if(life>0)
+		{
+			soundManajer.reproducirAtacar (0.5f);
+			if(inCombat)
+			{
+				player.GetComponent<PlayerBehaviour> ().ReceiveDamage (damage);
+			}
+
+		}
+
+
+		yield return new WaitForSeconds (attackCD);
 		isAttackCD = false;
 	}
 	/// <summary>

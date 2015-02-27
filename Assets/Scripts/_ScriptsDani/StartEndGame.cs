@@ -8,13 +8,17 @@ public class StartEndGame : MonoBehaviour
 	public Transform firstPoint;
 	private bool _firstTime = true;
 	private PauseBehaviour pauseBeha;
+	private GameObject hudUI;
+	private GameObject endGameUI;
 	// Use this for initialization
 	void Start ()
 	{
+		hudUI = GameObject.Find("HUDPanel");
+		endGameUI = GameObject.Find("EndText");
 		pauseBeha = GameObject.Find("EventSystem").GetComponent<PauseBehaviour>();
 		if (PathEndGame && PathEndGame.activeSelf)
 			PathEndGame.SetActive (false);
-		
+		endGameUI.SetActive(false);
 		
 	}
 	
@@ -28,6 +32,8 @@ public class StartEndGame : MonoBehaviour
 	{
 		PathEndGame.SetActive (true);
 		pauseBeha.endGame = true;
+		endGameUI.SetActive(true);
+		hudUI.SetActive(false);
 	}
 	
 	public void StartPath ()
