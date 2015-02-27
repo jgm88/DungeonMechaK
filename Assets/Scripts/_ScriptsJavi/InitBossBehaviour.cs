@@ -9,7 +9,7 @@ public class InitBossBehaviour : MonoBehaviour
 	public GameObject bossThunder;
 	public GameObject firstStatueAura;
 	public AudioClip music;
-	
+	private GameObject indicationUI;
 //	void Awake ()
 //	{
 //
@@ -18,16 +18,18 @@ public class InitBossBehaviour : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		indicationUI = GameObject.Find("BossIndication");
 //		_boss = GameObject.FindWithTag ("Boss");
 		_boss.SetActive (false);
 		_bossDoorBehaviour = transform.parent.GetComponent<BoosDoorBehaviour> ();	
+		indicationUI.SetActive(false);
 	}
 	
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag == "Player") {
 			RenderSettings.fogDensity = 0.05f;
-
+			indicationUI.SetActive (true);
 			bossThunder.SetActive (true);
 			_bossDoorBehaviour.setDoor (true);
 			float duration = bossThunder.GetComponent<ParticleSystem> ().duration;
@@ -40,7 +42,7 @@ public class InitBossBehaviour : MonoBehaviour
 			GameObject.Find("StartBattle").GetComponent<AudioSource>().Play();
 		}
 	}
-
+	
 	/// <summary>
 	/// Coroutine that starts the spawns in boss area, events and destroys outside area enemies and some objects.
 	/// </summary>
@@ -54,6 +56,7 @@ public class InitBossBehaviour : MonoBehaviour
 		SpawnController.IsInBoss (true);
 		SpawnController.DestroyEnemiesOutsideBoss ();
 		yield return new WaitForSeconds (duration);
+		indicationUI.SetActive(false);
 		_boss.SetActive (true);
 		Destroy (bossThunder);
 		Destroy (this.gameObject);

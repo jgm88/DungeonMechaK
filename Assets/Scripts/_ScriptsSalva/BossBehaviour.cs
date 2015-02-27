@@ -337,6 +337,7 @@ public class BossBehaviour : MonoBehaviour
 			foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
 				c.enabled = false;
 			}
+			Destroy(player.collider);
 			StartEndGame path = player.GetComponent<StartEndGame> ();
 			//volvemos a activar el path e iniciamos
 			path.enabled = true;

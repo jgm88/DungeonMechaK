@@ -30,10 +30,14 @@ public class StartEndGame : MonoBehaviour
 	
 	public void EnablePath ()
 	{
-		PathEndGame.SetActive (true);
-		pauseBeha.endGame = true;
-		endGameUI.SetActive(true);
-		hudUI.SetActive(false);
+		if(PathEndGame)
+			PathEndGame.SetActive (true);
+		if(pauseBeha)
+			pauseBeha.endGame = true;
+		if(endGameUI)
+			endGameUI.SetActive(true);
+		if(hudUI)
+			hudUI.SetActive(false);
 	}
 	
 	public void StartPath ()

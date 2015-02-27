@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-
 public class LetPowerize : MonoBehaviour
 {
 	public int stateActive;
@@ -15,9 +15,12 @@ public class LetPowerize : MonoBehaviour
 	private AttackPlayerBehaviour attackController;
 	private GameObject bloomLight;
 	private bool _soundLaunched = false;
+	private Text textW,textB;
 	// Use this for initialization
 	void Awake ()
 	{
+		textW = GameObject.Find("WickTextWhite").GetComponent<Text>();
+		textB = GameObject.Find("WickTextBlack").GetComponent<Text>();
 		bloomLight = transform.FindChild ("Bloom02").gameObject;
 		bossPhase = boss.GetComponent<BossBehaviour> ();
 	}
@@ -44,6 +47,7 @@ public class LetPowerize : MonoBehaviour
 	{
 		if (bossPhase.currentState == stateActive) {
 			if (other.tag == "Player") {
+				textB.enabled = textW.enabled = true;
 				if (thunder.activeSelf) {
 					permitRestoreMana.inWickArea = true;
 					permitRestoreMana.letPowerize = this;
@@ -72,6 +76,7 @@ public class LetPowerize : MonoBehaviour
 		if (other.tag == "Player") {
 			permitRestoreMana.letPowerize = null;
 			permitRestoreMana.inWickArea = false;
+			textB.enabled = textW.enabled = false;
 		}
 	}
 }
