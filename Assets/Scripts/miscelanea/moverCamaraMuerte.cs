@@ -54,10 +54,12 @@ public class moverCamaraMuerte : MonoBehaviour {
 		// Desactivo los componentes para que se esten quietos
 		GameObject.Find("EnemySpawns").SetActive(false);
 
-		boss.GetComponent<AIPath>().enabled = false;
-		boss.GetComponent<SphereCollider>().enabled = false;
-		boss.GetComponent<BossBehaviour>().inCombat = true;
-		boss.GetComponent<BossBehaviour>().isAttackCD = true;
+		if(boss){
+			boss.GetComponent<AIPath>().enabled = false;
+			boss.GetComponent<SphereCollider>().enabled = false;
+			boss.GetComponent<BossBehaviour>().inCombat = true;
+			boss.GetComponent<BossBehaviour>().isAttackCD = true;
+		}
 		foreach(GameObject enemy in enemies)
 		{
 			enemy.GetComponent<AIPath>().enabled = false;

@@ -39,11 +39,8 @@ public class PlayerBehaviour : MonoBehaviour
 	}
 	void Start(){
 		_fadeBloodUI = GameObject.Find("BloodUI").GetComponent<FadeUI>();
-		if(_fadeBloodUI)
-		{
-			Debug.Log("lo recojo");
-		}
-			_fadeBloodUI.FadeOut();
+
+		_fadeBloodUI.FadeOut();
 	}
 
 	void LateUpdate(){
