@@ -6,8 +6,12 @@ public class FadeUI : MonoBehaviour {
 	
 	private Animator _animator;
  
-	void Start () {
+	void Awake()
+	{
 		_animator = gameObject.GetComponent<Animator>();
+
+	}
+	void Start () {
 	
 		_animator.SetBool("Fade", false);
 	}
