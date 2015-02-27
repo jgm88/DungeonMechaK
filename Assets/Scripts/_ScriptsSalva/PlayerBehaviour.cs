@@ -12,16 +12,56 @@ public class PlayerBehaviour : MonoBehaviour
 
 	public bool receiveDamage;
 
-	private manejadorAudioAnimado soundManajer;
 	private HUDStatusBehaviour _lifeHUD;
 	private HUDStatusBehaviour _manaHUD;
 	private bool _isDead = false;
+	private bool _isMoving = false;
+	private bool _isPlayingMovementSound = false;
+	private manejadorAudioAnimado _soundDeath;
+	private manejadorAudioAnimado _soundMovement;
+	private manejadorAudioAnimado _soundImpact;
+	private manejadorAudioAnimado _soundAttack;
+	private manejadorAudioAnimado _soundHitCry;
+	private manejadorAudioAnimado _soundSpecial;
 
 	void Awake ()
 	{
-		soundManajer = GetComponent<manejadorAudioAnimado> ();
 		_lifeHUD = GameObject.Find ("LifeMask").GetComponent<HUDStatusBehaviour> ();
 		_manaHUD = GameObject.Find ("ManaMask").GetComponent<HUDStatusBehaviour> ();
+		_soundDeath = GameObject.Find("DeadSound").GetComponent<manejadorAudioAnimado>();
+		_soundMovement = GameObject.Find("WalkSound").GetComponent<manejadorAudioAnimado>();
+		_soundImpact = GameObject.Find("ImpactSound").GetComponent<manejadorAudioAnimado>();
+		_soundAttack = GameObject.Find("AttackSound").GetComponent<manejadorAudioAnimado>();
+		_soundHitCry = GameObject.Find("HitSound").GetComponent<manejadorAudioAnimado>();
+		_soundSpecial = GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>();
+	}
+
+	void LateUpdate(){
+		isMoving();
+	}
+
+	private void isMoving(){
+		if(isPressingMovementKey()){
+			_isMoving = true;
+			if(!_isPlayingMovementSound)
+				StartCoroutine(COSoundMoving());
+		}
+		else{
+			_isMoving = false;
+		}
+	}
+
+	private bool isPressingMovementKey(){
+		return (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)
+		        || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow));
+	}
+
+	IEnumerator COSoundMoving(){
+
+		float duration = _soundMovement.reproducirMovimiento();
+		_isPlayingMovementSound = true;
+		yield return new WaitForSeconds(duration);
+		_isPlayingMovementSound = false;
 	}
 
 	public void ReceiveDamage (int damage)
@@ -29,8 +69,8 @@ public class PlayerBehaviour : MonoBehaviour
 		if (!receiveDamage) {
 			life -= damage;
 			if (life > 0) {
-				soundManajer.reproducirImpacto ();
-				soundManajer.reproducirGolpeado ();
+				_soundImpact.reproducirImpacto ();
+				_soundHitCry.reproducirGolpeado ();
 				receiveDamage = true;
 				StartCoroutine (COHit (1.2f));
 			} else if (!_isDead) {
@@ -69,7 +109,7 @@ public class PlayerBehaviour : MonoBehaviour
 
 	private void muertePj ()
 	{
-		soundManajer.reproducirMuerte ();	
+		_soundDeath.reproducirMuerte ();	
 		GameObject.FindWithTag ("MainCamera").GetComponent<moverCamaraMuerte> ().moverCamara ();
 	}
 
@@ -88,7 +128,6 @@ public class PlayerBehaviour : MonoBehaviour
 	{
 		if (life <= 0)
 		{
-			Debug.Log("me invocano");
 			return false;
 		}
 		return true;

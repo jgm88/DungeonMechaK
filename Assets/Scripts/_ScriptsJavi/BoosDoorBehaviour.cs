@@ -84,6 +84,7 @@ public class BoosDoorBehaviour : MonoBehaviour
 	IEnumerator COShowDoorOpened ()
 	{
 		openDoorText.SetActive (true);
+		GameObject.Find("DoorOpened").GetComponent<AudioSource>().Play();
 		yield return new WaitForSeconds (4.0f);
 		openDoorText.SetActive (false);
 	}

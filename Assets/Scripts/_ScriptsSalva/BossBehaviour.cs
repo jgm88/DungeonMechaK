@@ -211,6 +211,8 @@ public class BossBehaviour : MonoBehaviour
 				receiveDamage = true;
 				StartCoroutine (COHit (1f));
 			} else {
+				receiveDamage = true;
+				StartCoroutine (COHit (1f));
 				_currentState++;
 				cambiarFases ();	
 			}
