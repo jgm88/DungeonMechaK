@@ -23,6 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
 	private manejadorAudioAnimado _soundAttack;
 	private manejadorAudioAnimado _soundHitCry;
 	private manejadorAudioAnimado _soundSpecial;
+	private FadeUI _fadeBloodUI;
 
 	void Awake ()
 	{
@@ -34,6 +35,11 @@ public class PlayerBehaviour : MonoBehaviour
 		_soundAttack = GameObject.Find("AttackSound").GetComponent<manejadorAudioAnimado>();
 		_soundHitCry = GameObject.Find("HitSound").GetComponent<manejadorAudioAnimado>();
 		_soundSpecial = GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>();
+		_fadeBloodUI = GameObject.Find("BloodUI").GetComponent<FadeUI>();
+
+	}
+	void Start(){
+		_fadeBloodUI.FadeOut();
 	}
 
 	void LateUpdate(){
@@ -71,6 +77,8 @@ public class PlayerBehaviour : MonoBehaviour
 			if (life > 0) {
 				_soundImpact.reproducirImpacto ();
 				_soundHitCry.reproducirGolpeado ();
+				_fadeBloodUI.FadeIn();
+
 				receiveDamage = true;
 				StartCoroutine (COHit (1.2f));
 			} else if (!_isDead) {
@@ -121,6 +129,7 @@ public class PlayerBehaviour : MonoBehaviour
 	IEnumerator COHit (float time)
 	{
 		yield return new WaitForSeconds (time);
+		_fadeBloodUI.FadeOut();
 		receiveDamage = false;
 	}
 

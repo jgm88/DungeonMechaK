@@ -13,6 +13,7 @@ public class ChangeCursor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		ShowCursor(false);
 	
 	}
 	
@@ -24,5 +25,9 @@ public class ChangeCursor : MonoBehaviour {
 
 		GUI.DrawTexture(rectangle, yourCursor);
 
+	}
+	public void ShowCursor(bool show)
+	{
+		Screen.showCursor = false;
 	}
 }
