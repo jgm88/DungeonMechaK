@@ -3,6 +3,7 @@ public var mainCamera:Transform;
 public var cameraTrs:Transform;
 public var rotSpeed:int = 20;
 public var effectObj:GameObject[];
+public var effectObProj:GameObject[];
 private var arrayNo:int = 0;
 
 private var nowEffectObj:GameObject;
@@ -13,8 +14,23 @@ private var num:int = 0;
 private var numBck:int = 0;
 private var initPos:Vector3;
 
+private var haveProFlg:boolean = false;
+private var nonProFX:GameObject;
+
+function visibleBt():boolean{
+	for(var tmpObj:GameObject in effectObProj){
+		if( effectObj[ arrayNo ].name == tmpObj.name){
+			nonProFX = tmpObj;
+			return true;
+		}
+	}
+	return false;
+}
+
 function Start () {
 	initPos = mainCamera.localPosition;
+	
+	haveProFlg = visibleBt();
 }
 
 function Update () {
@@ -44,6 +60,8 @@ function  OnGUI(){
 		arrayNo --;
 		if(arrayNo < 0)arrayNo = effectObj.Length -1;
 		effectOn();
+		
+		haveProFlg = visibleBt();
 	}
 	
 	if (GUI.Button (Rect(50, 0, 200, 30), effectObj[ arrayNo ].name )) {
@@ -54,7 +72,17 @@ function  OnGUI(){
 		arrayNo ++;
 		if(arrayNo >= effectObj.Length)arrayNo = 0;
 		effectOn();
+		
+		haveProFlg = visibleBt();
 	}
+	
+	if( haveProFlg ){
+		if (GUI.Button (Rect(50, 30, 300, 70), "+Distorsion (Pro only)" )) {
+			if(nowEffectObj != null)Destroy( nowEffectObj );
+			nowEffectObj = Instantiate( nonProFX );
+		}
+	}
+	
 	
 	if (GUI.Button (Rect(300, 0, 200, 30), cameraState[ cameraRotCon ] )) {
 		if( cameraRotCon == 1){
