@@ -60,12 +60,12 @@ public class LetPowerize : MonoBehaviour
 					}
 				}
 				// TODO quitar de aqui, se comprueba en skill behaviour
-				if (Input.GetKeyDown (KeyCode.Alpha1)) {
-					if (!_soundLaunched) {
-						GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
-						_soundLaunched = true;
-					}
-				}
+//				if (Input.GetKeyDown (KeyCode.Alpha1)) {
+//					if (!_soundLaunched) {
+//						GetComponent<manejadorAudioAnimado> ().reproducirEspecial ();
+//						_soundLaunched = true;
+//					}
+//				}
 			}
 
 		}

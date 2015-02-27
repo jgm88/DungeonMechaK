@@ -35,11 +35,15 @@ public class PlayerBehaviour : MonoBehaviour
 		_soundAttack = GameObject.Find("AttackSound").GetComponent<manejadorAudioAnimado>();
 		_soundHitCry = GameObject.Find("HitSound").GetComponent<manejadorAudioAnimado>();
 		_soundSpecial = GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>();
-		_fadeBloodUI = GameObject.Find("BloodUI").GetComponent<FadeUI>();
 
 	}
 	void Start(){
-		_fadeBloodUI.FadeOut();
+		_fadeBloodUI = GameObject.Find("BloodUI").GetComponent<FadeUI>();
+		if(_fadeBloodUI)
+		{
+			Debug.Log("lo recojo");
+		}
+			_fadeBloodUI.FadeOut();
 	}
 
 	void LateUpdate(){

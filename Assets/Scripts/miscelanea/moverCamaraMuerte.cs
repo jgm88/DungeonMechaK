@@ -15,6 +15,7 @@ public class moverCamaraMuerte : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+
 		UIDie = GameObject.Find("Diepanel");
 		player = transform.parent.gameObject;
 		UIDie.SetActive(false);
@@ -38,6 +39,7 @@ public class moverCamaraMuerte : MonoBehaviour {
 
 		desactiveEnemies();
 		UIDie.SetActive(true);
+
 		//cambio los settings de la camara y el render para dar aspecto de muerte
 		
 	}
