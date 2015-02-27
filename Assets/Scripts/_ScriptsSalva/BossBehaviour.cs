@@ -398,7 +398,7 @@ public class BossBehaviour : MonoBehaviour
 		yield return new WaitForEndOfFrame ();
 		isAttackCD = true;
 		yield return new WaitForSeconds (1f);
-		if (inCombat)
+		if (inCombat && !_isDying)
 			player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
 		yield return new WaitForSeconds (attackCD - 1f);
 		isAttackCD = false;

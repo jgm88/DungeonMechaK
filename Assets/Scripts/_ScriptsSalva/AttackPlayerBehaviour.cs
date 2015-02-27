@@ -48,6 +48,7 @@ public class AttackPlayerBehaviour : MonoBehaviour
 	//coroutinas que reproducen la animacion y activan el collider el tiempo exacto que puede golpear
 	IEnumerator COatacar ()
 	{
+		yield return new WaitForEndOfFrame();
 		isAttack = true;
 
 		yield return new WaitForSeconds (0.2f);
@@ -61,12 +62,12 @@ public class AttackPlayerBehaviour : MonoBehaviour
 	{
 				
 		//espero el tiempo para deshabilitar el collider
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (0.5f);
 		weaponCollider.enabled = false;
 		golpeado = false;
 		
 		//espero a que concluya la animacion para poder volver a atacar
-		yield return new WaitForSeconds (animator.GetCurrentAnimationClipState (0).Length - 1.06f);
+		yield return new WaitForSeconds (animator.GetCurrentAnimationClipState (0).Length - 0.9f);
 		
 		isAttack = false;
 	}
