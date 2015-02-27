@@ -33,16 +33,16 @@ public class HealBehaviour : MonoBehaviour {
 			
 			_gAux = Instantiate(healEffect,_positionAux, Camera.main.transform.rotation) as GameObject;
 			_gAux.transform.parent = Camera.main.transform;
-			StartCoroutine(CoDestoyParticles(_gAux));
+//			StartCoroutine(CoDestoyParticles(_gAux));
 			canHeal = false;
 			StartCoroutine(CoVisualCoolDown());
 		}
 	}
 
-	IEnumerator CoDestoyParticles(GameObject particles){
-		yield return new WaitForSeconds(3f);
-		Destroy(particles);
-	}
+//	IEnumerator CoDestoyParticles(GameObject particles){
+//		yield return new WaitForSeconds(3f);
+//		Destroy(particles);
+//	}
 	IEnumerator CoVisualCoolDown(){
 		maskSkill.fillAmount = 1;
 		for (int i = 0; i < 50; ++i) {
