@@ -11,10 +11,12 @@ public class moverCamaraMuerte : MonoBehaviour {
 	private GameObject player;
 	private Material noSkybox;
 	private GameObject UIDie;
+	private GameObject bloodUI;
 //	private controladorGuitexts controladorGuitexts;
 	
 	// Use this for initialization
 	void Start () {
+		bloodUI = GameObject.Find("BloodUI");
 		UIDie = GameObject.Find("Diepanel");
 		player = transform.parent.gameObject;
 		UIDie.SetActive(false);
