@@ -11,6 +11,7 @@ public class StartEndGame : MonoBehaviour
 	private PauseBehaviour pauseBeha;
 	private GameObject hudUI;
 	private GameObject endGameUI;
+	private GameObject _UICamera;
 	// Use this for initialization
 	void Start ()
 	{
@@ -20,12 +21,8 @@ public class StartEndGame : MonoBehaviour
 		if (PathEndGame && PathEndGame.activeSelf)
 			PathEndGame.SetActive (false);
 		endGameUI.SetActive(false);
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
+
+		_UICamera = GameObject.Find("UICamera");
 		
 	}
 	
@@ -39,6 +36,7 @@ public class StartEndGame : MonoBehaviour
 			endGameUI.SetActive(true);
 		if(hudUI)
 			hudUI.SetActive(false);
+		_UICamera.SetActive(false);
 
 		Camera.main.audio.Stop ();
 		Camera.main.audio.clip = music;

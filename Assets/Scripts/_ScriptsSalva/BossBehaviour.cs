@@ -335,9 +335,10 @@ public class BossBehaviour : MonoBehaviour
 		if (player) {
 			//Disable all components
 			foreach (MonoBehaviour c in player.GetComponents<MonoBehaviour>()) {
+	
 				c.enabled = false;
 			}
-			Destroy(player.collider);
+
 			StartEndGame path = player.GetComponent<StartEndGame> ();
 			//volvemos a activar el path e iniciamos
 			path.enabled = true;
@@ -347,9 +348,15 @@ public class BossBehaviour : MonoBehaviour
 			//remove child nodes
 			foreach (Transform t in player.transform) {
 				if (t.gameObject.name != "Main Camera") {
-					Destroy (t.gameObject);
+					if(t.gameObject.name == "Torches"){
+						t.Find("Torch").Find("torche").gameObject.SetActive(false);
+					}
+					else{
+						t.gameObject.SetActive(false);
+					}
 				}
 			}
+			
 		}
 		//Disable traps for the tour
 		foreach (GameObject trap in GameObject.FindGameObjectsWithTag("Trap")) {
