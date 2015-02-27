@@ -6,6 +6,7 @@ public class StartEndGame : MonoBehaviour
 
 	public GameObject PathEndGame;
 	public Transform firstPoint;
+	public AudioClip music;
 	private bool _firstTime = true;
 	private PauseBehaviour pauseBeha;
 	private GameObject hudUI;
@@ -38,6 +39,10 @@ public class StartEndGame : MonoBehaviour
 			endGameUI.SetActive(true);
 		if(hudUI)
 			hudUI.SetActive(false);
+
+		Camera.main.audio.Stop ();
+		Camera.main.audio.clip = music;
+		Camera.main.audio.Play ();
 	}
 	
 	public void StartPath ()
