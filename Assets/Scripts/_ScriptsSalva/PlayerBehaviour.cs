@@ -130,7 +130,9 @@ public class PlayerBehaviour : MonoBehaviour
 	IEnumerator COHit (float time)
 	{
 		yield return new WaitForSeconds (time);
-		_fadeBloodUI.FadeOut();
+		if(life>0){
+			_fadeBloodUI.FadeOut();
+		}
 		receiveDamage = false;
 	}
 
