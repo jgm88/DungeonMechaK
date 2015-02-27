@@ -28,13 +28,14 @@ public class PauseBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(playerBehaviour.isVivo() && !_endGame)
+		if(playerBehaviour.isVivo() )
 		{
 			if(!inPause && Input.GetKeyDown(KeyCode.Escape))
 			{
+
 				ShowCursor(true);
-				pauseMenu.SetActive(true);
 				mouseLook.enabled = false;
+				pauseMenu.SetActive(true);
 				Time.timeScale = 0;
 				inPause = true;
 			}
@@ -54,9 +55,12 @@ public class PauseBehaviour : MonoBehaviour {
 
 	public void QuitPause()
 	{
+		if(!_endGame)
+		{
+			mouseLook.enabled = true;
+		}
 		ShowCursor(false);
 		pauseMenu.SetActive(false);
-		mouseLook.enabled = true;
 		Time.timeScale = 1;
 		inPause = false;
 	}
