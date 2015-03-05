@@ -22,11 +22,20 @@ public class ondaExpansiva : MonoBehaviour
 	
 	void OnTriggerStay (Collider other)
 	{
-		if (other.tag == "Enemy") {
+		if (other.tag == "Enemy") 
+		{
+			// Kill Enemy
+			AchievementManager.Instance.NotifyDynamiteKillEnemy ();
 			other.gameObject.GetComponent<EnemyBehaviour> ().ReceiveDamage (damageExplosion);
-		} else if (other.tag == "Player") {
+		} 
+		else if (other.tag == "Player") 
+		{
+			// Kill player
+			AchievementManager.Instance.NotifyDynamiteKillPlayer ();
 			other.gameObject.GetComponent<PlayerBehaviour> ().ReceiveDamage (damageExplosion);
-		} else if (other.tag == "Boss") {
+		}
+		else if (other.tag == "Boss") 
+		{
 			other.gameObject.GetComponent<BossBehaviour> ().ReceiveDamage (damageExplosion);
 		}
 	}

@@ -25,6 +25,8 @@ public class HealBehaviour : MonoBehaviour {
 	
 	public void Heal(){
 
+		AchievementManager.Instance.NotifyPlayerUseHeal (healAmount, _playerBehaviour.maxLife);
+
 		if(canHeal){
 			_playerBehaviour.ReceiveHeal(healAmount);
 			_playerBehaviour.DeductMana(manaCost);

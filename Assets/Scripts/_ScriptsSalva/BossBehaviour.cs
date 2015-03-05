@@ -296,6 +296,8 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	private void muerteBoss ()
 	{
+		AchievementManager.Instance.NotifyBossEnd ();
+
 		_isDying = true;
 		aiPath.enabled = false;
 		isMoving = false;
