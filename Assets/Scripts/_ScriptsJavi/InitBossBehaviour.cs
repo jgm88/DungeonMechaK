@@ -5,16 +5,13 @@ public class InitBossBehaviour : MonoBehaviour
 {
 
 	public GameObject _boss;
-	private BoosDoorBehaviour _bossDoorBehaviour;
 	public GameObject bossThunder;
 	public GameObject firstStatueAura;
 	public AudioClip music;
+
 	private GameObject indicationUI;
-//	void Awake ()
-//	{
-//
-//
-//	}
+	private BoosDoorBehaviour _bossDoorBehaviour;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -28,6 +25,9 @@ public class InitBossBehaviour : MonoBehaviour
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag == "Player") {
+
+			AchievementManager.Instance.NotifyBossInit ();
+
 			RenderSettings.fogDensity = 0.05f;
 			indicationUI.SetActive (true);
 			bossThunder.SetActive (true);
