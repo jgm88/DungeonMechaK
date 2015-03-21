@@ -4,10 +4,11 @@ using System.Collections;
 public class BossAnimationController : MonoBehaviour
 {
 	private BossBehaviour bossBeha;
-	private Animation bossAnim;
 	private int numRand;
 	private string nomAnimation;
 	private bool _ismuerto;
+
+	public Animation bossAnim;
 
 	// Use this for initialization
 	void Awake ()

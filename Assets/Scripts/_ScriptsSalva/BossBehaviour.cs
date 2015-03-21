@@ -30,6 +30,9 @@ public class BossBehaviour : MonoBehaviour
 	/// The initial life.
 	/// </summary>
 	public int initialLife = 200;
+
+	public float timeHit = 0.5f;
+
 	/// <summary>
 	/// Enemy is receiving damage.
 	/// </summary>
@@ -175,6 +178,10 @@ public class BossBehaviour : MonoBehaviour
 			_animationController.PlayDeath ();
 		else if (isMoving)
 			_animationController.PlayRun ();
+
+		if(!inCombat){
+			StopCoroutine(COAtacar());
+		}
 			
 	}
 
@@ -209,10 +216,10 @@ public class BossBehaviour : MonoBehaviour
 				_animationController.PlayHit ();
 				_auidioController.reproducirGolpeado ();
 				receiveDamage = true;
-				StartCoroutine (COHit (1f));
+				StartCoroutine (COHit (timeHit));
 			} else {
 				receiveDamage = true;
-				StartCoroutine (COHit (1f));
+				StartCoroutine (COHit (timeHit));
 				_currentState++;
 				cambiarFases ();	
 			}
@@ -289,6 +296,8 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	private void muerteBoss ()
 	{
+		AchievementManager.Instance.NotifyBossEnd ();
+
 		_isDying = true;
 		aiPath.enabled = false;
 		isMoving = false;
@@ -406,8 +415,11 @@ public class BossBehaviour : MonoBehaviour
 		yield return new WaitForEndOfFrame ();
 		isAttackCD = true;
 		yield return new WaitForSeconds (1f);
-		if (inCombat && !_isDying)
-			player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
+		if (inCombat && !_isDying){
+			if((_animationController.bossAnim.IsPlaying("attack_1") || _animationController.bossAnim.IsPlaying("attack_2"))){
+				player.GetComponent<PlayerBehaviour> ().ReceiveDamage (currentDamage);
+			}
+		}
 		yield return new WaitForSeconds (attackCD - 1f);
 		isAttackCD = false;
 
@@ -421,6 +433,8 @@ public class BossBehaviour : MonoBehaviour
 	/// <param name="time">Cooldown time </param>
 	IEnumerator COHit (float time)
 	{
+		bossSkinMat.color = Color.red;
+
 		aiPath.enabled = false;
 		isMoving = false;
 		yield return new WaitForSeconds (time);
@@ -429,6 +443,8 @@ public class BossBehaviour : MonoBehaviour
 			aiPath.enabled = true;
 		}
 		receiveDamage = false;
+
+		bossSkinMat.color = colorStates[currentState];;
 	}
 
 
