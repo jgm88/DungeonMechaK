@@ -144,6 +144,10 @@ public class BossBehaviour : MonoBehaviour
 
 	private float distance;
 
+	private HudBossStatusBehaviour _hudBar;
+
+	private GameObject bossPanel;
+	
 //	private manejadorAudioAnimado soundManajer;
 	// Use this for initialization
 	void Awake ()
@@ -157,6 +161,10 @@ public class BossBehaviour : MonoBehaviour
 		agregarColoresYPoderes ();
 		weaknesPower = powersList [_currentState];
 		_auidioController = GetComponent<manejadorAudioAnimado> ();
+		_hudBar = GameObject.Find("BossLifeMask").GetComponent<HudBossStatusBehaviour>();
+		bossPanel =GameObject.Find("BossPanel");
+		bossPanel.SetActive(false);
+
 		
 	}
 
@@ -169,6 +177,7 @@ public class BossBehaviour : MonoBehaviour
 		playerAttackController = player.GetComponent<AttackPlayerBehaviour> ();
 		impactPoint = GameObject.Find ("MazeImpactPoint");
 		_animationController = GetComponent<BossAnimationController> ();
+		bossPanel.SetActive(true);
 	}
 	
 	//	// Update is called once per frame
@@ -216,6 +225,7 @@ public class BossBehaviour : MonoBehaviour
 				_animationController.PlayHit ();
 				_auidioController.reproducirGolpeado ();
 				receiveDamage = true;
+				_hudBar.SetValue(damage);
 				StartCoroutine (COHit (timeHit));
 			} else {
 				receiveDamage = true;
@@ -237,11 +247,13 @@ public class BossBehaviour : MonoBehaviour
 			particles.startColor = colorStates [_currentState];
 			particles.Play ();
 			StartCoroutine (COPhaseChangeText ());
+			_hudBar.ChangeBar(currentState);
 		} else if (_currentState == 3) {
 			weaknesPower = powersList [_currentState];
 			bossSkinMat.color = colorStates [_currentState];
 			life = finalLife;
 			currentDamage = finalDamage;
+			_hudBar.ChangeBar(currentState);
 			StartCoroutine (COFinalPhaseText ());
 		} else
 			muerteBoss ();
@@ -297,7 +309,7 @@ public class BossBehaviour : MonoBehaviour
 	private void muerteBoss ()
 	{
 		AchievementManager.Instance.NotifyBossEnd ();
-
+		bossPanel.SetActive(false);
 		_isDying = true;
 		aiPath.enabled = false;
 		isMoving = false;
