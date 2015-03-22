@@ -52,6 +52,7 @@ public class WickBehaviour : MonoBehaviour {
 				_chargeBehaviour.wickBehaviour = null;
 				setActiveWickText(false);
 				if(!adquired){
+					AchievementManager.Instance.NotifyPlayerGetFlame ();
 					adquired = true;
 					_chargeBehaviour.transform.gameObject.audio.Play();
 					_bossDoorBehaviour.purchaseWick(color);

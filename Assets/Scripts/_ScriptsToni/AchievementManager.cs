@@ -4,7 +4,62 @@ using System.Collections.Generic;
 
 public class AchievementManager : MonoBehaviour 
 {
-	#region Public fast access
+	#region Achievement definition
+	
+	/// <summary>
+	/// List of achievements to unlock.
+	/// </summary>
+	private enum AchievementsEnum 
+	{
+		// Play&Care
+		FirstFlame,			// Get your first flame
+		FacingBoss,			// Facing the boss
+		DefeatBoss,			// Defeat the boss
+		
+		// Dynamite power
+		DynamiteSuicide,	// Dying using dynamite
+		
+		// About heal
+		DoubleHeal, 		// Heal double max life player
+		NoHealInDungeon, 	// No use heal during "mecha" searching
+		NoHealInBoss, 		// No use heal during boss combat
+		NoHealInAllGame, 	// No use heal in all game play
+		
+		// About damage
+		NoDamageInDungeon,	// Dont receive damage during "mecha" searching
+		NoDamageInBoss,		// Dont receive damage during boss combat
+		NoDamageInAllGame,	// Dont receive damage in all game playe
+	};
+
+	/// <summary>
+	/// Initializes the achievements to unlock.
+	/// </summary>
+	private void InitializeAchievements ()
+	{
+		// Recoge la llama (consume tu primera mecha)
+		_achievements.Add (AchievementsEnum.FirstFlame, 
+		                   new Achievement ("Recoge la llama", 
+		                 					"Consume tu primera mecha."));
+		
+		// Enfrentate al Mal (llega hasta el boss)
+		_achievements.Add (AchievementsEnum.FacingBoss, 
+		                   new Achievement ("Enfréntate al Mal", 
+		                 					"Consigue llegar hasta el jefe final."));
+		
+		// Sangre y Fuego (derrota al boss)
+		_achievements.Add (AchievementsEnum.DefeatBoss, 
+		                   new Achievement ("Sangre y Fuego", 
+		                 					"Consigue derrotar al jefe final."));
+		
+		// ¿Curarse?, eso es de débiles (no te cures hasta llegar al boss)
+		_achievements.Add (AchievementsEnum.NoHealInDungeon, 
+		                   new Achievement ("¿Curarse? Eso es de débiles", 
+		                 					"No te cures hasta enfrentarte con el jefe final."));
+	}
+
+	#endregion
+
+	#region Public fast access, and Start() method
 	
 	public static readonly string GAMEOBJECT_NAME = "/AchievementManager";
 	
@@ -20,43 +75,61 @@ public class AchievementManager : MonoBehaviour
 		}
 	}
 	
+	
+	void Start ()
+	{
+		InitializeAchievements ();
+	}
+	
 	#endregion
 
-	#region Achievements
-
+	#region Achievements members
+	
 	/// <summary>
-	/// List of achievements to unlock.
+	/// Class to describe achievements by title and description.
 	/// </summary>
-	private enum Achievements 
+	private class Achievement
 	{
-		// Dynamite power
-		DynamiteSuicide,	// Dying using dynamite
+		/// <summary>
+		/// Creates an achievement by title and description.
+		/// </summary>
+		/// <param name="title">Title.</param>
+		/// <param name="description">Description.</param>
+		public Achievement (string title, string description)
+		{
+			this.Title = title;
+			this.Description = description;
+		}
 
-		// About heal
-		DoubleHeal, 		// Heal double max life player
-		NoHealInDungeon, 	// No use heal during "mecha" searching
-		NoHealInBoss, 		// No use heal during boss combat
-		NoHealInAllGame, 	// No use heal in all game play
+		/// <summary>
+		/// Gets the title.
+		/// </summary>
+		/// <value>The title.</value>
+		public string Title { get; private set; }
 
-		// About damage
-		NoDamageInDungeon,	// Dont receive damage during "mecha" searching
-		NoDamageInBoss,		// Dont receive damage during boss combat
-		NoDamageInAllGame,	// Dont receive damage in all game playe
-	};
+		/// <summary>
+		/// Gets the description.
+		/// </summary>
+		/// <value>The description.</value>
+		public string Description { get; private set; }
+	}
 
 	/// <summary>
 	/// Log achievements unlocked.
 	/// </summary>
-	private HashSet <Achievements> _achievementsUnlocked = new HashSet <Achievements> ();
+	private HashSet <AchievementsEnum> _achievementsUnlocked = new HashSet <AchievementsEnum> ();
 
-	void Start ()
-	{
-		// TODO Initialize a dictionary or similar, with title and description of achievements
-	}
+	/// <summary>
+	/// The achievements title and description.
+	/// </summary>
+	private IDictionary <AchievementsEnum, Achievement> _achievements = new Dictionary <AchievementsEnum, Achievement> ();
 
 	#endregion
 
-	#region Achievements manager
+	#region Achievements notifications
+
+	// About flames
+	private bool playerGetsFirstFlame = false;
 
 	// About heal
 	private bool playerUsedHealOnDungeon = false;
@@ -67,10 +140,20 @@ public class AchievementManager : MonoBehaviour
 	private bool playerReceivedDamageOnDungeon = false;
 	private bool playerReceivedDamageOnBoss = false;
 
-	// About game progress
+	// About boss progress
 	private bool bossInit = false;
 	private bool bossEnd = false;
 
+
+	public void NotifyPlayerGetFlame ()
+	{
+		// If player not got any flame yet
+		if (!playerGetsFirstFlame)
+		{
+			playerGetsFirstFlame = true;
+			UnlockAchievement (AchievementsEnum.FirstFlame);
+		}
+	}
 
 	public void NotifyPlayerUseHeal (int healAmount, int playerMaxLife)
 	{
@@ -83,7 +166,7 @@ public class AchievementManager : MonoBehaviour
 		else playerUsedHealOnDungeon = true;
 
 		// Check to unlock an achievement
-		if (playerHealedAmount > playerMaxLife) UnlockAchievement (Achievements.DoubleHeal);
+		if (playerHealedAmount > playerMaxLife) UnlockAchievement (AchievementsEnum.DoubleHeal);
 	}
 
 	public void NotifyPlayerReceiveDamage ()
@@ -101,8 +184,8 @@ public class AchievementManager : MonoBehaviour
 		bossInit = true;
 
 		// Check to unlock an achievement
-		if (!playerUsedHealOnDungeon) UnlockAchievement (Achievements.NoHealInDungeon);
-		if (!playerReceivedDamageOnDungeon) UnlockAchievement (Achievements.NoDamageInDungeon);
+		if (!playerUsedHealOnDungeon) UnlockAchievement (AchievementsEnum.NoHealInDungeon);
+		if (!playerReceivedDamageOnDungeon) UnlockAchievement (AchievementsEnum.NoDamageInDungeon);
 	}
 
 	public void NotifyBossEnd ()
@@ -113,12 +196,12 @@ public class AchievementManager : MonoBehaviour
 		bossEnd = true;
 
 		// Check to unlock an achievement about HEAL
-		if (!playerUsedHealOnBoss) UnlockAchievement (Achievements.NoHealInBoss);
-		if (!playerUsedHealOnBoss && !playerUsedHealOnDungeon) UnlockAchievement (Achievements.NoHealInAllGame);
+		if (!playerUsedHealOnBoss) UnlockAchievement (AchievementsEnum.NoHealInBoss);
+		if (!playerUsedHealOnBoss && !playerUsedHealOnDungeon) UnlockAchievement (AchievementsEnum.NoHealInAllGame);
 
 		// Check to unlock an achievement about DAMAGE
-		if (!playerReceivedDamageOnBoss) UnlockAchievement (Achievements.NoDamageInBoss);
-		if (!playerReceivedDamageOnBoss && !playerReceivedDamageOnDungeon) UnlockAchievement (Achievements.NoDamageInAllGame);
+		if (!playerReceivedDamageOnBoss) UnlockAchievement (AchievementsEnum.NoDamageInBoss);
+		if (!playerReceivedDamageOnBoss && !playerReceivedDamageOnDungeon) UnlockAchievement (AchievementsEnum.NoDamageInAllGame);
 	}
 	
 	public void NotifyDynamiteKillEnemy ()
@@ -133,14 +216,14 @@ public class AchievementManager : MonoBehaviour
 		Debug.Log ("[AchievementManager] - Dynamite kill player");
 
 		// Unlock an achievement
-		UnlockAchievement (Achievements.DynamiteSuicide);
+		UnlockAchievement (AchievementsEnum.DynamiteSuicide);
 	}
 
 	#endregion
 
 	#region Unlock achievements and canvas print
 
-	private void UnlockAchievement (Achievements achievement)
+	private void UnlockAchievement (AchievementsEnum achievement)
 	{
 		if (!_achievementsUnlocked.Contains (achievement))
 		{
