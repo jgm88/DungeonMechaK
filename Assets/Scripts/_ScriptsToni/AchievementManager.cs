@@ -1,9 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class AchievementManager : MonoBehaviour 
 {
+	#region Public members
+
+	/// <summary>
+	/// Popup to show achievements.
+	/// </summary>
+	public GameObject Popup = null;
+
+	#endregion
+
 	#region Achievement definition
 	
 	/// <summary>
@@ -79,6 +89,7 @@ public class AchievementManager : MonoBehaviour
 	void Start ()
 	{
 		InitializeAchievements ();
+		Popup.SetActive (false);
 	}
 	
 	#endregion
@@ -229,10 +240,39 @@ public class AchievementManager : MonoBehaviour
 		{
 			Debug.Log ("[AchievementManager] - Unlocked '" + achievement + "'");
 
-			_achievementsUnlocked.Add (achievement);
-			// TODO Print on a canvas
-			// TODO Notify to MoreThanGamers API
+			// Gets info for the achievement unlocked
+			Achievement achievementInfo;
+			bool achievementExists = _achievements.TryGetValue (achievement, out achievementInfo);
+
+			if (achievementExists)
+			{
+				_achievementsUnlocked.Add (achievement);
+				
+				// Print on a canvas
+				// TODO Apilar si se desbloquean varios a la vez
+				Popup.SetActive (true);
+				Popup.transform.FindChild ("AchievementInfo").GetComponent <Text> ().text 
+					= achievementInfo.Title + "\n" + achievementInfo.Description;
+				StartCoroutine (COAnimAchievement (Popup.GetComponent <Animator> ()));
+				
+				// TODO Notify to MoreThanGamers API
+			}
+			else
+			{
+				Debug.LogError ("[AchievementManager] - ERROR: No information for achievement " + achievement);
+			}
 		}
+	}
+
+	private IEnumerator COAnimAchievement (Animator animator)
+	{
+		// Appear
+		animator.SetBool ("isShowing", true);
+		yield return new WaitForSeconds (3.0f); // 1sec anim appear + 2sec still showing
+
+		// Disappear
+		animator.SetBool ("isShowing", false);
+		yield return new WaitForSeconds (1.0f);
 	}
 
 	#endregion
