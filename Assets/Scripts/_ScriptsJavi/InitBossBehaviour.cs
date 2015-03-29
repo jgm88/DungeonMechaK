@@ -58,6 +58,8 @@ public class InitBossBehaviour : MonoBehaviour
 		yield return new WaitForSeconds (duration);
 		indicationUI.SetActive(false);
 		_boss.SetActive (true);
+		GameObject.Find("MiniMapCamera").SetActive(false);
+		GameObject.Find("MiniMapCanvas").SetActive(false);
 		Destroy (bossThunder);
 		Destroy (this.gameObject);
 	}
