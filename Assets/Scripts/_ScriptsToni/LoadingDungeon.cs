@@ -8,7 +8,6 @@ public class LoadingDungeon : MonoBehaviour
 	
 	private float maskSizeWidth;
 
-	private int PRUvalue = 0;
 	
 	// Use this for initialization
 	void Start ()

@@ -4,11 +4,11 @@ using System.Collections;
 public class RotateCameraTopoint : MonoBehaviour
 {
 
-	private Transform camera;
+//	private Transform camera;
 	// Use this for initialization
 	void Start ()
 	{
-		camera = Camera.main.transform;
+//		camera = Camera.main.transform;
 	}
 	
 	// Update is called once per frame

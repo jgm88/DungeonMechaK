@@ -3,7 +3,8 @@ using System.Collections;
 
 public class cambiarCamaraSettings : MonoBehaviour {
 
-    private Material noSkybox;
+    
+
 
 	private bool vivo;
 //	public GameObject guitextMuerte;
@@ -25,7 +26,7 @@ public class cambiarCamaraSettings : MonoBehaviour {
             RenderSettings.fog = true;
             RenderSettings.fogColor = Color.red;
             RenderSettings.fogDensity = 1f;
-            RenderSettings.skybox = noSkybox;
+            RenderSettings.skybox = null;
 			RenderSettings.fogStartDistance = -20f;
 			RenderSettings.fogEndDistance = 10f;
         }

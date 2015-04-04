@@ -16,9 +16,6 @@ public class MarkerBehaviour : MonoBehaviour {
 
 		transform.position = _tPlayer.position;
 		_vRotation.y = _tPlayer.eulerAngles.y;
-
-		Debug.Log(_tPlayer.eulerAngles.y);
-		Debug.Log(_vRotation);
 		transform.eulerAngles = _vRotation;
 //		transform.eulerAngles
 	}

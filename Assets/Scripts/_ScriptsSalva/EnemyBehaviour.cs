@@ -50,7 +50,6 @@ public class EnemyBehaviour : MonoBehaviour
 
 	private manejadorAudioAnimado soundManajer;
 
-	private bool firstAttack = false;
 	// Use this for initialization
 	void Awake ()
 	{

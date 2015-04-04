@@ -14,15 +14,17 @@ public class PlayerBehaviour : MonoBehaviour
 
 	private HUDStatusBehaviour _lifeHUD;
 	private HUDStatusBehaviour _manaHUD;
+
 	private bool _isDead = false;
-	private bool _isMoving = false;
+//	private bool _isMoving = false;
 	private bool _isPlayingMovementSound = false;
 	private manejadorAudioAnimado _soundDeath;
 	private manejadorAudioAnimado _soundMovement;
 	private manejadorAudioAnimado _soundImpact;
-	private manejadorAudioAnimado _soundAttack;
+//	private manejadorAudioAnimado _soundAttack;
 	private manejadorAudioAnimado _soundHitCry;
-	private manejadorAudioAnimado _soundSpecial;
+
+//	private manejadorAudioAnimado _soundSpecial;
 	private FadeUI _fadeBloodUI;
 
 	void Awake ()
@@ -32,9 +34,9 @@ public class PlayerBehaviour : MonoBehaviour
 		_soundDeath = GameObject.Find("DeadSound").GetComponent<manejadorAudioAnimado>();
 		_soundMovement = GameObject.Find("WalkSound").GetComponent<manejadorAudioAnimado>();
 		_soundImpact = GameObject.Find("ImpactSound").GetComponent<manejadorAudioAnimado>();
-		_soundAttack = GameObject.Find("AttackSound").GetComponent<manejadorAudioAnimado>();
+//		_soundAttack = GameObject.Find("AttackSound").GetComponent<manejadorAudioAnimado>();
 		_soundHitCry = GameObject.Find("HitSound").GetComponent<manejadorAudioAnimado>();
-		_soundSpecial = GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>();
+//		_soundSpecial = GameObject.Find("SpecialSound").GetComponent<manejadorAudioAnimado>();
 
 	}
 	void Start(){
@@ -49,13 +51,14 @@ public class PlayerBehaviour : MonoBehaviour
 
 	private void isMoving(){
 		if(isPressingMovementKey()){
-			_isMoving = true;
+
+//			_isMoving = true;
 			if(!_isPlayingMovementSound)
 				StartCoroutine(COSoundMoving());
 		}
-		else{
-			_isMoving = false;
-		}
+//		else{
+//			_isMoving = false;
+//		}
 	}
 
 	private bool isPressingMovementKey(){

@@ -9,7 +9,7 @@ public class controladorPickupsKey : MonoBehaviour {
 	public GameObject puerta2;
 	public GameObject muropuerta;
 	
-	private string tagOld = "TorchePlayer";
+
 	
 	// Use this for initialization
 	void Start () {
@@ -33,7 +33,5 @@ public class controladorPickupsKey : MonoBehaviour {
 	public int getNumKeysActuales(){
 		return llavesRecogidas;
 	}
-	public void cambiaTorch(string torchColor){
-		int I;
-	}
+
 }

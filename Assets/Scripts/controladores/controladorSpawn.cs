@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class controladorSpawn : MonoBehaviour
 {
 	#region private Fields
-	private int _levelByKeys = 0;
+
 	private bool _inBoss = false;
 	private GameObject _target;
 	#endregion
@@ -23,7 +23,7 @@ public class controladorSpawn : MonoBehaviour
 	void Start ()
 	{
 		_target = GameObject.FindWithTag ("Player");
-		_levelByKeys = 0;//GameObject.FindWithTag ("Player").GetComponent<controladorPickupsKey> ().getNumKeysActuales ();
+
 		foreach (GameObject g in prefabsEnemigos) {
 			g.GetComponent<AIPath> ().target = _target.transform;
 		}

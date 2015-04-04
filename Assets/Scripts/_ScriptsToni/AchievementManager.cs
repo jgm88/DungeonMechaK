@@ -14,6 +14,15 @@ public class AchievementManager : MonoBehaviour
 
 	#endregion
 
+
+	#region Private members
+	/// <summary>
+	/// Boolean to determine if we can show the achievement or we must to wait.
+	/// </summary>
+	private bool _canShow;
+
+	#endregion
+
 	#region Achievement definition
 	
 	/// <summary>
@@ -90,6 +99,7 @@ public class AchievementManager : MonoBehaviour
 	{
 		InitializeAchievements ();
 		Popup.SetActive (false);
+		_canShow = true;
 	}
 	
 	#endregion
@@ -153,7 +163,7 @@ public class AchievementManager : MonoBehaviour
 
 	// About boss progress
 	private bool bossInit = false;
-	private bool bossEnd = false;
+//	private bool bossEnd = false;
 
 
 	public void NotifyPlayerGetFlame ()
@@ -193,10 +203,13 @@ public class AchievementManager : MonoBehaviour
 
 		// Save state
 		bossInit = true;
+		UnlockAchievement ( AchievementsEnum.FacingBoss);
 
 		// Check to unlock an achievement
 		if (!playerUsedHealOnDungeon) UnlockAchievement (AchievementsEnum.NoHealInDungeon);
-		if (!playerReceivedDamageOnDungeon) UnlockAchievement (AchievementsEnum.NoDamageInDungeon);
+
+//		if (!playerReceivedDamageOnDungeon) UnlockAchievement (AchievementsEnum.NoDamageInDungeon);
+//		Debug.Log("MUESTRO NO DAÑO");
 	}
 
 	public void NotifyBossEnd ()
@@ -204,8 +217,9 @@ public class AchievementManager : MonoBehaviour
 		Debug.Log ("[AchievementManager] - Boss end");
 
 		// Save state
-		bossEnd = true;
+//		bossEnd = true;
 
+		UnlockAchievement(AchievementsEnum.DefeatBoss);
 		// Check to unlock an achievement about HEAL
 		if (!playerUsedHealOnBoss) UnlockAchievement (AchievementsEnum.NoHealInBoss);
 		if (!playerUsedHealOnBoss && !playerUsedHealOnDungeon) UnlockAchievement (AchievementsEnum.NoHealInAllGame);
@@ -251,9 +265,8 @@ public class AchievementManager : MonoBehaviour
 				// Print on a canvas
 				// TODO Apilar si se desbloquean varios a la vez
 				Popup.SetActive (true);
-				Popup.transform.FindChild ("AchievementInfo").GetComponent <Text> ().text 
-					= achievementInfo.Title + "\n" + achievementInfo.Description;
-				StartCoroutine (COAnimAchievement (Popup.GetComponent <Animator> ()));
+
+				StartCoroutine (COWaitForOther (Popup.GetComponent <Animator> (),achievementInfo));
 				
 				// TODO Notify to MoreThanGamers API
 			}
@@ -263,9 +276,18 @@ public class AchievementManager : MonoBehaviour
 			}
 		}
 	}
-
-	private IEnumerator COAnimAchievement (Animator animator)
+	private IEnumerator COWaitForOther( Animator animator, Achievement achievementInfo )
 	{
+		if(!_canShow)
+			yield return new WaitForSeconds (4.2f);
+		StartCoroutine(COAnimAchievement(animator,achievementInfo));
+	}
+
+	private IEnumerator COAnimAchievement (Animator animator,Achievement achievementInfo)
+	{
+		_canShow = false;
+		Popup.transform.FindChild ("AchievementInfo").GetComponent <Text> ().text 
+			= achievementInfo.Title + "\n" + achievementInfo.Description;
 		// Appear
 		animator.SetBool ("isShowing", true);
 		yield return new WaitForSeconds (3.0f); // 1sec anim appear + 2sec still showing
@@ -273,6 +295,7 @@ public class AchievementManager : MonoBehaviour
 		// Disappear
 		animator.SetBool ("isShowing", false);
 		yield return new WaitForSeconds (1.0f);
+		_canShow = true;
 	}
 
 	#endregion

@@ -10,13 +10,13 @@ public class HudBossStatusBehaviour : MonoBehaviour {
 	public int TotalBossLife = 1100;
 
 	private RectTransform currentLifeBar;
-	private int bossState;
+
 	private int currentBossLife;
 	private float maskSizeWidth;
 	// Use this for initialization
 	void Start () {
 		maskSizeWidth = mask.rect.width;
-		bossState = 0;
+	
 		currentLifeBar = lifesBar[0].GetComponent<RectTransform>();
 		currentBossLife = TotalBossLife;
 	}

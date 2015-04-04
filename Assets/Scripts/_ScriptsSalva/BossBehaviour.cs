@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class BossBehaviour : MonoBehaviour
 {
+	#region public members
 
 	public Material bossSkinMat;
 	/// <summary>
@@ -32,7 +33,6 @@ public class BossBehaviour : MonoBehaviour
 	public int initialLife = 200;
 
 	public float timeHit = 0.5f;
-
 	/// <summary>
 	/// Enemy is receiving damage.
 	/// </summary>
@@ -74,13 +74,21 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	public float stunTime = 4f;
 	/// <summary>
+	/// The stun sprite.
+	/// </summary>
+	public GameObject stunSprite;
+	public GameObject PhaseChangeText;
+	public GameObject FinalPhaseText;
+
+	#endregion
+
+	#region private members
+
+	/// <summary>
 	/// The original color.
 	/// </summary>
 	private Color originalColor;
-	/// <summary>
-	/// The number states.
-	/// </summary>
-	private int numStates = 4;
+
 	/// <summary>
 	/// The current state.
 	/// </summary>
@@ -116,20 +124,9 @@ public class BossBehaviour : MonoBehaviour
 	/// </summary>
 	public string weaknesPower;
 	/// <summary>
-	/// The stun sprite.
-	/// </summary>
-	public GameObject stunSprite;
-	public GameObject PhaseChangeText;
-	public GameObject FinalPhaseText;
-	/// <summary>
 	/// The player.
 	/// </summary>
 	private GameObject player;
-	/// <summary>
-	/// The guitext victoria.
-	/// </summary>
-	private GameObject guitextVictoria;
-
 	/// <summary>
 	/// The ai path controller script
 	/// </summary>
@@ -140,14 +137,16 @@ public class BossBehaviour : MonoBehaviour
 
 	private manejadorAudioAnimado _auidioController;
 
-	private GameObject impactPoint;
+//	private GameObject impactPoint;
 
 	private float distance;
 
 	private HudBossStatusBehaviour _hudBar;
 
 	private GameObject bossPanel;
-	
+
+	#endregion
+
 //	private manejadorAudioAnimado soundManajer;
 	// Use this for initialization
 	void Awake ()
@@ -172,10 +171,10 @@ public class BossBehaviour : MonoBehaviour
 	{
 //		stunSprite = GameObject.Find("Stun").gameObject;
 //		stunSprite.SetActive(false);
-		guitextVictoria = GameObject.Find ("victoria");
+
 		player = GameObject.FindWithTag ("Player");
 		playerAttackController = player.GetComponent<AttackPlayerBehaviour> ();
-		impactPoint = GameObject.Find ("MazeImpactPoint");
+//		impactPoint = GameObject.Find ("MazeImpactPoint");
 		_animationController = GetComponent<BossAnimationController> ();
 		bossPanel.SetActive(true);
 	}

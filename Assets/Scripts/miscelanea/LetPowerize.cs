@@ -14,7 +14,7 @@ public class LetPowerize : MonoBehaviour
 	private BossBehaviour bossPhase;
 	private AttackPlayerBehaviour attackController;
 	private GameObject bloomLight;
-	private bool _soundLaunched = false;
+
 	private Text textW,textB;
 	// Use this for initialization
 	void Awake ()
@@ -80,3 +80,4 @@ public class LetPowerize : MonoBehaviour
 		}
 	}
 }
+	
