@@ -20,7 +20,10 @@ public class AchievementManager : MonoBehaviour
 	/// Boolean to determine if we can show the achievement or we must to wait.
 	/// </summary>
 	private bool _canShow;
-
+	/// <summary>
+	/// The comunication manager.
+	/// </summary>
+	private AchievementCommunication _comunicationManager;
 	#endregion
 
 	#region Achievement definition
@@ -100,6 +103,7 @@ public class AchievementManager : MonoBehaviour
 		InitializeAchievements ();
 		Popup.SetActive (false);
 		_canShow = true;
+		_comunicationManager = GetComponent<AchievementCommunication>();
 	}
 	
 	#endregion
@@ -244,6 +248,28 @@ public class AchievementManager : MonoBehaviour
 		UnlockAchievement (AchievementsEnum.DynamiteSuicide);
 	}
 
+	private void sendToWeb(AchievementsEnum achievement)
+	{
+		switch(achievement)
+		{
+			case AchievementsEnum.FirstFlame:
+				_comunicationManager.sendGetFlame();
+				break;
+			case AchievementsEnum.DefeatBoss:
+				_comunicationManager.sendEndGame();
+				break;
+			case AchievementsEnum.FacingBoss:
+				_comunicationManager.sendDoorOpen();
+				break;
+			case AchievementsEnum.NoHealInDungeon:
+				_comunicationManager.sendNoHeal();
+				break;
+			default:
+				break;
+
+		}
+	}
+
 	#endregion
 
 	#region Unlock achievements and canvas print
@@ -264,9 +290,9 @@ public class AchievementManager : MonoBehaviour
 				
 				// Print on a canvas
 				// TODO Apilar si se desbloquean varios a la vez
-				Popup.SetActive (true);
-
-				StartCoroutine (COWaitForOther (Popup.GetComponent <Animator> (),achievementInfo));
+//				Popup.SetActive (true);
+				//sendToWeb(achievement);
+//				StartCoroutine (COWaitForOther (Popup.GetComponent <Animator> (),achievementInfo));
 				
 				// TODO Notify to MoreThanGamers API
 			}

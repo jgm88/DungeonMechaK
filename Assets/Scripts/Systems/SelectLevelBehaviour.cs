@@ -3,18 +3,20 @@ using System.Collections;
 
 public class SelectLevelBehaviour : MonoBehaviour {
 
-	public void NextLevelButton(int index)
-	{
-		if(Time.timeScale ==0)
-			Time.timeScale = 1;
-		Application.LoadLevel(index);
-	}
+//	public void NextLevelButton(int index)
+//	{
+//		if(Time.timeScale ==0)
+//			Time.timeScale = 1;
+//		Application.LoadLevel(index);
+//	}
 
 	public void NextLevelButton(string levelName)
 	{
 		if(Time.timeScale ==0)
 			Time.timeScale = 1;
-		Application.LoadLevel(levelName);
+
+		AppDelegate.Instance.NextLevelToLoad = levelName;
+		Application.LoadLevel("loading");
 	}
 
 	public void exitGame()
