@@ -28,7 +28,6 @@ public class HudBossStatusBehaviour : MonoBehaviour {
 	public void SetValue (int damage)
 	{
 		currentBossLife -= damage;
-		Debug.Log(currentBossLife);
 		// Comprobar Overdeath
 		if (currentBossLife < 0) currentBossLife = 0;
 		
