@@ -19,8 +19,8 @@ public class ChangeCursor : MonoBehaviour {
 	
 	// Update is called once per frame
 	void OnGUI () {
-		x = Event.current.mousePosition.x-cursorSizeX/2;
-		y = Event.current.mousePosition.y-cursorSizeY/2;
+		x = Event.current.mousePosition.x;//-cursorSizeX/2;
+		y = Event.current.mousePosition.y;//-cursorSizeY/2;
 		rectangle = new Rect(x,y,cursorSizeX, cursorSizeY);
 
 		GUI.DrawTexture(rectangle, yourCursor);
