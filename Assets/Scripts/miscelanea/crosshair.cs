@@ -9,8 +9,8 @@ public class crosshair : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GameObject.Find("mirilla2").guiTexture.enabled = true;
-		GameObject.Find("mirilla2").guiTexture.enabled = false;
+		GameObject.Find("mirilla2").GetComponent<GUITexture>().enabled = true;
+		GameObject.Find("mirilla2").GetComponent<GUITexture>().enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -20,8 +20,8 @@ public class crosshair : MonoBehaviour {
 	
 	private void cambioMirilla(){
 		if(Input.GetMouseButtonDown(0)){
-			GameObject.Find("mirilla1").guiTexture.enabled = false;
-			GameObject.Find("mirilla2").guiTexture.enabled = true;
+			GameObject.Find("mirilla1").GetComponent<GUITexture>().enabled = false;
+			GameObject.Find("mirilla2").GetComponent<GUITexture>().enabled = true;
 			//gaurdo el instante del impacto
 			t1 = Time.time;
 			t2 = t1;
@@ -35,8 +35,8 @@ public class crosshair : MonoBehaviour {
 		//si transcurre el tiempo deseado se desbloquea el semaforo y cambio mirilla
 		if(espera && (t2 -t1) >= 1){
 			espera = false;
-			GameObject.Find("mirilla1").guiTexture.enabled = true;
-			GameObject.Find("mirilla2").guiTexture.enabled = false;
+			GameObject.Find("mirilla1").GetComponent<GUITexture>().enabled = true;
+			GameObject.Find("mirilla2").GetComponent<GUITexture>().enabled = false;
 		}
 	}
 }

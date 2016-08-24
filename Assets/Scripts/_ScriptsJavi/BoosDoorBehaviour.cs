@@ -53,7 +53,7 @@ public class BoosDoorBehaviour : MonoBehaviour
 	{
 		_doorRight3D.SetActive (openClose);
 		_doorLeft3D.SetActive (openClose);
-		transform.collider.enabled = openClose;
+		transform.GetComponent<Collider>().enabled = openClose;
 	}
 
 	public void purchaseWick (string color)

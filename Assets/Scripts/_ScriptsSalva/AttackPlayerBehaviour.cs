@@ -67,7 +67,7 @@ public class AttackPlayerBehaviour : MonoBehaviour
 		golpeado = false;
 		
 		//espero a que concluya la animacion para poder volver a atacar
-		yield return new WaitForSeconds (animator.GetCurrentAnimationClipState (0).Length - 0.9f);
+		yield return new WaitForSeconds (animator.GetCurrentAnimatorClipInfo (0).Length - 0.9f);
 		
 		isAttack = false;
 	}
@@ -75,7 +75,7 @@ public class AttackPlayerBehaviour : MonoBehaviour
 	//recojo el evento de golpear a un enemigo
 	void OnTriggerStay (Collider other)
 	{
-		if (other.collider.tag == "Enemy" && weaponCollider.enabled == true && !golpeado) {
+		if (other.GetComponent<Collider>().tag == "Enemy" && weaponCollider.enabled == true && !golpeado) {
 			
 			//falta crear un un metodo para obtener el tiempo start animacion
 			//			other.SendMessage("reproducirImpacto", controladorAnimaciones.getTiempoStartAnimacion(), SendMessageOptions.DontRequireReceiver);

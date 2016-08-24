@@ -380,7 +380,7 @@ public class BossBehaviour : MonoBehaviour
 		}
 		//Disable traps for the tour
 		foreach (GameObject trap in GameObject.FindGameObjectsWithTag("Trap")) {
-			trap.collider.enabled = false;
+			trap.GetComponent<Collider>().enabled = false;
 		}
 	}
 

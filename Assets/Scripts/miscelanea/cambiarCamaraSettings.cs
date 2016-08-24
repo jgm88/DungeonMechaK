@@ -22,7 +22,7 @@ public class cambiarCamaraSettings : MonoBehaviour {
 		vivo = player.GetComponent<PlayerBehaviour>().isVivo();
         if (!vivo)
         {
-			camera.backgroundColor = new Color(164f, 0 ,0);
+			GetComponent<Camera>().backgroundColor = new Color(164f, 0 ,0);
             RenderSettings.fog = true;
             RenderSettings.fogColor = Color.red;
             RenderSettings.fogDensity = 1f;

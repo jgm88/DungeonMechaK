@@ -38,9 +38,9 @@ public class StartEndGame : MonoBehaviour
 			hudUI.SetActive(false);
 		_UICamera.SetActive(false);
 
-		Camera.main.audio.Stop ();
-		Camera.main.audio.clip = music;
-		Camera.main.audio.Play ();
+		Camera.main.GetComponent<AudioSource>().Stop ();
+		Camera.main.GetComponent<AudioSource>().clip = music;
+		Camera.main.GetComponent<AudioSource>().Play ();
 	}
 	
 	public void StartPath ()

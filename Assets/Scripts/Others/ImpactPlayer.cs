@@ -35,7 +35,7 @@ public class ImpactPlayer : MonoBehaviour {
 			other.GetComponent<ImpactReceiver> ().AddImpact (dir.normalized * force);
 
 			// Animación del pincho
-			audio.Play();
+			GetComponent<AudioSource>().Play();
 			iTweenEvent.GetEvent(pinchos, "activarTrampa").Play();
 			iTweenEvent.GetEvent(pinchos, "esconderPinchos").Play();
 		}

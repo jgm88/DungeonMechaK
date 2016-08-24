@@ -42,7 +42,7 @@ public class manejadorAudioAnimado : MonoBehaviour
 	public float reproducirMovimiento ()
 	{
 		int indice = Random.Range (0, (movimiento.Count - 1));
-		audio.PlayOneShot (movimiento [indice]);
+		GetComponent<AudioSource>().PlayOneShot (movimiento [indice]);
 		return movimiento[indice].length;
 	}
 	
@@ -50,14 +50,14 @@ public class manejadorAudioAnimado : MonoBehaviour
 	public void reproducirImpacto ()
 	{
 		int indice = Random.Range (0, (armadura.Count - 1));
-		audio.PlayOneShot (armadura [indice]);
+		GetComponent<AudioSource>().PlayOneShot (armadura [indice]);
 	}
 	
 	//reproduce el clip cuando es golpeado (gemido)
 	public void reproducirGolpeado ()
 	{
 		int indice = Random.Range (0, (golpeado.Count - 1));
-		audio.PlayOneShot (golpeado [indice]);
+		GetComponent<AudioSource>().PlayOneShot (golpeado [indice]);
 	}
 	
 	//reproduce la coroutina de atacar si no esta atacando
@@ -73,7 +73,7 @@ public class manejadorAudioAnimado : MonoBehaviour
 	public void reproducirMuerte ()
 	{
 		int indice = Random.Range (0, (muere.Count - 1));
-		audio.PlayOneShot (muere [indice]);
+		GetComponent<AudioSource>().PlayOneShot (muere [indice]);
 		//guardo la duracion del clip reproducido
 		duracionMuerte = muere [indice].length;
 		
@@ -87,7 +87,7 @@ public class manejadorAudioAnimado : MonoBehaviour
 			indice = Random.Range (0, (especial.Count - 1));
 		}
 
-		audio.PlayOneShot (especial [indice]);
+		GetComponent<AudioSource>().PlayOneShot (especial [indice]);
 	}
 	
 	//devuelve la duracion del clip muerte para reproducirlo antes de destruir el objeto en el manejador vida
@@ -102,17 +102,17 @@ public class manejadorAudioAnimado : MonoBehaviour
 	IEnumerator coroutineRespirar ()
 	{
 		int indice = Random.Range (0, (respirar.Count - 1));
-		audio.PlayOneShot (respirar [indice]);
-		yield return new WaitForSeconds (audio.clip.length + 2f);
+		GetComponent<AudioSource>().PlayOneShot (respirar [indice]);
+		yield return new WaitForSeconds (GetComponent<AudioSource>().clip.length + 2f);
 		yield return StartCoroutine (coroutineRespirar ());
 	}
 	//reproduce el clip de atacar justo cuando el arma esta atacando
 	IEnumerator coroutineAtacar ()
 	{
 		int indice = Random.Range (0, (atacar.Count - 1));
-		audio.clip = atacar [indice];
+		GetComponent<AudioSource>().clip = atacar [indice];
 		//reproduzco el clip con retardo para que coincida con el ataque
-		audio.PlayDelayed (tiempoStartAtacarAnimacion);
+		GetComponent<AudioSource>().PlayDelayed (tiempoStartAtacarAnimacion);
 		atacando = true;
 		//espero la duracion de la animacion del ataque para no poder spamear el ataque
 		yield return new WaitForSeconds (atacar [indice].length);

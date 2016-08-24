@@ -28,6 +28,6 @@ public class ChangeCursor : MonoBehaviour {
 	}
 	public void ShowCursor(bool show)
 	{
-		Screen.showCursor = false;
+		Cursor.visible = false;
 	}
 }

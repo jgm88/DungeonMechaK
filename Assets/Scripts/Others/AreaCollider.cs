@@ -21,8 +21,8 @@ public class AreaCollider : MonoBehaviour {
 		if(other.tag=="Enemy"){
 			Vector3 dir = other.transform.position - transform.position;
 			dir.y = 0;
- 			if (other.rigidbody){
-     			 other.rigidbody.AddForce(dir.normalized * force);
+ 			if (other.GetComponent<Rigidbody>()){
+     			 other.GetComponent<Rigidbody>().AddForce(dir.normalized * force);
 			} 
 			else { // use a special script for character controllers:
 				other.gameObject.SendMessage("AddImpact",dir.normalized * force,SendMessageOptions.DontRequireReceiver);

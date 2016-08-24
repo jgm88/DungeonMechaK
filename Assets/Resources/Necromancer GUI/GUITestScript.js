@@ -55,12 +55,12 @@ private var ToggleBTN = false;
 private var NecroText ="This started as a question... How flexible is the built in GUI in unity? The answer... pretty damn flexible! At first I wasn’t so sure; it seemed no one ever used it to make a non OS style GUI at least not a publicly available one. So I decided I couldn’t be sure until I tried to develop a full GUI, Long story short Necromancer was the result and is now available to the general public, free for comercial and non-comercial use. I only ask that if you add something Share it.   Credits to Kevin King for the fonts.";
 
 
-function AddSpikes(winX)
+function AddSpikes(winX:float)
 {
-	spikeCount = Mathf.Floor(winX - 152)/22;
+	var spikeCount :float = Mathf.Floor(winX - 152)/22;
 	GUILayout.BeginHorizontal();
 	GUILayout.Label ("", "SpikeLeft");//-------------------------------- custom
-	for (i = 0; i < spikeCount; i++)
+	for (var i = 0; i < spikeCount; i++)
         {
 			GUILayout.Label ("", "SpikeMid");//-------------------------------- custom
         }
@@ -68,7 +68,7 @@ function AddSpikes(winX)
 	GUILayout.EndHorizontal();
 }
 
-function FancyTop(topX)
+function FancyTop(topX:float)
 {
 	leafOffset = (topX/2)-64;
 	frameOffset = (topX/2)-27;
@@ -78,7 +78,7 @@ function FancyTop(topX)
 	GUI.Label(new Rect(skullOffset, 12, 0, 0), "", "Skull");//-------------------------------- custom	
 }
 
-function WaxSeal(x,y)
+function WaxSeal(x:float,y:float)
 {
 	WSwaxOffsetX = x - 120;
 	WSwaxOffsetY = y - 115;
@@ -89,7 +89,7 @@ function WaxSeal(x,y)
 	GUI.Label(new Rect(WSwaxOffsetX, WSwaxOffsetY, 0, 0), "", "WaxSeal");//-------------------------------- custom	
 }
 
-function DeathBadge(x,y)
+function DeathBadge(x:float,y:float)
 {
 	RibbonOffsetX = x;
 	FrameOffsetX = x+3;

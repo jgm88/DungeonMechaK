@@ -14,12 +14,12 @@ public class controladorParticulas : MonoBehaviour {
 	}
 	
 	public void startParticles(){
-		this.particleEmitter.maxSize = 1;
+		this.GetComponent<ParticleEmitter>().maxSize = 1;
 		StartCoroutine(COStartParticles());
 	}
 	
 	IEnumerator COStartParticles(){
 		yield return new WaitForSeconds(3);
-		this.particleEmitter.maxSize = 0;
+		this.GetComponent<ParticleEmitter>().maxSize = 0;
 	}
 }

@@ -11,7 +11,7 @@ public class MenuAnimatorController : MonoBehaviour {
 	void Start () {
 
 		_animator = GetComponent<Animator>();
-		_audio = GameObject.Find ("AudioClick").audio;
+		_audio = GameObject.Find ("AudioClick").GetComponent<AudioSource>();
 
 		gameObject.SetActive(showOnStart);
 		if(showOnStart){

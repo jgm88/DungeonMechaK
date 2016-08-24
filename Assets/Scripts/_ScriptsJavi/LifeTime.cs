@@ -11,7 +11,7 @@ public class LifeTime : MonoBehaviour {
 	void OnEnable(){
 		_spawnTime = Time.time;
 		if(hasAudio)
-			audio.Play();
+			GetComponent<AudioSource>().Play();
 	}
 	
 	void Update () {

@@ -24,7 +24,7 @@ public class controladorAnimaciones : MonoBehaviour
 	void Start ()
 	{
 		animacionActual = animaciones [0];
-		this.animation.clip = animacionActual.clipAnimacion;
+		this.GetComponent<Animation>().clip = animacionActual.clipAnimacion;
 	}
 	
 	// Update is called once per frame
@@ -46,12 +46,12 @@ public class controladorAnimaciones : MonoBehaviour
 				animacionActual = animaciones [i];
 			i++;
 		}
-		this.animation.clip = animacionActual.clipAnimacion;
+		this.GetComponent<Animation>().clip = animacionActual.clipAnimacion;
 	}
 	
 	public void playAnimationClip ()
 	{
-		this.animation.Play ();
+		this.GetComponent<Animation>().Play ();
 	}
 	
 	public float getTiempoAnimationClip ()

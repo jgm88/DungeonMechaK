@@ -141,7 +141,7 @@ public class menuAcciones : MonoBehaviour {
 		guitexts.AddRange(GameObject.FindGameObjectsWithTag("MenuPrincipal"));
 		
 		foreach(GameObject obj in guitexts){
-			obj.guiText.enabled = !obj.guiText.enabled;
+			obj.GetComponent<GUIText>().enabled = !obj.GetComponent<GUIText>().enabled;
 		}
 		cambiarSalir();
 	}
@@ -153,7 +153,7 @@ public class menuAcciones : MonoBehaviour {
 		guitexts.AddRange(GameObject.FindGameObjectsWithTag("MenuSalir"));
 		
 		foreach(GameObject obj in guitexts){
-			obj.guiText.enabled = !obj.guiText.enabled;
+			obj.GetComponent<GUIText>().enabled = !obj.GetComponent<GUIText>().enabled;
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class menuAcciones : MonoBehaviour {
 		guitexts.AddRange(GameObject.FindGameObjectsWithTag("MenuPrincipal"));
 		
 		foreach(GameObject obj in guitexts){
-			obj.guiText.enabled = !obj.guiText.enabled;
+			obj.GetComponent<GUIText>().enabled = !obj.GetComponent<GUIText>().enabled;
 		}
 	}
 	
@@ -176,7 +176,7 @@ public class menuAcciones : MonoBehaviour {
 		guitexts.AddRange(GameObject.FindGameObjectsWithTag("Controles"));
 		
 		foreach(GameObject obj in guitexts){
-			obj.guiText.enabled = !obj.guiText.enabled;
+			obj.GetComponent<GUIText>().enabled = !obj.GetComponent<GUIText>().enabled;
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class menuAcciones : MonoBehaviour {
 		guitexts.AddRange(GameObject.FindGameObjectsWithTag("MenuComenzar"));
 		
 		foreach(GameObject obj in guitexts){
-			obj.guiText.enabled = !obj.guiText.enabled;
+			obj.GetComponent<GUIText>().enabled = !obj.GetComponent<GUIText>().enabled;
 		}
 	}
 	

@@ -17,7 +17,7 @@ public class activarItween : MonoBehaviour {
 		
 		//if(Input.GetKeyDown(KeyCode.P)){
 			Debug.Log("entra itween");
-			this.gameObject.guiText.enabled = true;
+			this.gameObject.GetComponent<GUIText>().enabled = true;
 		iTweenEvent.GetEvent(this.gameObject, "puta").Play();
 		//}
 	}

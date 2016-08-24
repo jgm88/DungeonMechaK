@@ -35,9 +35,9 @@ public class InitBossBehaviour : MonoBehaviour
 			float duration = bossThunder.GetComponent<ParticleSystem> ().duration;
 			StartCoroutine (COSpawnBoss (duration));
 
-			Camera.main.audio.Stop ();
-			Camera.main.audio.clip = music;
-			Camera.main.audio.Play ();
+			Camera.main.GetComponent<AudioSource>().Stop ();
+			Camera.main.GetComponent<AudioSource>().clip = music;
+			Camera.main.GetComponent<AudioSource>().Play ();
 			firstStatueAura.SetActive (true);
 			GameObject.Find("StartBattle").GetComponent<AudioSource>().Play();
 		}
@@ -50,7 +50,7 @@ public class InitBossBehaviour : MonoBehaviour
 	/// <param name="duration">Duration.</param>
 	IEnumerator COSpawnBoss (float duration)
 	{
-		this.collider.enabled = false;
+		this.GetComponent<Collider>().enabled = false;
 		//establecemos el spawner a la sala del boss
 		controladorSpawn SpawnController = GameObject.Find ("EnemySpawns").GetComponent<controladorSpawn> ();
 		SpawnController.IsInBoss (true);

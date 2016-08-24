@@ -24,7 +24,7 @@ public class moverCamaraMuerte : MonoBehaviour {
 	//funcion que mueve la camara muerte al morir
 	public void moverCamara(){
 
-		camaraWeapons.camera.enabled = false;
+		camaraWeapons.GetComponent<Camera>().enabled = false;
 
 		
 		//desactivo control del pj

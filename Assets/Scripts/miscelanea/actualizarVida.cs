@@ -24,8 +24,8 @@ public class actualizarVida : MonoBehaviour {
 		//si la vida total del player puede cambiar descomentar esta linea
 		//vida = GameObject.FindWithTag("Player").GetComponent<manejadorVida>().vida;
 		vidaRestante = player.GetComponent<PlayerBehaviour>().life;
-		vida.guiText.text = " " + vidaRestante + "/" + vidaTotal;
+		vida.GetComponent<GUIText>().text = " " + vidaRestante + "/" + vidaTotal;
 		if(vidaRestante < 0)
-			vida.guiText.text = " HAS MUERTO"; 
+			vida.GetComponent<GUIText>().text = " HAS MUERTO"; 
 	}
 }

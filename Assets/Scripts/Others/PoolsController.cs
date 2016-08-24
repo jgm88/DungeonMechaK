@@ -109,8 +109,8 @@ public class PoolsController : MonoBehaviour { //Spawner
 	public void Destroy (GameObject objectToDestroy) {
 		if (Instance && Instance.activeCachedObjects.ContainsKey(objectToDestroy)) {
 			objectToDestroy.SetActive(false);
-			if(objectToDestroy.rigidbody)
-				objectToDestroy.rigidbody.velocity = Vector3.zero;
+			if(objectToDestroy.GetComponent<Rigidbody>())
+				objectToDestroy.GetComponent<Rigidbody>().velocity = Vector3.zero;
 			Instance.activeCachedObjects[objectToDestroy] = false;
 		}
 		else Destroy(objectToDestroy);

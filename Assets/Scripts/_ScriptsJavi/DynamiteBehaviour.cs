@@ -11,10 +11,10 @@ public class DynamiteBehaviour : MonoBehaviour {
 	private float _randomRotation;
 
 	void OnEnable(){
-		gameObject.rigidbody.AddForce(transform.forward * speed);
+		gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * speed);
 		_randomRotation = Random.Range(0f, 360f);
-		rigidbody.AddTorque(_randomRotation,_randomRotation, _randomRotation);
-		audio.Play();
+		GetComponent<Rigidbody>().AddTorque(_randomRotation,_randomRotation, _randomRotation);
+		GetComponent<AudioSource>().Play();
 		StartCoroutine(CoLifeTimer());
 
 	}

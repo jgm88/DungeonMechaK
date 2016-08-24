@@ -11,14 +11,14 @@ public class linterna : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.F)){
-			if(this.light.enabled)
-				this.light.enabled = false;
+			if(this.GetComponent<Light>().enabled)
+				this.GetComponent<Light>().enabled = false;
 			else
-				this.light.enabled = true;
+				this.GetComponent<Light>().enabled = true;
 		}
 	}
 	
 	public void encenderLinterna(){
-		this.light.enabled = true;
+		this.GetComponent<Light>().enabled = true;
 	}
 }

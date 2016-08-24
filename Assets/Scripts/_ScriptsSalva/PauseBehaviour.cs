@@ -48,7 +48,7 @@ public class PauseBehaviour : MonoBehaviour {
 	}
 	public void ShowCursor(bool show)
 	{
-		Screen.showCursor = false;
+		Cursor.visible = false;
 		Screen.lockCursor = !show;
 		changeCursor.enabled = show;
 	}

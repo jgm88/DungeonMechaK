@@ -49,7 +49,7 @@ public class ataqueDistanciaRayCast : MonoBehaviour {
 		//recojo su controlador de audio
 		controladorAnimaciones = GetComponent<controladorAnimaciones>();
 		controladorAnimaciones.playAnimationClip();
-		audio.PlayOneShot(sonidoDisparo);
+		GetComponent<AudioSource>().PlayOneShot(sonidoDisparo);
 		//tiempoStartAnimacion = controladorAnimaciones.getTiempoStartAnimacion();
 		
 		//envio los mensjes

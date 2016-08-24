@@ -17,14 +17,14 @@ public class permitirAvivar : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other){
 		if(other.tag == "Player")
-			guitextAvivar.guiText.enabled = true;
+			guitextAvivar.GetComponent<GUIText>().enabled = true;
 		Invoke("QuitaGuiText",2f);
 	}
 	void QuitaGuiText(){
-		guitextAvivar.guiText.enabled =false;
+		guitextAvivar.GetComponent<GUIText>().enabled =false;
 	}
 	void OnTriggerExit(Collider other){
 		if(other.tag == "Player")
-			guitextAvivar.guiText.enabled = false;
+			guitextAvivar.GetComponent<GUIText>().enabled = false;
 	}
 }

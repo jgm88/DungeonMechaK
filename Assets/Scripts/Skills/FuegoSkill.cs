@@ -10,7 +10,7 @@ public class FuegoSkill : MonoBehaviour {
 
 	void OnEnable(){
 		spawnTime = Time.time;
-		audio.Play();
+		GetComponent<AudioSource>().Play();
 	}
 
 	void Update () {
